@@ -3,6 +3,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+
+
+Route::get('/billy', function () {
+    return view('billy');
+});
+
+
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
