@@ -8,14 +8,11 @@ use App\Http\Controllers\LoginController;
 Route::get('/billy', function () {
     return view('billy');
 });
-
-
-
-
-
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/transaksi', function () {
+    return view('transaksi');
+});
+Route::get('/dashboard', function () {
+    return view('dashboard');
 });
 // Show the login form
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
