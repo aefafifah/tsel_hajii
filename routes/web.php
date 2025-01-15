@@ -9,16 +9,6 @@ Route::get('/billy', function () {
     return view('billy');
 });
 
-Route::get('/transaksi', function () {
-    return view('transaksi');
-});
-
-
-
-
-
-Route::get('/', function () {
-    return view('welcome');
 });
 // Show the login form
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
