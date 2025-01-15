@@ -9,6 +9,9 @@ Route::get('/billy', function () {
     return view('billy');
 });
 
+Route::get('/transaksi', function () {
+    return view('transaksi');
+});
 
 
 
