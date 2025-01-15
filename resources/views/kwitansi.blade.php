@@ -79,9 +79,10 @@
 </head>
 <body>
     <div class="container">
-        <img src="icon_telkomsel" alt="Watermark" class="watermark">
+    <img src="{{ asset('admin_asset/img/photos/icon_telkomsel.png') }}" alt="Icon Telkomsel"
+    class="watermark">
         <div class="header">
-            <img src="logo_telkomsel.png" alt="Logo">
+            <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo">
             <h1>Kwitansi Pembayaran</h1>
         </div>
         <div class="content">
