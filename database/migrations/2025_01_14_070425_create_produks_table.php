@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('supervisor', function (Blueprint $table) {
+        Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->string('sv_name');
-            $table->string('sv_email')->unique();
-            $table->string('sv_photo')->nullable();
-            $table->string('pin');
+            $table->string('produk_nama');
+            $table->integer('produk_harga');
+            $table->decimal('produk_diskon',5,2)->default(0);
+            $table->text('produk_detail');
+            $table->integer('produk_stok');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('supervisor');
+        Schema::dropIfExists('produks');
     }
 };
