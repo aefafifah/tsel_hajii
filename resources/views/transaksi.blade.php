@@ -61,8 +61,65 @@
             color: red;
             display: none;
         }
-        
+        .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    .checkbox-box {
+        display: flex;
+        align-items: center;
+        width: 48%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fefefe;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .checkbox-box:hover {
+        border-color: #007bff;
+        background-color: #eaf4ff;
+    }
+    .checkbox-box input {
+        display: none;
+    }
+    .checkbox-box label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+    }
+    .checkbox-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        position: relative;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+    input:checked + label .checkbox-icon {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    input:checked + label .checkbox-icon::after {
+        content: '✔';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+    }
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -79,75 +136,143 @@
         type="text" 
         name="no" 
         placeholder="Masukkan nomor" 
-        pattern="\d+" 
-        oninput="validateInput(this)" 
+        oninput="restrictInput(this)" 
         required>
     <small id="error-message" style="color: red; display: none;">Harap masukkan hanya angka (nomor)</small>
 </div>
 
 <script>
-    function validateInput(input) {
+    function restrictInput(input) {
         const errorMessage = document.getElementById('error-message');
-        
-        // Cek apakah input hanya berisi angka
-        if (!/^\d*$/.test(input.value)) { // Ubah regex agar menerima kosong untuk validasi berjalan saat input kosong
-            // Set pesan error jika input tidak valid
-            input.setCustomValidity('Harap masukkan hanya angka (nomor)');
+        const onlyNumbers = input.value.replace(/\D/g, ''); // Hapus karakter selain angka
+
+        if (input.value !== onlyNumbers) {
+            // Set pesan error jika ada karakter non-angka
             errorMessage.style.display = 'block'; // Tampilkan pesan error
         } else {
-            // Hapus pesan error jika input valid
-            input.setCustomValidity('');
-            errorMessage.style.display = 'none'; // Sembunyikan pesan error
+            // Sembunyikan pesan error jika valid
+            errorMessage.style.display = 'none';
         }
+
+        input.value = onlyNumbers; // Perbarui input hanya dengan angka
     }
 </script>
 
-</script>
 <div class="form-group">
     <label>Telah Terima Dari:</label>
     <input 
         type="text" 
         name="telah_terima_dari" 
         placeholder="Masukkan nama penerima" 
-        pattern="[a-zA-Z\s]+" 
-        oninvalid="this.setCustomValidity('Harap masukkan huruf saja')" 
-        oninput="this.setCustomValidity('')" 
+        oninput="restrictTextInput(this)" 
         required>
-        
+    <small id="error-message-text" style="color: red; display: none;">Harap masukkan hanya huruf </small>
 </div>
+
+<script>
+    function restrictTextInput(input) {
+        const errorMessage = document.getElementById('error-message-text');
+        const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, ''); // Hapus karakter selain huruf dan spasi
+
+        if (input.value !== onlyLetters) {
+            // Set pesan error jika ada karakter non-huruf
+            errorMessage.style.display = 'block'; // Tampilkan pesan error
+        } else {
+            // Sembunyikan pesan error jika valid
+            errorMessage.style.display = 'none';
+        }
+
+        input.value = onlyLetters; // Perbarui input hanya dengan huruf dan spasi
+    }
+</script>
+
 <div class="form-group">
     <label>Nomor Telepon:</label>
     <input 
         type="text" 
         name="nomor_telepon" 
         placeholder="Masukkan nomor telepon" 
-        pattern="\d+" 
-        oninvalid="this.setCustomValidity('Harap masukkan nomor saja')" 
-        oninput="this.setCustomValidity('')" 
+        oninput="restrictPhoneInput(this)" 
         required>
+    <small id="error-message-phone" style="color: red; display: none;">Harap masukkan hanya angka</small>
 </div>
+
+<script>
+    function restrictPhoneInput(input) {
+        const errorMessage = document.getElementById('error-message-phone');
+        const onlyNumbers = input.value.replace(/\D/g, ''); // Hapus karakter selain angka
+
+        if (input.value !== onlyNumbers) {
+            // Tampilkan pesan error jika input tidak valid
+            errorMessage.style.display = 'block';
+        } else {
+            // Sembunyikan pesan error jika input valid
+            errorMessage.style.display = 'none';
+        }
+
+        input.value = onlyNumbers; // Perbarui input agar hanya berisi angka
+    }
+</script>
+
 <div class="form-group">
     <label>Nama Pelanggan:</label>
     <input 
         type="text" 
         name="nama_pelanggan" 
         placeholder="Masukkan nama pelanggan" 
-        pattern="[a-zA-Z\s]+" 
-        oninvalid="this.setCustomValidity('Harap masukkan huruf saja')" 
-        oninput="this.setCustomValidity('')" 
+        oninput="restrictNameInput(this)" 
         required>
+    <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf </small>
 </div>
+
+<script>
+    function restrictNameInput(input) {
+        const errorMessage = document.getElementById('error-message-name');
+        const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, ''); // Hapus karakter selain huruf
+
+        if (input.value !== onlyLetters) {
+            // Tampilkan pesan error jika input tidak valid
+            errorMessage.style.display = 'block';
+        } else {
+            // Sembunyikan pesan error jika input valid
+            errorMessage.style.display = 'none';
+        }
+
+        input.value = onlyLetters; // Perbarui input hanya dengan huruf 
+    }
+</script>
+
 <div class="form-group">
     <label>Uang Sejumlah:</label>
     <input 
         type="text" 
         name="uang_sejumlah" 
-        placeholder="Masukkan jumlah uang"
-        pattern="[a-zA-Z0-9\s]+" 
-        oninvalid="this.setCustomValidity
-        oninput="this.setCustomValidity
+        placeholder="Masukkan jumlah uang" 
+        oninput="validateAmountInput(this)" 
         required>
+    <small id="error-message-amount" style="color: red; display: none;">Harap isi dengan angka atau huruf, jangan dibiarkan kosong</small>
 </div>
+
+<script>
+    function validateAmountInput(input) {
+        const errorMessage = document.getElementById('error-message-amount');
+        const trimmedValue = input.value.trim(); // Menghilangkan spasi awal/akhir
+
+        if (trimmedValue === '') {
+            // Pesan error jika input kosong
+            errorMessage.style.display = 'block';
+            input.setCustomValidity('Input tidak boleh kosong');
+        } else if (!/^[a-zA-Z0-9\s]+$/.test(trimmedValue)) {
+            // Pesan error jika input memiliki karakter tidak valid
+            errorMessage.style.display = 'block';
+            input.setCustomValidity('Harap hanya masukkan huruf, angka,');
+        } else {
+            // Input valid
+            errorMessage.style.display = 'none';
+            input.setCustomValidity('');
+        }
+    }
+</script>
 
             <div class="form-group">
                 <label>Aktivasi Tanggal:</label>
@@ -244,66 +369,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-    .checkbox-box {
-        display: flex;
-        align-items: center;
-        width: 48%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #fefefe;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .checkbox-box:hover {
-        border-color: #007bff;
-        background-color: #eaf4ff;
-    }
-    .checkbox-box input {
-        display: none;
-    }
-    .checkbox-box label {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #333;
-    }
-    .checkbox-icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        background-color: #fff;
-        position: relative;
-        transition: background-color 0.3s, border-color 0.3s;
-    }
-    input:checked + label .checkbox-icon {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-    input:checked + label .checkbox-icon::after {
-        content: '✔';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff;
-        font-size: 14px;
-        font-weight: bold;
-    }
-</style>
    
             <div class="form-group">
                 <label>Tanggal Pembelian:</label>
@@ -311,5 +376,95 @@
             </div>
         </form>
     </div>
+
+    <div class="form-group" style="text-align: center; margin-top: 20px;">
+    <!-- Tombol Oke untuk menyimpan data -->
+    <button 
+        type="button" 
+        onclick="OkeForm()" 
+        style="
+            padding: 10px 20px; 
+            margin-right: 10px; 
+            font-size: 16px; 
+            border: none; 
+            background-color: #007bff; 
+            color: white; 
+            border-radius: 5px; 
+            cursor: pointer;">
+        Oke
+    </button>
+    
+    <!-- Tombol Cancel untuk membatalkan pengisian -->
+    <button 
+        type="button" 
+        onclick="cancelForm()" 
+        style="
+            padding: 10px 20px; 
+            font-size: 16px; 
+            border: none; 
+            background-color: #dc3545; 
+            color: white; 
+            border-radius: 5px; 
+            cursor: pointer;">
+        Cancel
+    </button>
+</div>
+
+<script>
+    // Fungsi untuk tombol Cancel
+    function cancelForm() {
+        const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
+        
+        if (confirmResult) {
+            // Notifikasi pembatalan
+            alert("Form telah dibatalkan.");
+            // Kembali ke halaman sebelumnya
+            window.history.back();
+        }
+    }
+
+    // Fungsi untuk tombol Oke
+    function OkeForm() {
+        const confirmResult = confirm("Apakah Anda yakin pengisian sudah selesai?");
+        
+        if (confirmResult) {
+            // Notifikasi keberhasilan
+            alert("Pengisian berhasil disimpan.");
+        }
+    }
+
+// Fungsi untuk memvalidasi form sebelum menekan tombol Oke
+function validateForm() {
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input[required]');
+    const errors = [];
+
+    // Periksa setiap input yang memiliki atribut required
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            errors.push(input.name);
+        }
+    });
+
+    // Jika ada kesalahan (kolom kosong), tampilkan notifikasi
+    if (errors.length > 0) {
+        alert("Lengkapi kolom yang kosong.");
+        return false; // Hentikan proses OkeForm
+    }
+
+    return true; // Lanjutkan ke OkeForm jika semua kolom lengkap
+}
+
+// Fungsi yang terhubung dengan tombol Oke
+function OkeForm() {
+    if (validateForm()) {
+        const confirmResult = confirm("Apakah Anda yakin pengisian sudah selesai?");
+        if (confirmResult) {
+            // Notifikasi keberhasilan
+            alert("Pengisian berhasil disimpan.");
+        }
+    }
+}
+</script>
 </body>
 </html>
