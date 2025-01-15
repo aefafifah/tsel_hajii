@@ -7,55 +7,79 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f7f7f7;
         }
         .container {
-            max-width: 700px;
+            width: 80mm;
+            height: 105mm;
             margin: auto;
             background: #fff;
-            padding: 20px;
+            padding: 10px;
+            box-sizing: border-box;
             border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: 0;
+            width: 60mm;
+            height: 60mm;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
         }
         .header h1 {
-            margin: 0;
-            font-size: 20px;
+            margin: 5px 0;
+            font-size: 14px;
         }
         .header img {
-            max-width: 150px;
-            margin-bottom: 15px;
+            max-width: 35mm;
+            margin-bottom: 5px;
         }
         .content {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
         }
         .content table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
         .content table td {
-            padding: 8px;
+            padding: 4px;
             border: 1px solid #ddd;
+            font-size: 12px;
         }
         .content table td.label {
             font-weight: bold;
-            width: 30%;
+            width: 40%;
         }
         .footer {
             text-align: center;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
         }
         .footer p {
-            margin: 0;
+            margin: 2px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="icon_telkomsel" alt="Watermark" class="watermark">
         <div class="header">
             <img src="logo_telkomsel.png" alt="Logo">
             <h1>Kwitansi Pembayaran</h1>
@@ -87,14 +111,14 @@
                     <td>20 Mei 2025</td>
                 </tr>
             </table>
-            <h3>Pembayaran</h3>
+            <h3 style="font-size: 12px; margin: 5px 0;">Pembayaran</h3>
             <table>
                 <tr>
                     <td class="label">Paket Internet Haji</td>
                     <td>17 GB - COMBO - 30D <strike>Rp 870.000,-</strike> (Rp 850.000,-)</td>
                 </tr>
             </table>
-            <h3>Merchandise</h3>
+            <h3 style="font-size: 12px; margin: 5px 0;">Merchandise</h3>
             <table>
                 <tr>
                     <td class="label">Barang</td>
