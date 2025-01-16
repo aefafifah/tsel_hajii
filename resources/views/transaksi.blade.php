@@ -74,7 +74,7 @@
             transition: 0.3s;
         }
         .checkbox-box:hover {
-            border-color:rgba(255, 0, 21, 0.79);
+            border-color:rgba(0, 60, 255, 0.79);
             background-color: #eaf4ff;
         }
         .checkbox-box input {
@@ -135,7 +135,7 @@
         color: white;
     }
     .form-buttons button.cancel {
-        background-color: #dc3545;
+        background-color:rgb(34, 39, 195);
         color: white;
     }
     .form-buttons button:hover {
@@ -297,13 +297,13 @@
     }
 </script>
 
-            <div class="form-group">
-                <label>Aktivasi Tanggal:</label>
-                <input type="date" name="aktivasi_tanggal">
-            </div>
-            <div class="form-group">
-                <label>Untuk Pembayaran: Paket Haji</label>
-            </div>
+<div class="form-group">
+    <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
+    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
+</div>
+<div class="form-group">
+</div>
+
 
             <div class="form-group">
     <label>Pilih Paket Internet:</label>
