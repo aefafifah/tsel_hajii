@@ -12,6 +12,30 @@ Route::get('/billy', function () {
     return view('billy');
 });
 
+Route::get('/sales/home', function () {
+    return view('sales.home');
+});
+
+Route::get('/sales/', function () {
+    return view('sales.home');
+});
+
+Route::get('/admin/home', function () {
+    return view('admin.home');
+});
+
+Route::get('/admin/', function () {
+    return view('admin.home');
+});
+
+Route::get('/supvis/home', function () {
+    return view('supvis.home');
+});
+
+Route::get('/supvis/', function () {
+    return view('supvis.home');
+});
+
 // produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
