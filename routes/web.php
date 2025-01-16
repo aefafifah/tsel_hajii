@@ -5,11 +5,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 
 
-Route::get('/billy', function () {
-    return view('billy');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+Route::get('/transaksi', function () {
+    return view('transaksi');
 });
 
-});
+
 // Show the login form
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 
