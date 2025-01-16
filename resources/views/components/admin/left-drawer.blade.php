@@ -9,7 +9,7 @@
                 Admin
             </li>
 
-            <x-admin.adminnav-link href="/admin/home" :active="request()->is('/admin/home')">Home</x-admin.adminnav-link>
+            <x-nav-link href="/admin/home" :active="request()->is('admin/home')">Home</x-nav-link>
             
     </div>
 </nav>
