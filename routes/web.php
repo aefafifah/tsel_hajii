@@ -11,7 +11,10 @@ use App\Http\Controllers\InsentifController;
 Route::get('/billy', function () {
     return view('billy');
 });
-
+// transaksi
+Route::get('/transaksi', function () {
+    return view('transaksi');
+});
 Route::get('/sales/home', function () {
     return view('sales.home');
 });

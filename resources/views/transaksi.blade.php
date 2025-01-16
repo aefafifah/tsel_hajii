@@ -22,7 +22,6 @@
     box-shadow: none; /* Hilangkan efek bayangan */
 }
 
-    
     .title {
         text-align: center;
         margin: 25px 0;
@@ -141,6 +140,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <span>Telkomsel</span>
         </div>
         <div class="title">
             KWITANSI PEMBAYARAN
