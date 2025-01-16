@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Insentif extends Model
 {
-    /** @use HasFactory<\Database\Factories\InsentifFactory> */
     use HasFactory;
-    
+
+    protected $fillable = [
+        'tipe_insentif',
+        'nilai_insentif',
+        'produk_id',
+    ];
 }
