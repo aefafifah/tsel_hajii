@@ -43,7 +43,7 @@ Route::get('/insentif/{insentif}', [InsentifController::class, 'show'])->name('i
 
 // kasaran landingpage
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 // login
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
