@@ -35,7 +35,7 @@ class LoginController extends Controller
                     return redirect()->route('supervisor.dashboard');
                 case 'sales':
                     Auth::login($user);
-                    return redirect()->route('sales.dashboard');
+                    return redirect()->route('sales');
                 default:
                     return back()->withErrors(['role' => 'Role tidak valid untuk mengakses halaman ini.']);
             }
@@ -50,6 +50,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login'); 
+        return redirect()->route('login');
     }
 }

@@ -7,59 +7,61 @@ use Illuminate\Http\Request;
 
 class InsentifController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+
+        $insentif = Insentif::all();
+        return view ('insentif.index',compact('insentif'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('insentif.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'tipe_insentif' => 'required|in:persen,harga',
+            'nilai_insentif' => 'required|numeric',
+            'produk_id' => 'required|exists:produks,id',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
+        Insentif::create($validated);
+        return redirect()->route('insentif.index')->with('success', 'Insentif berhasil ditambahkan!');
+    }
     public function show(Insentif $insentif)
     {
-        //
+
+        return view('insentif.show', compact('insentif'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
+
     public function edit(Insentif $insentif)
     {
-        //
+        return view('insentif.edit', compact('insentif'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Insentif $insentif)
     {
-        //
+        $request->validate([
+            'tipe_insentif' => 'required|in:persen,harga',
+            'nilai_insentif' => 'required|numeric',
+            'produk_id' => 'required|exists:produks,id',
+        ]);
+
+       $insentif->update($request->all());
+
+        return redirect()->route('insentif.index')->with('success', 'Insentif berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Insentif $insentif)
     {
-        //
+        $insentif->delete();
+
+        return redirect()->route('insentif.index')->with('success', 'Insentif berhasil dihapus!');
     }
 }
