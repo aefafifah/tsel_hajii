@@ -14,20 +14,15 @@
             padding: 0;
         }
         .container {
-        max-width: 1000px; /* Mengubah lebar maksimum */
-        margin: 30px auto; /* Memberi jarak lebih besar */
-        background: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Meningkatkan efek bayangan */
-    }
-    .header {
-        text-align: right;
-        background-color: rgba(255, 0, 0, 0.72);
-        color: #fff;
-        padding: 15px 25px; /* Menambah padding */
-        font-size: 20px; /* Memperbesar ukuran teks */
-    }
+    max-width: 1000px; /* Tetap sesuai kebutuhan */
+    margin: 30px auto; /* Memberi jarak dengan bagian atas */
+    background: none; /* Hapus background putih */
+    border-radius: 0; /* Hapus sudut membulat */
+    overflow: visible; /* Izinkan konten keluar */
+    box-shadow: none; /* Hilangkan efek bayangan */
+}
+
+    
     .title {
         text-align: center;
         margin: 25px 0;
@@ -146,7 +141,6 @@
 <body>
     <div class="container">
         <div class="header">
-            <span>Telkomsel</span>
         </div>
         <div class="title">
             KWITANSI PEMBAYARAN
@@ -405,7 +399,7 @@
         type="button" 
         onclick="OkeForm()" 
         style="
-            padding: 10px 20px; 
+            padding: 10px 50px; 
             margin-right: 10px; 
             font-size: 16px; 
             border: none; 
@@ -421,7 +415,7 @@
         type="button" 
         onclick="cancelForm()" 
         style="
-            padding: 10px 20px; 
+            padding: 10px 50px; 
             font-size: 16px; 
             border: none; 
             background-color: #dc3545; 
