@@ -39,6 +39,21 @@ Route::get('/supvis/', function () {
     return view('supvis.home');
 });
 
+// checklist sales
+Route::get('/checklist', function () {
+    return view('checklist_sales');
+});
+
+// tambah sales
+Route::get('/tambah_sales', function () {
+    return view('tambah_sales');
+});
+
+// tambah spv
+Route::get('/tambah_spv', function () {
+    return view('tambah_spv');
+});
+
 // produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');

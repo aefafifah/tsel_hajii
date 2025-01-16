@@ -9,7 +9,7 @@
                 SuperVisor
             </li>
 
-            <x-supvis.supvisnav-link href="/supvis/home" :active="request()->is('/supvis/home')">Home</x-supvis.supvisnav-link>
+            <x-nav-link href="/supvis/home" :active="request()->is('supvis/home')">Home</x-nav-link>
             
     </div>
 </nav>

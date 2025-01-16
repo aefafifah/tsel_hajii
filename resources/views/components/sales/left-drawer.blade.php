@@ -9,7 +9,7 @@
                 Sales
             </li>
 
-            <x-sales.salesnav-link href="/sales/home" :active="request()->is('/sales/home')">Home</x-sales.salesnav-link>
+            <x-nav-link href="/sales/home" :active="request()->is('sales/home')">Home</x-nav-link>
             
     </div>
 </nav>
