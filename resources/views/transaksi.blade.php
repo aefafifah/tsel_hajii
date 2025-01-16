@@ -22,6 +22,13 @@
     box-shadow: none; /* Hilangkan efek bayangan */
 }
 
+    .header {
+        text-align: right;
+        background-color: rgba(255, 0, 0, 0.72);
+        color: #fff;
+        padding: 15px 25px; /* Menambah padding */
+        font-size: 20px; /* Memperbesar ukuran teks */
+    }
     .title {
         text-align: center;
         margin: 25px 0;
@@ -139,14 +146,16 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <span>Telkomsel</span>
-        </div>
+    <div>
+    <div>
+        <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 50px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
+    </div>
         <div class="title">
             KWITANSI PEMBAYARAN
         </div>
         <form action="{{ url('/transaksi/submit') }}" method="POST">   
         <div class="form-group">
+            
     <label>No:</label>
     <input 
         type="text" 
@@ -399,7 +408,7 @@
         type="button" 
         onclick="OkeForm()" 
         style="
-            padding: 10px 50px; 
+            padding: 10px 20px; 
             margin-right: 10px; 
             font-size: 16px; 
             border: none; 
@@ -415,7 +424,7 @@
         type="button" 
         onclick="cancelForm()" 
         style="
-            padding: 10px 50px; 
+            padding: 10px 20px; 
             font-size: 16px; 
             border: none; 
             background-color: #dc3545; 
