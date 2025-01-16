@@ -9,35 +9,11 @@
                 TSEL_HAJII
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="">
-                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Billy</span>
-                </a>
-            </li>
+            <x-nav-link href="/dashboard" :active="request()->is('dashboard')">Dashboard</x-nav-link>
+            <x-nav-link href="/transaksi" :active="request()->is('transaksi')">Transaksi</x-nav-link>
+            <x-nav-link href="/" :active="request()->is('')">Aef</x-nav-link>
+            <x-nav-link href="/" :active="request()->is('')">Yuan</x-nav-link>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="">
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Nira</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-sign-in.html">
-                    <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Aef</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-sign-up.html">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Yuan</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item active">
-                <a class="sidebar-link" href="pages-sign-up.html">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Dashboard</span>
-                </a>
-            </li>
 
 
 
