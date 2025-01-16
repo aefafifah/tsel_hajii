@@ -1,3 +1,4 @@
+<x-layouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,5 +192,4 @@
             resultDiv.hidden = false;
         }
     </script>
-</body>
-</html>
+</x-layouts>

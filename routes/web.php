@@ -44,6 +44,11 @@ Route::get('/checklist', function () {
     return view('checklist_sales');
 });
 
+// tambah sales
+Route::get('/tambah_sales', function () {
+    return view('tambah_sales');
+});
+
 // produk
 Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
 Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
