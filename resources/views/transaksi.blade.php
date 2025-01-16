@@ -147,15 +147,13 @@
 <body>
     <div class="container">
     <div>
-    <div>
-        <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 50px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
+        <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
     </div>
         <div class="title">
             KWITANSI PEMBAYARAN
         </div>
         <form action="{{ url('/transaksi/submit') }}" method="POST">   
         <div class="form-group">
-            
     <label>No:</label>
     <input 
         type="text" 
@@ -436,6 +434,30 @@
 </div>
 
 <script>
+    function OkeForm() {
+        // Ambil semua input form dengan atribut required
+        const inputs = document.querySelectorAll("input[required]");
+        let isValid = true;
+
+        // Periksa apakah semua input sudah terisi
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.style.borderColor = "red"; // Tandai input kosong dengan border merah
+            } else {
+                input.style.borderColor = ""; // Reset border jika valid
+            }
+        });
+
+        // Tampilkan notifikasi
+        if (isValid) {
+            alert("Pengisian berhasil!");
+            // Simpan data (tambahkan logika penyimpanan di sini jika diperlukan)
+        } else {
+            alert("Lengkapi kolom!");
+        }
+    }
+
     // Fungsi untuk tombol Cancel
     function cancelForm() {
         const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
@@ -444,53 +466,13 @@
             // Notifikasi pembatalan
             alert("Form telah dibatalkan.");
             // Kembali ke halaman sebelumnya
-            window.history.back();
+            window.transaksi.back();
         }
     }
 
-    // Fungsi untuk tombol Oke
-    function OkeForm() {
-        const confirmResult = confirm("Apakah Anda yakin pengisian sudah selesai?");
-        
-        if (confirmResult) {
-            // Notifikasi keberhasilan
-            alert("Pengisian berhasil disimpan.");
-        }
-    }
 
-// Fungsi untuk memvalidasi form sebelum menekan tombol Oke
-function validateForm() {
-    const form = document.querySelector('form');
-    const inputs = form.querySelectorAll('input[required]');
-    const errors = [];
-
-    // Periksa setiap input yang memiliki atribut required
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            errors.push(input.name);
-        }
-    });
-
-    // Jika ada kesalahan (kolom kosong), tampilkan notifikasi
-    if (errors.length > 0) {
-        alert("Lengkapi kolom yang kosong.");
-        return false; // Hentikan proses OkeForm
-    }
-
-    return true; // Lanjutkan ke OkeForm jika semua kolom lengkap
-}
-
-// Fungsi yang terhubung dengan tombol Oke
-function OkeForm() {
-    if (validateForm()){
-        const confirmResult = confirm("Apakah Anda yakin pengisian sudah selesai?");
-        if (confirmResult) {
-            // Notifikasi keberhasilan
-            alert("Pengisian berhasil disimpan.");
-        }
-    }
-}
 </script>
+
 </body>
 </html>
 
