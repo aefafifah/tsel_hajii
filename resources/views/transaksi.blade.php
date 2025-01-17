@@ -480,7 +480,7 @@
         } else {
             alert("Lengkapi kolom!");
         }
-    }
+    
     function cancelForm() {
     const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
     
@@ -520,7 +520,7 @@
 }
 
         // Kembali ke halaman sebelumnya jika diperlukan
-        window.transaksi.back(); // Gunakan ini untuk navigasi balik
+        window.kuitansi.back(); // Gunakan ini untuk navigasi balik
     </script>
 </script>
 </body>
