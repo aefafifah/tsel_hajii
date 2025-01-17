@@ -9,7 +9,7 @@ class SalesController extends Controller
 {
     public function store(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:role_users,email',
@@ -35,6 +35,13 @@ class SalesController extends Controller
         ]);
         return redirect()->route('add_sales')->with('success', 'Sales berhasil ditambahkan!');
 
+    }
+
+    public function showChecklist()
+    {
+        $sales = RoleUsers::where('role', operator: 'sales')->get();
+
+        return view('supvis.sales_allow', compact('sales'));
     }
 }
 

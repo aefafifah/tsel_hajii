@@ -118,3 +118,5 @@ Route::post('/supvis', [SupvisController::class, 'store'])->name('supvis.store')
 Route::get('/tambah-supvis', function () {
     return view('supvis.add_supvis');
 })->name('add_supvis');
+//sales checklist
+Route::get('/sales-checklist', [SalesController::class, 'showChecklist']);
