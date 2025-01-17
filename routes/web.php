@@ -14,6 +14,10 @@ Route::get('/billy', function () {
     return view('billy');
 });
 
+Route::get('/kwitansi', function () {
+    return view('kwitansi');
+});
+
 Route::get('/sales/home', function () {
     return view('sales.home');
 });
