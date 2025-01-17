@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Insentif;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class InsentifController extends Controller
@@ -15,7 +16,8 @@ class InsentifController extends Controller
 
     public function create()
     {
-        return view('insentif.create');
+        $produks = Produk::all();
+        return view('insentif.create', compact('produks'));
     }
 
 
