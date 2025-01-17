@@ -35,7 +35,7 @@ class LoginController extends Controller
                     return redirect()->route('supvis.home');
                 case 'sales':
                     Auth::login($user);
-                    return redirect()->route('sales.home');
+                    return redirect()->route('sales');
                 default:
                     return back()->withErrors(['role' => 'Role tidak valid untuk mengakses halaman ini.']);
             }

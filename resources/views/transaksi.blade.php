@@ -1,4 +1,4 @@
-<x-sales.saleslayouts>
+<x-layouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -388,6 +388,7 @@
             </div>
         </form>
     </div>
+
     <div class="form-group" style="text-align: center; margin-top: 20px;">
     <!-- Tombol Oke untuk menyimpan data -->
     <button 
@@ -422,6 +423,7 @@
 </div>
 
 <script>
+<<<<<<< HEAD:resources/views/sales/transaksi.blade.php
    function OkeForm() {
     // Ambil semua input form dengan atribut required
     const inputs = document.querySelectorAll("input[required]");
@@ -459,61 +461,61 @@
         alert("Lengkapi kolom!");
     }
 }
+=======
+    function OkeForm() {
+        // Ambil semua input form dengan atribut required
+        const inputs = document.querySelectorAll("input[required]");
+        let isValid = true;
+
+        // Periksa apakah semua input sudah terisi
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.style.borderColor = "red"; // Tandai input kosong dengan border merah
+            } else {
+                input.style.borderColor = ""; // Reset border jika valid
+            }
+        });
+
+>>>>>>> aef:resources/views/transaksi.blade.php
         // Tampilkan notifikasi
         if (isValid) {
             alert("Pengisian berhasil!");
-            alert("Form telah disimpan");
             // Simpan data (tambahkan logika penyimpanan di sini jika diperlukan)
         } else {
             alert("Lengkapi kolom!");
         }
+<<<<<<< HEAD:resources/views/sales/transaksi.blade.php
 <<<<<<< HEAD:resources/views/transaksi.blade.php
     
 =======
 >>>>>>> 79525d1f2efc639359f3bc5d0ca3f14d1b4256e6:resources/views/sales/transaksi.blade.php
-    function cancelForm() {
-    const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
-    
-    if (confirmResult) {
-        // Notifikasi pembatalan
-        alert("Form telah dibatalkan.");
-        
-        // Ambil elemen form berdasarkan ID
-        const form = document.getElementById("form-transaksi");
-        if (form) {
-            // Gunakan reset untuk mengembalikan nilai default form
-            form.reset();
-            
-            // Untuk memastikan, kosongkan nilai semua input secara manual
-            const inputs = form.querySelectorAll("input, select, textarea");
-            inputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false; // Hilangkan checkbox atau radio yang dicentang
-                } else {
-                    input.value = ""; // Kosongkan input lainnya
-                }
-                input.style.borderColor = ""; // Reset warna border ke default
-            });
-        }
-
-        // Tambahan untuk mereset form lain atau elemen input lainnya yang mungkin ada di luar tag form
-        const additionalInputs = document.querySelectorAll("input, select, textarea");
-        additionalInputs.forEach(input => {
-            if (input.type === "checkbox" || input.type === "radio") {
-                input.checked = false; // Reset checkbox atau radio
-            } else {
-                input.value = ""; // Reset input lainnya
-            }
-            input.style.borderColor = ""; // Reset warna border ke default
-        });
+=======
     }
-}
 
+    // Fungsi untuk tombol Cancel
+>>>>>>> aef:resources/views/transaksi.blade.php
+    function cancelForm() {
+        const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
+        
+        if (confirmResult) {
+            // Notifikasi pembatalan
+            alert("Form telah dibatalkan.");
+            // Kembali ke halaman sebelumnya
+            window.transaksi.back();
+        }
+    }
+
+<<<<<<< HEAD:resources/views/sales/transaksi.blade.php
         // Kembali ke halaman sebelumnya jika diperlukan
         window.kuitansi.back(); // Gunakan ini untuk navigasi balik
     </script>
+=======
+
+>>>>>>> aef:resources/views/transaksi.blade.php
 </script>
+
 </body>
 </html>
 
-</x-sales.saleslayouts>
+</x-layouts>

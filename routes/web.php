@@ -14,10 +14,6 @@ Route::get('/billy', function () {
     return view('billy');
 });
 
-Route::get('/kwitansi', function () {
-    return view('kwitansi');
-});
-
 Route::get('/sales/home', function () {
     return view('sales.home');
 });
@@ -71,75 +67,72 @@ Route::post('login', [LoginController::class, 'login']);
 // -------------
 // SUPERVISOR
 
-Route::get('/supvis/home', function () {
-    if (Auth::user() && Auth::user()->role === 'supervisor') {
+// Grup rute untuk role supervisor
+Route::middleware(['supervisor'])->group(function () {
+    // Dashboard Supervisor
+    Route::get('/supvis/home', function () {
         return view('supvis.home');
-    }
-    abort(403, 'Unauthorized access.');
-})->name('supvis.home');
+    })->name('supvis.home');
 
-// insentif
-Route::get('/insentif', [InsentifController::class, 'index'])->name('insentif.index');
-Route::get('/insentif/create', [InsentifController::class, 'create'])->name('insentif.create');
-Route::post('/insentif/store', [InsentifController::class, 'store'])->name('insentif.store');
-Route::get('/insentif/{insentif}/edit', [InsentifController::class, 'edit'])->name('insentif.edit');
-Route::put('/insentif/{insentif}', [InsentifController::class, 'update'])->name('insentif.update');
-Route::delete('/insentif/{insentif}', [InsentifController::class, 'destroy'])->name('insentif.destroy');
-Route::get('/insentif/{insentif}', [InsentifController::class, 'show'])->name('insentif.show');
+    // Rute Insentif
+    Route::prefix('insentif')->name('insentif.')->group(function () {
+        Route::get('/', [InsentifController::class, 'index'])->name('index');
+        Route::get('/create', [InsentifController::class, 'create'])->name('create');
+        Route::post('/store', [InsentifController::class, 'store'])->name('store');
+        Route::get('/{insentif}/edit', [InsentifController::class, 'edit'])->name('edit');
+        Route::put('/{insentif}', [InsentifController::class, 'update'])->name('update');
+        Route::delete('/{insentif}', [InsentifController::class, 'destroy'])->name('destroy');
+        Route::get('/{insentif}', [InsentifController::class, 'show'])->name('show');
+    });
 
-// produk
-Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
-Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
-Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
-Route::get('/produk/{produk}', [ProdukController::class, 'show'])->name('produk.show');
-Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-Route::put('/produk/{produk}', [ProdukController::class, 'update'])->name('produk.update');
-Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    // Rute Produk
+    Route::prefix('produk')->name('produk.')->group(function () {
+        Route::get('/', [ProdukController::class, 'index'])->name('index');
+        Route::get('/create', [ProdukController::class, 'create'])->name('create');
+        Route::post('/', [ProdukController::class, 'store'])->name('store');
+        Route::get('/{produk}', [ProdukController::class, 'show'])->name('show');
+        Route::get('/{produk}/edit', [ProdukController::class, 'edit'])->name('edit');
+        Route::put('/{produk}', [ProdukController::class, 'update'])->name('update');
+        Route::delete('/{produk}', [ProdukController::class, 'destroy'])->name('destroy');
+    });
 
-// merch
-Route::get('/merch', [MerchandiseController::class, 'index'])->name('merch.index');
-Route::get('/merch/create', [MerchandiseController::class, 'create'])->name('merch.create');
-Route::post('/merch', [MerchandiseController::class, 'store'])->name('merch.store');
-Route::get('/merch/{merchandise}', [MerchandiseController::class, 'show'])->name('merch.show');
-Route::get('/merch/{merchandise}/edit', [MerchandiseController::class, 'edit'])->name('merch.edit');
-Route::put('/merch/{merchandise}', [MerchandiseController::class, 'update'])->name('merch.update');
-Route::delete('/merch/{merchandise}', [MerchandiseController::class, 'destroy'])->name('merch.destroy');
+    // Rute Merchandise
+    Route::prefix('merch')->name('merch.')->group(function () {
+        Route::get('/', [MerchandiseController::class, 'index'])->name('index');
+        Route::get('/create', [MerchandiseController::class, 'create'])->name('create');
+        Route::post('/', [MerchandiseController::class, 'store'])->name('store');
+        Route::get('/{merchandise}', [MerchandiseController::class, 'show'])->name('show');
+        Route::get('/{merchandise}/edit', [MerchandiseController::class, 'edit'])->name('edit');
+        Route::put('/{merchandise}', [MerchandiseController::class, 'update'])->name('update');
+        Route::delete('/{merchandise}', [MerchandiseController::class, 'destroy'])->name('destroy');
+    });
 
-// tambah sales backend
-Route::post('/sales', [SalesController::class, 'store'])->name('sales.store');
-Route::get('/tambah-sales', function () {
-    return view('supvis.add_sales');
-})->name('add_sales');
+    // Tambah Sales Backend
+    Route::post('/sales', [SalesController::class, 'store'])->name('sales.store');
+    Route::get('/tambah-sales', function () {
+        return view('supvis.add_sales');
+    })->name('add_sales');
 
+    // Tambah Supervisor Backend
+    Route::post('/supvis', [SupvisController::class, 'store'])->name('supvis.store');
+    Route::get('/tambah-supvis', function () {
+        return view('supvis.add_supvis');
+    })->name('add_supvis');
 
-// tambah supvis backend
-Route::post('/supvis', [SupvisController::class, 'store'])->name('supvis.store');
-Route::get('/tambah-supvis', function () {
-    return view('supvis.add_supvis');
-})->name('add_supvis');
+    // Sales Checklist
+    Route::get('/sales-checklist', [SalesController::class, 'showChecklist'])->name('sales.checklist');
+});
 
 
 // -------------
 
-
-// SALES
-
-Route::get('/sales/home', function () {
-    if (Auth::user() && Auth::user()->role === 'sales') {
-        return view('sales.home');
-    }
-    abort(403, 'Unauthorized access.');
-})->name('sales.home');
-
-// transaksi
-Route::get('/sales/transaksi', function () {
-    return view('sales.transaksi');
+Route::middleware(['sales'])->group(function () {
+    Route::get('/sales/dashboard', function () {
+        return view('sales');
+    })->name('sales');
 });
-
 
 // logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-//sales checklist
-Route::get('/sales-checklist', [SalesController::class, 'showChecklist']);
