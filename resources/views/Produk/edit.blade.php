@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
     <div class="container mt-5">
         <h2 class="mb-4">Edit Produk</h2>
         <form action="{{ route('produk.update', $produk->id) }}" method="POST">
@@ -33,4 +33,4 @@
             <a href="{{ route('produk.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
-</x-layouts>
+</x-supvis.supvislayouts>

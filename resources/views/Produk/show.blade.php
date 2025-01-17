@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
     <div class="container mt-5">
         <h2 class="mb-4">Detail Produk</h2>
         <div class="mb-3">
@@ -23,4 +23,4 @@
         </div>
         <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
     </div>
-</x-layouts>
+</x-supvis.supvislayouts>

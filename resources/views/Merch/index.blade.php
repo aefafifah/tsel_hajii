@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
     <div class="container mt-5">
         <h2 class="mb-4">Daftar Merchandise</h2>
         <a href="{{ route('merch.create') }}" class="btn btn-success mb-3">Tambah Merchandise</a>
@@ -46,4 +46,4 @@
             </table>
         @endif
     </div>
-</x-layouts>
+</x-supvis.supvislayouts>
