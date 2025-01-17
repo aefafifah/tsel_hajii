@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
     <div class="container mt-5">
         <h2 class="mb-4">Daftar Insentif</h2>
         <a href="{{ route('insentif.create') }}" class="btn btn-success mb-3">Tambah Insentif</a>
@@ -47,4 +47,4 @@
         @endif
     </div>
 
-</x-layouts>
+</x-supvis.supvislayouts>

@@ -32,7 +32,7 @@ class LoginController extends Controller
             switch ($user->role) {
                 case 'supervisor':
                     Auth::login($user);
-                    return redirect()->route('supervisor.dashboard');
+                    return redirect()->route('supvis.home');
                 case 'sales':
                     Auth::login($user);
                     return redirect()->route('sales');
