@@ -1,4 +1,4 @@
-<x-layouts>
+<x-sales.saleslayouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,7 +152,7 @@
         <div class="title">
             KWITANSI PEMBAYARAN
         </div>
-        <form action="{{ url('/transaksi/submit') }}" method="POST">   
+        <form action="{{ url('sales/transaksi/submit') }}" method="POST">   
         <div class="form-group">
     <label>No:</label>
     <input 
@@ -180,17 +180,6 @@
         input.value = onlyNumbers; // Perbarui input hanya dengan angka
     }
 </script>
-
-<div class="form-group">
-    <label>Telah Terima Dari:</label>
-    <input 
-        type="text" 
-        name="telah_terima_dari" 
-        placeholder="Masukkan nama penerima" 
-        oninput="restrictTextInput(this)" 
-        required>
-    <small id="error-message-text" style="color: red; display: none;">Harap masukkan hanya huruf </small>
-</div>
 
 <script>
     function restrictTextInput(input) {
@@ -470,8 +459,6 @@
         alert("Lengkapi kolom!");
     }
 }
-
-
         // Tampilkan notifikasi
         if (isValid) {
             alert("Pengisian berhasil!");
@@ -480,7 +467,10 @@
         } else {
             alert("Lengkapi kolom!");
         }
+<<<<<<< HEAD:resources/views/transaksi.blade.php
     
+=======
+>>>>>>> 79525d1f2efc639359f3bc5d0ca3f14d1b4256e6:resources/views/sales/transaksi.blade.php
     function cancelForm() {
     const confirmResult = confirm("Apakah Anda yakin ingin membatalkan pengisian formulir?");
     
@@ -526,4 +516,4 @@
 </body>
 </html>
 
-</x-layouts>
+</x-sales.saleslayouts>
