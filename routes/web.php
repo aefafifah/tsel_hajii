@@ -13,10 +13,7 @@ use App\Http\Controllers\SupvisController;
 Route::get('/billy', function () {
     return view('billy');
 });
-// transaksi
-Route::get('/transaksi', function () {
-    return view('transaksi');
-});
+
 Route::get('/sales/home', function () {
     return view('sales.home');
 });
@@ -120,13 +117,20 @@ Route::get('/tambah-supvis', function () {
 
 // -------------
 
-// sales
-Route::get('/sales/dashboard', function () {
+
+// SALES
+
+Route::get('/sales/home', function () {
     if (Auth::user() && Auth::user()->role === 'sales') {
-        return view('sales');
+        return view('sales.home');
     }
     abort(403, 'Unauthorized access.');
-})->name('sales');
+})->name('sales.home');
+
+// transaksi
+Route::get('/sales/transaksi', function () {
+    return view('sales.transaksi');
+});
 
 
 // logout

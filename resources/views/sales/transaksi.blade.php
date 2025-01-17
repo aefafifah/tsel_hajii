@@ -1,4 +1,4 @@
-<x-layouts>
+<x-sales.saleslayouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -526,4 +526,4 @@
 </body>
 </html>
 
-</x-layouts>
+</x-sales.saleslayouts>
