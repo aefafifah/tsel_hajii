@@ -1,3 +1,0 @@
-<x-layouts>
-    
-</x-layouts>
