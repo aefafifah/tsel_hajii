@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -45,4 +45,4 @@
     </body>
     </html>
 
-</x-layouts>
+</x-supvis.supvislayouts>

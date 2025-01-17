@@ -1,4 +1,4 @@
-<x-layouts>
+<x-supvis.supvislayouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -181,4 +181,4 @@
             resultDiv.hidden = false;
         }
     </script>
-</x-layouts>
+</x-supvis.supvislayouts>
