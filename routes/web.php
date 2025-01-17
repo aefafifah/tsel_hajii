@@ -6,6 +6,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\InsentifController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SupvisController;
 
 // contoh layout
 Route::get('/billy', function () {
@@ -106,3 +108,13 @@ Route::get('/sales/dashboard', function () {
 })->name('sales');
 // logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// tambah sales backend
+Route::post('/sales', [SalesController::class, 'store'])->name('sales.store');
+Route::get('/tambah-sales', function () {
+    return view('supvis.add_sales');
+})->name('add_sales');
+// tambah supvis backend
+Route::post('/supvis', [SupvisController::class, 'store'])->name('supvis.store');
+Route::get('/tambah-supvis', function () {
+    return view('supvis.add_supvis');
+})->name('add_supvis');
