@@ -5,9 +5,12 @@ namespace Database\Seeders;
 use App\Models\RoleUsers;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User; // Pastikan model User ada
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class RoleUsersSeeder extends Seeder
 {
@@ -38,36 +41,30 @@ class RoleUsersSeeder extends Seeder
         }
 
         // Create users and assign roles
-        $users = [
+        DB::table('role_users')->insert([
             [
-                'name' => 'Supervisor User',
-                'email' => 'supervisor@example.com',
-                'photo' => null,
-                'pin' => bcrypt('5678'),
+                'name' => 'Supervisor ',
+                'email' => 'supervisor@test.com',
+                'pin' => Hash::make('123456'),
                 'role' => 'supervisor',
+                'is_superuser' => false,
+
             ],
             [
-                'name' => 'Sales User',
-                'email' => 'sales@example.com',
-                'photo' => null,
-               'pin' => bcrypt('5678'),
-                'role' => 'sales',
+                'name' => 'Superuservisor ',
+                'email' => 'superuservisor@test.com',
+                'pin' => Hash::make('123456'),
+                'role' => 'supervisor',
+                'is_superuser' => true,
+
             ],
-        ];
-
-        foreach ($users as $userData) {
-            $user = RoleUsers::firstOrCreate(
-                ['email' => $userData['email']],
-                [
-                    'name' => $userData['name'],
-                    'photo' => $userData['photo'],
-                    'pin' => $userData['pin'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
-
-            $user->assignRole($userData['role']);
-        }
+            [
+                'name' => 'Sales ',
+                'email' => 'sales@test.com',
+                'pin' => Hash::make('123456'),
+                'role' => 'sales',
+                'is_superuser' => false,
+            ],
+        ]);
     }
 }
