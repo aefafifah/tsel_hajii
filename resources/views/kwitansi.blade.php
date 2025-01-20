@@ -13,7 +13,7 @@
         }
         .container {
             width: 80mm;
-            height: 105mm;
+            height: 110mm;
             margin: auto;
             background: #fff;
             padding: 10px;
@@ -96,16 +96,16 @@
                     <td>20 Mei 2025</td>
                 </tr>
                 <tr>
+                    <td class="label">Nama Sales</td>
+                    <td>Telkomsel Event Haji</td>
+                </tr>
+                <tr>
                     <td class="label">Nama Pelanggan</td>
                     <td>bany_at_telkomsel</td>
                 </tr>
                 <tr>
-                    <td class="label">Nomor Telepon</td>
+                    <td class="label">No. Tlp Pelanggan</td>
                     <td>0812-xxxx-xxxx</td>
-                </tr>
-                <tr>
-                    <td class="label">Uang Sejumlah</td>
-                    <td>Rp 850.000,-</td>
                 </tr>
                 <tr>
                     <td class="label">Aktivasi Tanggal</td>
@@ -128,7 +128,7 @@
             </table>
         </div>
         <div class="footer">
-            <p>Contact Person : bany_at_telkomsel</p>
+            <p>Contact Person : Telkomsel Event Haji</p>
             <p>No Tlp : 0812-xxxx-xxxx</p>
         </div>
     </div>
