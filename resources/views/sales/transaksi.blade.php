@@ -1,6 +1,5 @@
-<x-layouts>
-<!DOCTYPE html>
-<html lang="en">
+<x-sales.saleslayouts>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +19,7 @@
     border-radius: 0; /* Hapus sudut membulat */
     overflow: visible; /* Izinkan konten keluar */
     box-shadow: none; /* Hilangkan efek bayangan */
-}
+    }
 
     .header {
         text-align: right;
@@ -144,6 +143,7 @@
     </style>
     
 </head>
+
 <body>
     <div class="container">
     <div>
@@ -154,7 +154,9 @@
         </div>
         <form action="{{ url('sales/transaksi/submit') }}" method="POST">   
         <div class="form-group">
-    <label>No:</label>
+        
+    @php $id_transaksi = str()->random(); @endphp
+    <label>No: {{ $id_transaksi }} </label>
     <input 
         type="text" 
         name="no" 
@@ -518,4 +520,4 @@
 </body>
 </html>
 
-</x-layouts>
+</x-sales.saleslayouts>
