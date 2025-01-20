@@ -9,54 +9,7 @@ use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupvisController;
 
-// contoh layout
-Route::get('/billy', function () {
-    return view('billy');
-});
-Route::get('/kwitansi', function () {
-    return view('kwitansi');
-});
-Route::get('/sales/home', function () {
-    return view('sales.home');
-});
-
-Route::get('/sales/', function () {
-    return view('sales.home');
-});
-
-Route::get('/admin/home', function () {
-    return view('admin.home');
-});
-
-Route::get('/admin/', function () {
-    return view('admin.home');
-});
-
-Route::get('/supvis/home', function () {
-    return view('supvis.home');
-});
-
-Route::get('/supvis/', function () {
-    return view('supvis.home');
-});
-
-// checklist sales
-Route::get('/checklist', function () {
-    return view('checklist_sales');
-});
-
-// tambah sales
-Route::get('/tambah_sales', function () {
-    return view('tambah_sales');
-});
-
-// tambah spv
-Route::get('/tambah_spv', function () {
-    return view('tambah_spv');
-});
-
-
-// kasaran landingpage
+// landing page
 Route::get('/', function () {
     return view('login');
 });
@@ -64,6 +17,8 @@ Route::get('/', function () {
 // login
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
+// logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 // -------------
@@ -127,14 +82,51 @@ Route::middleware(['supervisor'])->group(function () {
 
 
 // -------------
+// SALES
 
 Route::middleware(['sales'])->group(function () {
-    Route::get('/sales/dashboard', function () {
-        return view('sales');
-    })->name('sales');
+    
+    Route::get('/sales/home', function () {
+        return view('sales.home');
+    })->name('sales.home');
+
+    Route::get('/sales/transaksi', function () {
+        return view('sales.transaksi');
+    })->name('sales.transaksi');
+
+    
 });
 
-// logout
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+// --------------------------------------------
+// mainan
+
+Route::get('/kwitansi', function () {
+    return view('kwitansi');
+});
+
+Route::get('/supvis/home', function () {
+    return view('supvis.home');
+});
+
+Route::get('/supvis/', function () {
+    return view('supvis.home');
+});
+
+// checklist sales
+Route::get('/checklist', function () {
+    return view('checklist_sales');
+});
+
+// tambah sales
+Route::get('/tambah_sales', function () {
+    return view('tambah_sales');
+});
+
+// tambah spv
+Route::get('/tambah_spv', function () {
+    return view('tambah_spv');
+});
 
 
