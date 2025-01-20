@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('produk_nama');
             $table->integer('produk_harga');
-            $table->decimal('produk_diskon',5,2)->default(0);
+            $table->integer('produk_diskon')->default(0);
+            $table->integer('produk_harga_akhir')->virtualAs('produk_harga - produk_diskon');
             $table->text('produk_detail');
             $table->integer('produk_stok');
+            $table->integer('produk_insentif')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

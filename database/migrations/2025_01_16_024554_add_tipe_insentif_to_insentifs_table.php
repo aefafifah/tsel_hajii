@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('insentifs', function (Blueprint $table) {
             $table->enum('tipe_insentif', ['persen', 'harga'])->after('id');
             $table->decimal('nilai_insentif', 10, 2)->after('tipe_insentif');
-            $table->foreignId('produk_id')->constrained()->after('nilai_insentif');
+            $table->foreignId(column: 'produk_id')->constrained()->after('nilai_insentif');
         });
     }
 

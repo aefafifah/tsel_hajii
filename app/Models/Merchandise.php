@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Merchandise extends Model
 {
-    /** @use HasFactory<\Database\Factories\MerchandiseFactory> */
     use HasFactory;
-
-    protected $table = 'merchandises';
 
     protected $fillable = [
         'merch_nama',
         'merch_detail',
-        'merch_stok'
+        'merch_stok',
     ];
+
+    /**
+     */
+    public function produks()
+    {
+        return $this->hasMany(Produk::class, 'merchandise_id');
+    }
 }

@@ -4,30 +4,41 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+
 class RoleUsers extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\RoleUsersFactory> */
     use HasFactory;
     use HasRoles;
 
     protected $table = 'role_users';
+
     protected $fillable = [
         'name',
         'email',
         'photo',
         'pin',
         'role',
+        'phone',
         'is_superuser',
     ];
 
+    /**
+     * Hash the PIN before saving to the database.
+     *
+     * @param string $value
+     */
     public function setPinAttribute($value)
     {
-        $this->attributes['pin'] = bcrypt($value); // Hash the PIN
+        $this->attributes['pin'] = bcrypt($value);
     }
 
-    // public function isSUperUser(): bool {
-    //     return $this -> role === 'supervisor' && $this->is_superuser;
+    /**
+     *
+     * @return bool
+     */
+    // public function isSuperUser(): bool
+    // {
+    //     return $this->role === 'supervisor' && $this->is_superuser;
     // }
 }
