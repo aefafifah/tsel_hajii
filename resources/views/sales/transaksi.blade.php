@@ -7,125 +7,143 @@
     
     <style>
 
-        body {
+body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 1000px; /* Tetap sesuai kebutuhan */
-            margin: 30px auto; /* Memberi jarak dengan bagian atas */
-            background: none; /* Hapus background putih */
-            border-radius: 0; /* Hapus sudut membulat */
-            overflow: visible; /* Izinkan konten keluar */
-            box-shadow: none; /* Hilangkan efek bayangan */
-            }
+    max-width: 1000px; /* Tetap sesuai kebutuhan */
+    margin: 30px auto; /* Memberi jarak dengan bagian atas */
+    background: none; /* Hapus background putih */
+    border-radius: 0; /* Hapus sudut membulat */
+    overflow: visible; /* Izinkan konten keluar */
+    box-shadow: none; /* Hilangkan efek bayangan */
+    }
 
-        .header {
-            text-align: right;
-            background-color: rgba(255, 0, 0, 0.72);
-            color: #fff;
-            padding: 15px 25px; /* Menambah padding */
-            font-size: 20px; /* Memperbesar ukuran teks */
-        }
-        .title {
-            text-align: center;
-            margin: 25px 0;
-            font-size: 23px; /* Memperbesar judul */
-            font-weight: bold;
-            color: #333;
-        }
-        form {
-            padding: 30px; /* Memperbesar jarak antar elemen */
-        }
-        .form-group {
-            margin-bottom: 25px; /* Memberi jarak antar grup form */
-        }
-        .form-group label {
-            display: block;
-            font-size: 14px; /* Memperbesar teks label */
-            margin-bottom: 10px;
-            color: #333;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px; /* Memperbesar padding */
-            font-size: 13px; /* Memperbesar teks */
-            border: 1px solid #ccc;
-            border-radius: 6px; /* Membuat lebih bulat */
-            box-sizing: border-box;
-        }
-        .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        }
+    .header {
+        text-align: right;
+        background-color: rgba(255, 0, 0, 0.72);
+        color: #fff;
+        padding: 15px 25px; /* Menambah padding */
+        font-size: 20px; /* Memperbesar ukuran teks */
+    }
+    .title {
+        text-align: center;
+        margin: 25px 0;
+        font-size: 23px; /* Memperbesar judul */
+        font-weight: bold;
+        color: #333;
+    }
+    form {
+        padding: 30px; /* Memperbesar jarak antar elemen */
+    }
+    .form-group {
+        margin-bottom: 25px; /* Memberi jarak antar grup form */
+    }
+    .form-group label {
+        display: block;
+        font-size: 14px; /* Memperbesar teks label */
+        margin-bottom: 10px;
+        color: #333;
+    }
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 12px; /* Memperbesar padding */
+        font-size: 13px; /* Memperbesar teks */
+        border: 1px solid #ccc;
+        border-radius: 6px; /* Membuat lebih bulat */
+        box-sizing: border-box;
+    }
+    .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
 
-        .checkbox-box {
-            display: flex;
-            align-items: center;
-            width: 48%; /* Default untuk layar besar */
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fefefe;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.checkbox-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fefefe;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .checkbox-box:hover {
-            border-color: rgba(0, 60, 255, 0.79);
-            background-color: #eaf4ff;
-        }
+.checkbox-box:hover {
+    border-color: #0056b3;
+    background-color: #e0f0ff;
+    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
+}
 
-        .checkbox-box input {
-            display: none;
-        }
+.checkbox-box input {
+    display: none;
+}
 
-        .checkbox-box label {
-            display: flex;
-            align-items: center;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #333;
-        }
+.checkbox-box label {
+    display: flex;
+    align-items: center;
+    font-size: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+    flex-grow: 1;
+}
 
-        .checkbox-icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            background-color: #fff;
-            position: relative;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.checkbox-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+}
 
-        /* Media query untuk mobile */
-        @media (max-width: 768px) {
-            .checkbox-box {
-                width: 30%; /* Menyesuaikan agar 3 kotak per baris */
-            }
-        }
+/* Checkbox Checked State */
+input:checked + label .checkbox-icon {
+    background-color: #007bff;
+    border-color: #007bff;
+    transform: scale(1.1); /* Animasi kecil */
+}
+input:checked + label .checkbox-icon::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+}
 
-        input:checked + label .checkbox-icon {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        input:checked + label .checkbox-icon::after {
-            content: '✔';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-        }
+@media (max-width: 768px) {
+    .checkbox-group {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 13px;
+    }
+    .checkbox-box {
+        padding: 13px;
+        height: auto;
+    }
+    .checkbox-box label {
+        font-size: 7px;
+        line-height: 1.5;
+    }
+    .checkbox-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+}
+
         .form-group small {
             color: red;
             display: none;
@@ -133,28 +151,28 @@
         .form-buttons {
         text-align: center;
         margin-top: 30px; /* Menambah jarak dengan form */
-        }
-        .form-buttons button {
-            padding: 12px 25px; /* Memperbesar tombol */
-            font-size: 18px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin: 0 12px;
-            transition: background-color 0.3s;
-        }
-        .form-buttons button.oke {
-            background-color: #007bff;
-            color: white;
-        }
-        .form-buttons button.cancel {
-            background-color:rgb(34, 39, 195);
-            color: white;
-        }
-        .form-buttons button:hover {
-            opacity: 0.9;
-        }
-    </style>
+    }
+    .form-buttons button {
+        padding: 12px 25px; /* Memperbesar tombol */
+        font-size: 10px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 0 12px;
+        transition: background-color 0.3s;
+    }
+    .form-buttons button.oke {
+        background-color: #007bff;
+        color: white;
+    }
+    .form-buttons button.cancel {
+        background-color:rgb(34, 39, 195);
+        color: white;
+    }
+    .form-buttons button:hover {
+        opacity: 0.9;
+    }
+</style>
     
 </head>
 
