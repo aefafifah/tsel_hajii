@@ -10,12 +10,12 @@
             </li>
 
             <x-nav-link href="/supvis/home" :active="request()->is('supvis/home')">Home</x-nav-link>
-            <x-nav-link href="/insentif" :active="request()->is('insentif')">Insentif</x-nav-link>
             <x-nav-link href="/produk" :active="request()->is('produk')">Produk</x-nav-link>
             <x-nav-link href="/merch" :active="request()->is('merch')">Merch</x-nav-link>
-            <x-nav-link href="/tambah-sales" :active="request()->is('add_sales')">Add Sales</x-nav-link>
+            <x-nav-link href="/tambah-sales" :active="request()->is('tambah-sales')">Add Sales</x-nav-link>
+            <x-nav-link href="/sales-checklist" :active="request()->is('sales-checklist')">Checklist Sales </x-nav-link>
             @if(Auth::user() && Auth::user()->is_superuser)
-                <x-nav-link href="/tambah-supvis" :active="request()->is('add_supvis')">Add Supervisor</x-nav-link>
+                <x-nav-link href="/tambah-supvis" :active="request()->is('tambah-supvis')">Add Supervisor</x-nav-link>
             @endif
 
 

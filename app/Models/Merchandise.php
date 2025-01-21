@@ -19,6 +19,6 @@ class Merchandise extends Model
      */
     public function produks()
     {
-        return $this->hasMany(Produk::class, 'merchandise_id');
+        return $this->belongsToMany(Produk::class, 'merchandise_produk');
     }
 }
