@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('photo')->nullable();
             $table->string('pin');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->enum('role', ['supervisor', 'sales'])->default('sales');
             $table->timestamps();
         });

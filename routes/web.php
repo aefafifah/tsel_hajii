@@ -102,9 +102,14 @@ Route::middleware(['sales'])->group(function () {
 
     Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
 
+    Route::get('/sales/Riwayat Transaksi', function () {
+        return view('sales.Riwayat Transaksi', ['produks' => Produk::all(), 'merchandises' => Merchandise::all()]);
+    })->name('sales.Riwayat Transaksi');
+
+    Route::post('sales/Riwayat Transaksi/submit', [RiwayatTransaksiController::class, 'submit'])->name('sales/Riwayat Transaksi/submit');
+
     
 });
-
 
 
 // --------------------------------------------
