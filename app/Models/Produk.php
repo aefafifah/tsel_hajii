@@ -10,20 +10,14 @@ class Produk extends Model
     use HasFactory;
 
     protected $fillable = [
-        'produk_nama',
-        'produk_harga',
-        'produk_diskon',
-        'produk_detail',
-        'produk_stok',
-        'produk_insentif',
-        'is_active',
-        'merchandise_id',
+        'produk_nama', 'produk_harga', 'produk_diskon', 'produk_stok',
+        'produk_detail', 'produk_insentif', 'is_active'
     ];
 
     /**
      */
-    public function merchandise()
+    public function merchandises()
     {
-        return $this->belongsTo(Merchandise::class, 'merchandise_id');
+        return $this->belongsToMany(Merchandise::class, 'merchandise_produk');
     }
 }

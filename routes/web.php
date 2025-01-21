@@ -8,6 +8,12 @@ use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupvisController;
+use App\Http\Controllers\TransaksiController;
+
+use App\Models\Produk;
+use App\Models\Merchandise;
+
+
 
 // landing page
 Route::get('/', function () {
@@ -91,8 +97,10 @@ Route::middleware(['sales'])->group(function () {
     })->name('sales.home');
 
     Route::get('/sales/transaksi', function () {
-        return view('sales.transaksi');
+        return view('sales.transaksi', ['produks' => Produk::all(), 'merchandises' => Merchandise::all()]);
     })->name('sales.transaksi');
+
+    Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
 
     
 });
