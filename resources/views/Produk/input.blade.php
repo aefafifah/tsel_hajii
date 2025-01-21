@@ -17,22 +17,26 @@
 
             <div class="form-group mb-3">
                 <label for="produk_nama">Nama Produk</label>
-                <input type="text" name="produk_nama" id="produk_nama" class="form-control" value="{{ old('produk_nama') }}" required>
+                <input type="text" name="produk_nama" id="produk_nama" class="form-control"
+                    value="{{ old('produk_nama') }}" required>
             </div>
 
             <div class="form-group mb-3">
                 <label for="produk_harga">Harga Produk</label>
-                <input type="text" name="produk_harga" id="produk_harga" class="form-control" value="{{ old('produk_harga') }}" required>
+                <input type="text" name="produk_harga" id="produk_harga" class="form-control"
+                    value="{{ old('produk_harga') }}" required>
             </div>
 
             <div class="form-group mb-3">
                 <label for="produk_diskon">Diskon (Rp)</label>
-                <input type="text" name="produk_diskon" id="produk_diskon" class="form-control" value="{{ old('produk_diskon') }}">
+                <input type="text" name="produk_diskon" id="produk_diskon" class="form-control"
+                    value="{{ old('produk_diskon') }}">
             </div>
 
             <div class="form-group mb-3">
                 <label for="produk_stok">Stok Produk</label>
-                <input type="number" name="produk_stok" id="produk_stok" class="form-control" value="{{ old('produk_stok') }}" required>
+                <input type="number" name="produk_stok" id="produk_stok" class="form-control"
+                    value="{{ old('produk_stok') }}" required>
             </div>
 
             <div class="form-group mb-3">
@@ -42,7 +46,8 @@
 
             <div class="form-group mb-3">
                 <label for="produk_insentif">Insentif</label>
-                <input type="text" name="produk_insentif" id="produk_insentif" class="form-control" value="{{ old('produk_insentif') }}">
+                <input type="text" name="produk_insentif" id="produk_insentif" class="form-control"
+                    value="{{ old('produk_insentif') }}">
             </div>
 
             <div class="form-group mb-3">
@@ -51,8 +56,7 @@
                     @foreach ($merchandises as $merchandise)
                         <div class="form-check">
                             <input type="checkbox" name="merchandises[]" id="merchandise_{{ $merchandise->id }}"
-                                value="{{ $merchandise->id }}"
-                                class="form-check-input"
+                                value="{{ $merchandise->id }}" class="form-check-input"
                                 {{ is_array(old('merchandises')) && in_array($merchandise->id, old('merchandises')) ? 'checked' : '' }}>
                             <label class="form-check-label" for="merchandise_{{ $merchandise->id }}">
                                 {{ $merchandise->merch_nama }}
