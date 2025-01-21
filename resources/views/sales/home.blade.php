@@ -1,39 +1,45 @@
 <x-sales.saleslayouts>
-    <main class="content">
-        <div class="container" style="text-align: center; padding: 20px;">
-            <header style="margin-bottom: 20px;">
-                <h1 style="font-size: 1.8rem; color:rgb(0, 0, 0);">Hello, {{ Auth::user()->name }}! 👋</h1>
-
-                <p style="color: #555; font-size: 1rem;">Pantau pencapaian sales Anda di bawah ini:</p>
-            </header>
-            
-            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 100px; max-width: 150px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1rem; color: #333;">Pencapaian Bulanan</h3>
-                    <p style="font-size: 1.3rem; font-weight: bold; color: #4caf50;">IDR 15,000,000</p>
-                    <p style="font-size: 0.85rem; color: #555;">10% lebih tinggi dari bulan lalu</p>
-                </div>
-
-                <div style="flex: 1; min-width: 100px; max-width: 150px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1rem; color: #333;">Pencapaian Tahunan</h3>
-                    <p style="font-size: 1.3rem; font-weight: bold; color: #f44336;">IDR 120,000,000</p>
-                    <p style="font-size: 0.85rem; color: #555;">5% lebih rendah dari tahun lalu</p>
-                </div>
+    <main class="content" style="padding: 20px; font-family: Arial, sans-serif; background-color: #f4f6f8;">
+        <!-- Header Section -->
+        <div style="background-color: #e3f2fd; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <div>
+                <h1 style="font-size: 1.5rem; color: #333; margin: 0;">Hai, {{ Auth::user()->name }} 👋</h1>
+                <p style="color: #666; font-size: 0.95rem; margin: 8px 0;">Selamat datang dan beraktivitas kembali!</p>
             </div>
+            <div>
+                <img src="{{ asset('admin_asset/img/photos/icon_sales.png') }}" alt="illustration" style="border-radius: 10px; width: 145px; height: auto;">
+            </div>
+        </div>
 
-            <!-- Setoran Status -->
-            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px;">
-                <div style="flex: 1; min-width: 180px; max-width: 300px; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: #e3f2fd;">
-                    <h3 style="font-size: 1rem; color: #333;">Status Setoran</h3>
-                    <p style="font-size: 1.2rem; font-weight: bold; color: #007bff;">Sudah Setor</p>
-                    <p style="font-size: 0.85rem; color: #555;">Terakhir setor: 3 hari yang lalu</p>
-                </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+            <div style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Total Pemesanan</h3>
+                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">6.29k</p>
+                <p style="font-size: 0.75rem; color: green; margin: 5px 0;">⬆ 0.43% (1 Minggu)</p>
+            </div>
+            <div style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Total Pendapatan</h3>
+                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">Rp 800m</p>
+                <p style="font-size: 0.75rem; color: red; margin: 5px 0;">⬇ 0.43% (1 Minggu)</p>
+            </div>
+        </div>
 
-                <div style="flex: 1; min-width: 180px; max-width: 300px; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: #ffebee;">
-                    <h3 style="font-size: 1rem; color: #333;">Status Setoran</h3>
-                    <p style="font-size: 1.2rem; font-weight: bold; color: #f44336;">Belum Setor</p>
-                    <p style="font-size: 0.85rem; color: #555;">Jadwal setor: Besok</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+            <div style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Statistik Pemesanan Mingguan</h3>
+                <div style="position: relative; width: 80px; height: 80px; margin: 0 auto;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; background: conic-gradient(#4caf50 90%, #ddd 0);"></div>
+                    <div style="position: absolute; top: 25%; left: 25%; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold;">90%</div>
                 </div>
+                <p style="margin-top: 8px; font-size: 0.75rem; color: #555;">Total Pemesanan 6.29k</p>
+            </div>
+            <div style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Statistik Pendapatan Mingguan</h3>
+                <div style="position: relative; width: 80px; height: 80px; margin: 0 auto;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; background: conic-gradient(#ffca28 80%, #ddd 0);"></div>
+                    <div style="position: absolute; top: 25%; left: 25%; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold;">80%</div>
+                </div>
+                <p style="margin-top: 8px; font-size: 0.75rem; color: #555;">Total Pendapatan Rp 800m</p>
             </div>
         </div>
     </main>
