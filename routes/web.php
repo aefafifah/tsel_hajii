@@ -106,13 +106,6 @@ Route::get('/kwitansi', function () {
     return view('kwitansi');
 });
 
-Route::get('/supvis/home', function () {
-    return view('supvis.home');
-});
-
-Route::get('/supvis/', function () {
-    return view('supvis.home');
-});
 
 // checklist sales
 Route::get('/checklist', function () {

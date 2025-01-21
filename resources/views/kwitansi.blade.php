@@ -13,7 +13,7 @@
         }
         .container {
             width: 80mm;
-            height: 110mm;
+            height: 125mm;
             margin: auto;
             background: #fff;
             padding: 10px;
@@ -83,13 +83,13 @@
     class="watermark">
         <div class="header">
             <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo">
-            <h1>Kwitansi Pembayaran</h1>
+            <h1>KWITANSI PEMBAYARAN</h1>
         </div>
         <div class="content">
             <table>
                 <tr>
                     <td class="label">No. Transaksi</td>
-                    <td>1234567890</td>
+                    <td>trx-Vla6rUg1J</td>
                 </tr>
                 <tr>
                     <td class="label">Tanggal Pembelian</td>
@@ -112,18 +112,30 @@
                     <td>20 Mei 2025</td>
                 </tr>
             </table>
-            <h3 style="font-size: 12px; margin: 5px 0;">Pembayaran</h3>
-            <table>
+            <h3 style="font-size: 12px; margin: 5px 0;">Paket Internet Haji</h3>
+            <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
-                    <td class="label">Paket Internet Haji</td>
-                    <td>17 GB - COMBO - 30D <strike>Rp 870.000,-</strike> (Rp 850.000,-)</td>
+                    <td>
+                        17 GB - COMBO - 30D <strike>Rp 870.000,-</strike><br>
+                        <span style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
+                            (Rp 850.000,-)
+                        </span>
+                    </td>
                 </tr>
             </table>
+
             <h3 style="font-size: 12px; margin: 5px 0;">Merchandise</h3>
             <table>
                 <tr>
                     <td class="label">Barang</td>
                     <td>Tumbler</td>
+                </tr>
+            </table>
+            <h3 style="font-size: 12px; margin: 5px 0;">Pembayaran</h3>
+            <table>
+                <tr>
+                    <td class="label">Metode</td>
+                    <td>Tunai</td>
                 </tr>
             </table>
         </div>
