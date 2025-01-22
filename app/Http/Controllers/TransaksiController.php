@@ -15,11 +15,11 @@ class TransaksiController extends Controller
             'nomor_telepon' => 'nullable|numeric',
             'nama_pelanggan' => 'nullable|string',
             'aktivasi_tanggal' => 'nullable|date',
-            'tanggal_transaksi' => 'nullable|date'
-            'nama_sales' => 'nullable|string',             
+            'tanggal_transaksi' => 'nullable|date',
+            'nama_sales' => 'nullable|string',               
             'jenis_paket' => 'nullable|string',               
             'merchandise' => 'nullable|string',               
-            'metode_pembayaran' => 'nullable|string',
+            'metode_pembayaran' => 'nullable|string',         
         ]);
 
         try {
