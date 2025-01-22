@@ -13,7 +13,7 @@ use App\Http\Controllers\TransaksiController;
 
 use App\Models\Produk;
 use App\Models\Merchandise;
- 
+
 
 
 
@@ -86,24 +86,21 @@ Route::middleware(['supervisor'])->group(function () {
 
     // Sales Checklist
     Route::get('/sales-checklist', [SalesController::class, 'showChecklist'])->name('sales.checklist');
+    Route::post('/update-is-setoran/{id}',[SalesController::class,'updateIsSetoran'])-> name ('is_setoran');
+
 });
 
 
 // -------------
 // SALES
 Route::middleware(['sales'])->group(function () {
-
     Route::get('/sales/home', function () {
         return view('sales.home');
     })->name('sales.home');
-
-    Route::get('/sales/transaksi', function () {
-        return view('sales.transaksi', ['produks' => Produk::all(), 'merchandises' => Merchandise::all()]);
-    })->name('sales.transaksi');
-
+    Route::get('/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales.transaksi.submit');
     Route::get('sales/riwayat-transaksi', [TransaksiController::class, 'index'])->name('transactions.index');
-    
+
 });
 
 

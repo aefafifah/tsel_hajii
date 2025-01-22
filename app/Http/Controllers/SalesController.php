@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RoleUsers;
+use App\Models\Produk;
+use App\Models\Merchandise;
 use Illuminate\Support\Facades\Validator;
 
 class SalesController extends Controller
@@ -44,31 +46,32 @@ class SalesController extends Controller
         return view('supvis.sales_allow', compact('sales'));
     }
 
-public function updateIsSetoran(Request $request, $id)
-{
-    $salesperson = RoleUsers::findOrFail($id);
+    public function updateIsSetoran(Request $request, $id)
+    {
+        $salesperson = RoleUsers::findOrFail($id);
 
-    if ($salesperson->role === 'sales') {
-        $salesperson->is_setoran = $request->is_setoran;
-        $salesperson->save();
+        if ($salesperson->role === 'sales') {
+            $salesperson->is_setoran = $request->is_setoran;
+            $salesperson->save();
 
-        return response()->json(['success' => true]);
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Invalid role']);
     }
 
-    return response()->json(['success' => false, 'message' => 'Invalid role']);
-}
+    public function transaksiPage(Request $request)
+    {
+        $user = auth()->user();
 
-public function transaksiPage(Request $request)
-{
-    $user = auth()->user();
-
-    if ($user->role === 'sales' && !$user->is_setoran) {
-        session()->flash('alert', 'Silahkan setoran dahulu ke supervisor.');
-        return redirect()->route('sales.home');
+        if ($user->role === 'sales' && !$user->is_setoran) {
+            session()->flash('alert', 'Silahkan setoran dahulu ke supervisor.');
+            return redirect()->route('sales.home');
+        }
+        $produks = Produk::all();
+        $merchandises = Merchandise::all();
+        return view('sales.transaksi', compact('produks', 'merchandises'));
     }
-
-    return view('sales.transaksii');
-}
 
 
 
