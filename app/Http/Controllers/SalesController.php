@@ -43,5 +43,35 @@ class SalesController extends Controller
 
         return view('supvis.sales_allow', compact('sales'));
     }
+
+public function updateIsSetoran(Request $request, $id)
+{
+    $salesperson = RoleUsers::findOrFail($id);
+
+    if ($salesperson->role === 'sales') {
+        $salesperson->is_setoran = $request->is_setoran;
+        $salesperson->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Invalid role']);
+}
+
+public function transaksiPage(Request $request)
+{
+    $user = auth()->user();
+
+    if ($user->role === 'sales') {
+        if (!$user->is_setoran) {
+            return redirect()->back()->with('alert', 'Silahkan setoran dahulu ke supervisor');
+        }
+    }
+
+   
+    return view('sales.transaksi');
+}
+
+
 }
 

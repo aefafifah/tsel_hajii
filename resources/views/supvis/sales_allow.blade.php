@@ -1,10 +1,4 @@
 <x-supvis.supvislayouts>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Checklist</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
@@ -133,52 +127,81 @@
             }
         }
     </style>
-</head>
-<body>
-<h1>Sales Checklist</h1>
-    <p>Pilih nama sales yang sudah menyelesaikan tugasnya.</p>
+    </head>
 
-    <div class="sales-list">
-        @foreach($sales as $salesperson)
-            <div class="sales-item">
-                <input type="checkbox" id="sales{{ $loop->index }}" value="{{ $salesperson->name }}">
-                <label for="sales{{ $loop->index }}">{{ $salesperson->name }}</label>
-            </div>
-        @endforeach
-    </div>
+    <body>
+        <h1>Sales Checklist</h1>
+        <p>Pilih nama sales yang sudah setorannn </p>
 
-    <button onclick="submitChecklist()">Submit Checklist</button>
+        <div class="sales-list">
+            @foreach ($sales as $salesperson)
+                <div class="sales-item">
+                    <input type="checkbox" id="sales{{ $loop->index }}" value="{{ $salesperson->id }}"
+                        class="setoran-checkbox" data-sales-id="{{ $salesperson->id }}"
+                        {{ $salesperson->is_setoran ? 'checked' : '' }}>
+                    <label for="sales{{ $loop->index }}">{{ $salesperson->name }}</label>
+                </div>
+            @endforeach
+        </div>
+        <button onclick="submitChecklist()">Submit Checklist</button>
 
-    <div id="result" hidden>
-        <h2>Checklist Result</h2>
-        <p id="checked-names">Tidak ada sales yang dichecklist.</p>
-    </div>
+        <div id="result" hidden>
+            <h2>Checklist Result</h2>
+            <p id="checked-names">Tidak ada sales yang dichecklist.</p>
+        </div>
 
-    <script>
-        function submitChecklist() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const checkedNames = [];
+        <script>
+            function submitChecklist() {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const checkedNames = [];
 
-            checkboxes.forEach(checkbox => {
-                const label = checkbox.nextElementSibling;
-                if (checkbox.checked) {
-                    checkedNames.push(checkbox.value);
-                    label.classList.add('completed');
+                checkboxes.forEach(checkbox => {
+                    const label = checkbox.nextElementSibling;
+                    if (checkbox.checked) {
+                        checkedNames.push(label.textContent.trim());
+                        label.classList.add('completed');
+                    } else {
+                        label.classList.remove('completed');
+                    }
+                });
+
+                const resultDiv = document.getElementById('result');
+                const namesParagraph = document.getElementById('checked-names');
+
+                if (checkedNames.length > 0) {
+                    namesParagraph.textContent = `Sales yang sudah dichecklist: ${checkedNames.join(', ')}`;
                 } else {
-                    label.classList.remove('completed');
+                    namesParagraph.textContent = 'Tidak ada sales yang dichecklist.';
                 }
-            });
 
-            const resultDiv = document.getElementById('result');
-            const namesParagraph = document.getElementById('checked-names');
-
-            if (checkedNames.length > 0) {
-                namesParagraph.textContent = `Sales yang sudah dichecklist: ${checkedNames.join(', ')}`;
-            } else {
-                namesParagraph.textContent = 'Tidak ada sales yang dichecklist.';
+                resultDiv.hidden = false;
             }
 
-            resultDiv.hidden = false;
-        }
-    </script>
+            document.querySelectorAll('.setoran-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const salesId = this.dataset.salesId;
+                    const isSetoran = this.checked;
+
+                    fetch(`/update-is-setoran/${salesId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                is_setoran: isSetoran
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Setoran updated successfully.');
+                            } else {
+                                console.error('Failed to update setoran.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        </script>
 </x-supvis.supvislayouts>
