@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f9f9f9;
+            padding: 15px;
         }
         .card {
             border-radius: 16px;
@@ -24,15 +24,15 @@
         .pin-display {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin: 20px 0;
         }
         .pin-display div {
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
             text-align: center;
-            line-height: 50px;
+            line-height: 45px;
             background-color: #eaeaea;
             border-radius: 50%;
             color: #333;
@@ -42,13 +42,13 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             justify-content: center;
-            max-width: 300px;
+            max-width: 280px;
             margin: auto;
         }
         .keypad button {
-            width: 80px;
-            height: 80px;
-            font-size: 24px;
+            width: 70px;
+            height: 70px;
+            font-size: 22px;
             font-weight: bold;
             color: #fff;
             background: linear-gradient(135deg, #6A11CB, #2575FC);
@@ -63,6 +63,19 @@
         .btn-clear {
             background-color: #f44336 !important;
         }
+        @media (max-width: 576px) {
+            .pin-display div {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                line-height: 40px;
+            }
+            .keypad button {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -75,7 +88,7 @@
                             <h1 class="h2">Masukkan Email dan PIN</h1>
                             <p class="lead">Gunakan email dan PIN untuk login.</p>
                         </div>
-                        <div class="card p-4">
+                        <div class="card p-3 p-md-4">
                             <div class="card-body">
                                 <form id="loginForm" action="{{ route('login') }}" method="POST">
                                     @csrf
