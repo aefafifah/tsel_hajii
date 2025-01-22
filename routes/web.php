@@ -10,8 +10,10 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupvisController;
 use App\Http\Controllers\TransaksiController;
 
+
 use App\Models\Produk;
 use App\Models\Merchandise;
+ 
 
 
 
@@ -89,9 +91,8 @@ Route::middleware(['supervisor'])->group(function () {
 
 // -------------
 // SALES
-
 Route::middleware(['sales'])->group(function () {
-    
+
     Route::get('/sales/home', function () {
         return view('sales.home');
     })->name('sales.home');
@@ -100,16 +101,11 @@ Route::middleware(['sales'])->group(function () {
         return view('sales.transaksi', ['produks' => Produk::all(), 'merchandises' => Merchandise::all()]);
     })->name('sales.transaksi');
 
-    Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
-
-    Route::get('/sales/Riwayat Transaksi', function () {
-        return view('sales.Riwayat Transaksi', ['produks' => Produk::all(), 'merchandises' => Merchandise::all()]);
-    })->name('sales.Riwayat Transaksi');
-
-    Route::post('sales/Riwayat Transaksi/submit', [RiwayatTransaksiController::class, 'submit'])->name('sales/Riwayat Transaksi/submit');
-
+    Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales.transaksi.submit');
+    Route::get('sales/riwayat-transaksi', [TransaksiController::class, 'index'])->name('transactions.index');
     
 });
+
 
 
 // --------------------------------------------
