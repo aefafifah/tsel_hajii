@@ -16,6 +16,10 @@ class TransaksiController extends Controller
             'nama_pelanggan' => 'nullable|string',
             'aktivasi_tanggal' => 'nullable|date',
             'tanggal_transaksi' => 'nullable|date'
+            'nama_sales' => 'nullable|string',             
+            'jenis_paket' => 'nullable|string',               
+            'merchandise' => 'nullable|string',               
+            'metode_pembayaran' => 'nullable|string',
         ]);
 
         try {
@@ -28,4 +32,11 @@ class TransaksiController extends Controller
                            ->withInput();
         }
     }
+    public function index()
+    {
+        $transaksi = Transaksi::all();
+        return view('sales.RiwayatTransaksi', compact('transaksi'));
+    }
 }
+
+
