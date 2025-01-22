@@ -6,6 +6,7 @@ use App\Models\RoleUsers;
 use App\Models\Produk;
 use App\Models\Merchandise;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -70,8 +71,13 @@ class SalesController extends Controller
         }
         $produks = Produk::all();
         $merchandises = Merchandise::all();
+        $merchandises->each(function ($merchandise) {
+            $merchandise->produk_ids = $merchandise->produks->pluck('id')->toArray();
+        });
         return view('sales.transaksi', compact('produks', 'merchandises'));
     }
+
+
 
 
 
