@@ -409,7 +409,7 @@
             <div class="title">
                 TRANSAKSI PEMBAYARAN
             </div>
-            <form action="{{ route('sales/transaksi/submit') }}" method="POST">
+            <form action="{{ route('sales.transaksi.submit') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     @php $id_transaksi = str()->random(); @endphp

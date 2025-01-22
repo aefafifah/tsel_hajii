@@ -80,8 +80,14 @@ tr:hover {
 }
 
 @media screen and (max-width: 768px) {
-    h1 {
-        font-size: 1.5rem;
+    .table-responsive {
+        overflow-y: auto; 
+        max-height: 400px; 
+    }
+
+    table {
+        width: 100%; 
+        border-collapse: collapse;
     }
 
     th, td {
@@ -89,6 +95,8 @@ tr:hover {
         padding: 10px;
     }
 }
+</style>
+
 
     </style>
 <body>

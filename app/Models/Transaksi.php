@@ -23,4 +23,14 @@ class Transaksi extends Model
         'merchandise',
         'metode_pembayaran'
     ];
+    public function produks()
+    {
+        return $this->belongsToMany(Produk::class, 'transaksi_produk', 'transaksi_id', 'produk_id');
+    }
+
+    public function merchandises()
+    {
+        return $this->belongsToMany(Merchandise::class, 'transaksi_merchandise', 'transaksi_id', 'merchandise_id');
+    }
+
 }    
