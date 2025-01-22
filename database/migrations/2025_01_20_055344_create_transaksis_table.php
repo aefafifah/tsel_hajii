@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('nomor_telepon')->nullable();
             $table->date('aktivasi_tanggal')->nullable();
             $table->date('tanggal_transaksi')->nullable();
+            $table->string('nama_sales')->nullable();   
+            $table->string('jenis_paket')->nullable();              
+            $table->string('merchandise')->nullable();              
+            $table->string('metode_pembayaran')->nullable();  
         });
     }
 

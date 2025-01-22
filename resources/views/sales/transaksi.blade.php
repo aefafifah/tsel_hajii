@@ -124,10 +124,235 @@
         font-weight: bold;
     }
 
+<<<<<<< HEAD
     @media (max-width: 768px) {
         .checkbox-group {
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 13px;
+=======
+<body>
+    <div class="container">
+        <div>
+            <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
+        </div>
+        <div class="title">
+            TRANSAKSI PEMBAYARAN
+        </div>
+        <form action="{{ route('sales.transaksi.submit') }}" method="POST">
+        @csrf
+            <div class="form-group">
+                @php $id_transaksi = str()->random(); @endphp
+                <label>No: {{ $id_transaksi }} </label>
+                <input 
+                    type="hidden" 
+                    name="id_transaksi" 
+                    id="id_transaksi"
+                    value="{{ $id_transaksi }}"> 
+                <div class="form-group">
+                <label>Nama Sales:</label>
+                <input 
+                    type="text" 
+                    name="nama_sales" 
+                    id="nama_sales" 
+                    placeholder="Masukkan nama Sales" 
+                    oninput="restrictNameInput(this)" 
+                    required>
+                <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf </small>
+            </div>
+
+            <script>
+                function restrictNameInput(input) {
+                    const errorMessage = document.getElementById('error-message-name');
+                    const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, ''); // Hapus karakter selain huruf
+
+                    if (input.value !== onlyLetters) {
+                        // Tampilkan pesan error jika input tidak valid
+                        errorMessage.style.display = 'block';
+                    } else {
+                        // Sembunyikan pesan error jika input valid
+                        errorMessage.style.display = 'none';
+                    }
+
+                    input.value = onlyLetters; // Perbarui input hanya dengan huruf 
+                }
+            </script>
+
+            <div class="form-group">
+                <label>Nomor Telepon:</label>
+                <input 
+                    type="text" 
+                    name="nomor_telepon" 
+                    placeholder="Masukkan nomor telepon" 
+                    oninput="restrictPhoneInput(this)" 
+                    required>
+                <small id="error-message-phone" style="color: red; display: none;">Harap masukkan hanya angka</small>
+            </div>
+
+            <script>
+                function restrictPhoneInput(input) {
+                    const errorMessage = document.getElementById('error-message-phone');
+                    const onlyNumbers = input.value.replace(/\D/g, ''); // Hapus karakter selain angka
+
+                    if (input.value !== onlyNumbers) {
+                        // Tampilkan pesan error jika input tidak valid
+                        errorMessage.style.display = 'block';
+                    } else {
+                        // Sembunyikan pesan error jika input valid
+                        errorMessage.style.display = 'none';
+                    }
+
+                    input.value = onlyNumbers; // Perbarui input agar hanya berisi angka
+                }
+            </script>
+
+            <div class="form-group">
+                <label>Nama Pelanggan:</label>
+                <input 
+                    type="text" 
+                    name="nama_pelanggan" 
+                    placeholder="Masukkan nama pelanggan" 
+                    oninput="restrictNameInput(this)" 
+                    required>
+                <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf </small>
+            </div>
+
+            <script>
+                function restrictNameInput(input) {
+                    const errorMessage = document.getElementById('error-message-name');
+                    const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, ''); // Hapus karakter selain huruf
+
+                    if (input.value !== onlyLetters) {
+                        // Tampilkan pesan error jika input tidak valid
+                        errorMessage.style.display = 'block';
+                    } else {
+                        // Sembunyikan pesan error jika input valid
+                        errorMessage.style.display = 'none';
+                    }
+
+                    input.value = onlyLetters; // Perbarui input hanya dengan huruf 
+                }
+            </script>
+
+
+            <div class="form-group">
+                <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
+                <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
+            </div>
+            <div class="form-group">
+            </div>
+
+
+            <div class="form-group">
+                <label>Pilih Paket Internet:</label>
+                <div class="checkbox-group">
+                    @foreach($produks as $index => $produk)
+                    <div class="checkbox-box">
+                        <input 
+                            type="radio" 
+                            id="paket{{ $index + 1 }}" 
+                            name="paket" 
+                            value="{{ $produk->produk_id }}"
+                        >
+                        <label for="paket{{ $index + 1 }}">
+                            <span class="checkbox-icon"></span>
+                            {{ $produk->produk_nama }} <br>
+                            {{ $produk->produk_detail }} <br>
+                            Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Pilih Merchandise:</label>
+                
+                <div class="checkbox-group">
+                    @foreach($merchandises as $index => $merchandise)
+                    <div class="checkbox-box">
+                        <input type="radio" id="merch{{ $index + 1 }}" name="merchandise" value="{{ $merchandise->merchandise_id }}">
+                        <label for="merch{{ $index + 1 }}">
+                            <span class="checkbox-icon"></span>
+                            {{ $merchandise->merch_nama }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                
+            </div>
+   
+            <div class="form-group">
+                <label>Tanggal Pembelian:</label>
+                <input type="date" name="tanggal_pembelian">
+            </div>
+    </div>
+
+    <div class="form-group"> 
+    <label>Metode Pembayaran:</label>
+    <div class="checkbox-group">
+        <div class="checkbox-box">
+            <input type="radio" id="metode1" name="metode_pembayaran" value="tunai" required>
+            <label for="metode1">
+                <span class="checkbox-icon"></span>
+                Tunai
+            </label>
+        </div>
+        <div class="checkbox-box">
+            <input type="radio" id="metode2" name="metode_pembayaran" value="non_tunai" required>
+            <label for="metode2">
+                <span class="checkbox-icon"></span>
+                Non Tunai
+            </label>
+        </div>
+        </form>
+    </div>
+
+    <div class="form-group" style="text-align: center; margin-top: 20px;">
+    <!-- Tombol Oke untuk menyimpan data -->
+    <button 
+        type="submit" 
+        onclick="return OkeForm()" 
+        style="
+            padding: 10px 20px; 
+            margin-right: 10px; 
+            font-size: 16px; 
+            border: none; 
+            background-color: #007bff; 
+            color: white; 
+            border-radius: 5px; 
+            cursor: pointer;">
+        Oke
+    </button>
+    
+    <!-- Tombol Cancel untuk membatalkan pengisian -->
+    <button 
+        type="button" 
+        onclick="cancelForm()" 
+        style="
+            padding: 10px 20px; 
+            font-size: 16px; 
+            border: none; 
+            background-color: #dc3545; 
+            color: white; 
+            border-radius: 5px; 
+            cursor: pointer;">
+        Cancel
+    </button>
+</div>
+<script>
+   function OkeForm() {
+    // Ambil semua input form dengan atribut required
+    const inputs = document.querySelectorAll("input[required]");
+    let isValid = true;
+
+    // Periksa apakah semua input sudah terisi
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = "red"; // Tandai input kosong dengan border merah
+        } else {
+            input.style.borderColor = ""; // Reset border jika valid
+>>>>>>> yuan
         }
         .checkbox-box {
             padding: 13px;
