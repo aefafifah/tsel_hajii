@@ -17,6 +17,10 @@ class Transaksi extends Model
         'nama_pelanggan',
         'nomor_telepon',
         'aktivasi_tanggal',
-        'tanggal_transaksi'
+        'tanggal_transaksi',
+        'nama_sales',
+        'jenis_paket',
+        'merchandise',
+        'metode_pembayaran'
     ];
-}
+}    
