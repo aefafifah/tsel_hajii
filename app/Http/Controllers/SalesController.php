@@ -62,15 +62,15 @@ public function transaksiPage(Request $request)
 {
     $user = auth()->user();
 
-    if ($user->role === 'sales') {
-        if (!$user->is_setoran) {
-            return redirect()->back()->with('alert', 'Silahkan setoran dahulu ke supervisor');
-        }
+    if ($user->role === 'sales' && !$user->is_setoran) {
+        session()->flash('alert', 'Silahkan setoran dahulu ke supervisor.');
+        return redirect()->route('sales.home');
     }
 
-   
-    return view('sales.transaksi');
+    return view('sales.transaksii');
 }
+
+
 
 
 }
