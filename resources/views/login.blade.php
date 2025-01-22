@@ -21,6 +21,18 @@
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
+        .logo-container {
+            position: relative;
+            margin-bottom: -30px; 
+            z-index: 1; 
+        }
+        .logo-container img {
+            max-width: 200px;
+            position: relative;
+            top: -30px;
+            display: block;
+            margin: auto;
+        }
         .pin-display {
             display: flex;
             justify-content: center;
@@ -51,7 +63,7 @@
             font-size: 22px;
             font-weight: bold;
             color: #fff;
-            background: linear-gradient(135deg, #6A11CB, #2575FC);
+            background: linear-gradient(135deg,rgb(33, 226, 62), #2575FC);
             border: none;
             border-radius: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -75,6 +87,10 @@
                 height: 60px;
                 font-size: 20px;
             }
+            .logo-container img {
+                max-width: 200px;
+                top: -8px;
+            }
         }
     </style>
 </head>
@@ -84,6 +100,10 @@
             <div class="row vh-100 m-0">
                 <div class="col-12 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
+
+                        <div class="logo-container">
+                            <img src="{{ asset('admin_asset/img/photos/icon_login.png') }}" alt="Logo Login">
+                        </div>
                         <div class="text-center mt-4">
                             <h1 class="h2">Masukkan Email dan PIN</h1>
                             <p class="lead">Gunakan email dan PIN untuk login.</p>
@@ -92,12 +112,12 @@
                             <div class="card-body">
                                 <form id="loginForm" action="{{ route('login') }}" method="POST">
                                     @csrf
-                                    <!-- Email Input -->
+                                    
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email:</label>
                                         <input type="email" id="email" name="email" class="form-control" placeholder="Email Anda" required>
                                     </div>
-                                    <!-- PIN Display -->
+                                    
                                     <div class="text-center">
                                         <label for="pin" class="form-label">PIN:</label>
                                         <div class="pin-display">
@@ -110,7 +130,7 @@
                                         </div>
                                         <input type="hidden" name="pin" id="hiddenPin">
                                     </div>
-                                    <!-- Keypad -->
+
                                     <div class="keypad mt-4">
                                         <button type="button" onclick="addDigit(1)">1</button>
                                         <button type="button" onclick="addDigit(2)">2</button>
