@@ -1,104 +1,134 @@
+<!DOCTYPE html>
 <x-sales.saleslayouts>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Transactions</title>
-</head>
-<style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-}
+        h1 {
+            color: #2a3d56;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-h1 {
-    color: #2a3d56;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
 
-th {
-    background-color: #4CAF50;
-    color: white;
-    font-weight: bold;
-}
+        td {
+            background-color: #ffffff;
+        }
 
-td {
-    background-color: #ffffff;
-}
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+        tr:hover {
+            background-color: #ddd;
+        }
 
-tr:hover {
-    background-color: #ddd;
-}
+        .alert {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
 
-.alert {
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 15px 0;
-}
+        .alert-success {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-.alert-success {
-    background-color: #4CAF50;
-    color: white;
-}
+        .alert-error {
+            background-color: #f44336;
+            color: white;
+        }
 
-.alert-error {
-    background-color: #f44336;
-    color: white;
-}
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-.container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-@media screen and (max-width: 768px) {
-    .table-responsive {
-        overflow-y: auto; 
-        max-height: 400px; 
-    }
-
+@media screen and (max-width: 600px) {
     table {
-        width: 100%; 
-        border-collapse: collapse;
+        border: 0;
+        width: 100%;
     }
 
-    th, td {
-        font-size: 0.8rem;
-        padding: 10px;
+    thead {
+        display: none;
+    }
+
+    tr {
+        display: block;
+        margin-bottom: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+    }
+
+    td::before {
+    content: attr(data-label);
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background-color: #4CAF50;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    min-width: 80px;
+}
+
+    td:last-child {
+        border-bottom: 0;
+    }
+
+    tr:last-child {
+        margin-bottom: 0;
     }
 }
-</style>
-
-
     </style>
+</head>
 <body>
     <h1>Riwayat Transaksi</h1>
 
@@ -108,37 +138,34 @@ tr:hover {
         <p style="color: red;">{{ session('error') }}</p>
     @endif
 
-    <table border="1">
-    <thead>
-        <tr>
-            <th>ID Transaksi</th>
-            <th>Nomor Telepon</th>
-            <th>Nama Pelanggan</th>
-            <th>Tanggal Transaksi</th>
-            <th>Nama Sales</th>
-            <th>Jenis Paket</th>
-            <th>Merchandise</th>
-            <th>Metode Pembayaran</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($transaksi as $transaction)
+    <table class="data-table">
+        <thead>
             <tr>
-                <td>{{ $transaction->id_transaksi }}</td>
-                <td>{{ $transaction->nomor_telepon }}</td>
-                <td>{{ $transaction->nama_pelanggan }}</td>
-                <td>{{ $transaction->aktivasi_tanggal }}</td>
-                <td>{{ $transaction->nama_sales }}</td>
-                <td>{{ $transaction->jenis_paket }}</td>
-                <td>{{ $transaction->merchandise }}</td>
-                <td>{{ $transaction->metode_pembayaran }}</td>
+                <th>ID Transaksi</th>
+                <th>Nomor Telepon</th>
+                <th>Nama Pelanggan</th>
+                <th>Tanggal Transaksi</th>
+                <th>Nama Sales</th>
+                <th>Jenis Paket</th>
+                <th>Merchandise</th>
+                <th>Metode Pembayaran</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($transaksi as $transaction)
+                <tr>
+                    <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
+                    <td data-label="Nomor Telepon">{{ $transaction->nomor_telepon }}</td>
+                    <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
+                    <td data-label="Tanggal Transaksi">{{ $transaction->aktivasi_tanggal }}</td>
+                    <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
+                    <td data-label="Jenis Paket">{{ $transaction->jenis_paket }}</td>
+                    <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
+                    <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </body>
 </html>
-
-
-
 </x-sales.saleslayouts>
