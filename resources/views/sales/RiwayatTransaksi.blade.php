@@ -6,78 +6,78 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Transactions</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
 
-        h1 {
-            color: #2a3d56;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+h1 {
+    color: #2a3d56;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
+th, td {
+    padding: 9px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
 
-        th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
 
-        td {
-            background-color: #ffffff;
-        }
+td {
+    background-color: #ffffff;
+}
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
-        tr:hover {
-            background-color: #ddd;
-        }
+tr:hover {
+    background-color: #ddd;
+}
 
-        .alert {
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 15px 0;
-        }
+.alert {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
 
-        .alert-success {
-            background-color: #4CAF50;
-            color: white;
-        }
+.alert-success {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        .alert-error {
-            background-color: #f44336;
-            color: white;
-        }
+.alert-error {
+    background-color: #f44336;
+    color: white;
+}
 
-        .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 @media screen and (max-width: 600px) {
     table {
@@ -91,11 +91,12 @@
 
     tr {
         display: block;
-        margin-bottom: 15px;
+        margin-bottom: 25px; /* Menambahkan ruang antar riwayat */
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        padding: 15px; /* Tambahkan padding untuk tampilan lebih baik */
     }
 
     td {
@@ -107,17 +108,11 @@
     }
 
     td::before {
-    content: attr(data-label);
-    display: inline-block;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    background-color: #4CAF50;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 10px;
-    min-width: 80px;
-}
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        color: #4CAF50;
+    }
 
     td:last-child {
         border-bottom: 0;
@@ -127,6 +122,7 @@
         margin-bottom: 0;
     }
 }
+
     </style>
 </head>
 <body>
