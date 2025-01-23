@@ -14,8 +14,7 @@ class Produk extends Model
         'produk_detail', 'produk_insentif', 'is_active'
     ];
 
-    /**
-     */
+    
     public function merchandises()
     {
         return $this->belongsToMany(Merchandise::class, 'merchandise_produk');
