@@ -79,44 +79,44 @@
 </head>
 <body>
     <div class="container">
-    <img src="{{ asset('admin_asset/img/photos/icon_telkomsel.png') }}" alt="Icon Telkomsel"
+    <img src="{{ $formData['icon'] }}" alt="Icon Telkomsel"
     class="watermark">
         <div class="header">
-            <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo">
+            <img src="{{ $formData['logo'] }}" alt="Logo">
             <h1>KWITANSI PEMBAYARAN</h1>
         </div>
         <div class="content">
             <table>
                 <tr>
                     <td class="label">No. Transaksi</td>
-                    <td>trx-Vla6rUg1J</td>
+                    <td>{{ $formData['id_transaksi'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">Tanggal Pembelian</td>
-                    <td>20 Mei 2025</td>
+                    <td>{{ $formData['tanggal_transaksi'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">Nama Sales</td>
-                    <td>Telkomsel Event Haji</td>
+                    <td>{{Auth::user()->name}}</td>
                 </tr>
                 <tr>
                     <td class="label">Nama Pelanggan</td>
-                    <td>bany_at_telkomsel</td>
+                    <td>{{ $formData['nama_pelanggan'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">No. Tlp Pelanggan</td>
-                    <td>0812-xxxx-xxxx</td>
+                    <td>{{ $formData['nomor_telepon'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">Aktivasi Tanggal</td>
-                    <td>20 Mei 2025</td>
+                    <td>{{ $formData['aktivasi_tanggal'] }}</td>
                 </tr>
             </table>
             <h3 style="font-size: 12px; margin: 5px 0;">Paket Internet Haji</h3>
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
                     <td>
-                        17 GB - COMBO - 30D <strike>Rp 870.000,-</strike><br>
+                        {{ $formData['produk_nama'] }} <strike>Rp 870.000,-</strike><br>
                         <span style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
                             (Rp 850.000,-)
                         </span>
@@ -128,20 +128,20 @@
             <table>
                 <tr>
                     <td class="label">Barang</td>
-                    <td>Tumbler</td>
+                    <td>{{ $formData['merch_nama'] }}</td>
                 </tr>
             </table>
             <h3 style="font-size: 12px; margin: 5px 0;">Pembayaran</h3>
             <table>
                 <tr>
                     <td class="label">Metode</td>
-                    <td>Tunai</td>
+                    <td>{{ $formData['metode_pembayaran'] }}</td>
                 </tr>
             </table>
         </div>
         <div class="footer">
-            <p>Contact Person : Telkomsel Event Haji</p>
-            <p>No Tlp : 0812-xxxx-xxxx</p>
+            <p>Contact Person : {{Auth::user()->name}}</p>
+            <p>No Tlp : {{Auth::user()->phone}}</p>
         </div>
     </div>
 </body>

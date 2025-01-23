@@ -101,50 +101,6 @@
                 flex-grow: 1;
             }
 
-<<<<<<< HEAD
-    <body>
-        <div class="container">
-            <div>
-                <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
-            </div>
-            <div class="title">
-                TRANSAKSI PEMBAYARAN
-            </div>
-            <form action="{{ route('sales.transaksi.submit') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    @php $id_transaksi = str()->random(); @endphp
-                    <label>No: {{ $id_transaksi }} </label>
-                    <input
-                        type="hidden"
-                        name="id_transaksi"
-                        id="id_transaksi"
-                        value="{{ $id_transaksi }}">
-                    <div class="form-group">
-                    <label>Nama Sales:</label>
-                    <input
-                        type="text"
-                        name="nama_sales"
-                        id="nama_sales"
-                        placeholder="Masukkan nama Sales"
-                        oninput="restrictNameInput(this)"
-                        required>
-                    <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf </small>
-                </div>
-=======
-            .checkbox-icon {
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                margin-right: 10px;
-                border: 2px solid #ccc;
-                border-radius: 4px;
-                background-color: #fff;
-                position: relative;
-                transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-            }
->>>>>>> 55807dc21d4ccf0514dc9de21554fe8ce5d1ed8e
-
             input:checked+label .checkbox-icon {
                 background-color: #007bff;
                 border-color: #007bff;
@@ -202,7 +158,7 @@
                     style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
             </div>
             <div class="title">TRANSAKSI PEMBAYARAN</div>
-            <form action="{{ route('sales.transaksi.submit') }}" method="POST">
+            <form action="{{ route('sales/transaksi/submit') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     @php $id_transaksi = str()->random(); @endphp
@@ -240,11 +196,11 @@
                 <div class="form-group">
                     <label>Pilih Paket Internet:</label>
                     <div class="checkbox-group">
-                        @foreach ($produks as $index => $produk)
+                        @foreach ($produks as $produk)
                             <div class="checkbox-box">
-                                <input type="radio" id="paket{{ $index + 1 }}" name="paket"
-                                    value="{{ $produk->produk_id }}">
-                                <label for="paket{{ $index + 1 }}">
+                                <input type="radio" id="produk{{ $produk->id }}" name="produk"
+                                    value="{{ $produk->id }}">
+                                <label for="produk{{ $produk->id }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
                                     {{ $produk->produk_detail }} <br>
@@ -258,11 +214,11 @@
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>
                     <div class="checkbox-group">
-                        @foreach ($merchandises as $index => $merchandise)
+                        @foreach ($merchandises as $merchandise)
                             <div class="checkbox-box">
-                                <input type="radio" id="merch{{ $index + 1 }}" name="merchandise"
-                                    value="{{ $merchandise->merchandise_id }}">
-                                <label for="merch{{ $index + 1 }}">
+                                <input type="radio" id="merch{{ $merchandise->id }}" name="merchandise"
+                                    value="{{ $merchandise->id }}">
+                                <label for="merch{{ $merchandise->id }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $merchandise->merch_nama }}
                                 </label>
@@ -272,22 +228,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tanggal Pembelian:</label>
-                    <input type="date" name="tanggal_pembelian">
+                    <label>Tanggal Transaksi:</label>
+                    <input type="date" name="tanggal_transaksi" id="tanggal_transaksi">
                 </div>
 
                 <div class="form-group">
                     <label>Metode Pembayaran:</label>
                     <div class="checkbox-group">
                         <div class="checkbox-box">
-                            <input type="radio" id="metode1" name="metode_pembayaran" value="tunai" required>
+                            <input type="radio" id="metode1" name="metode_pembayaran" value="Tunai" required>
                             <label for="metode1">
                                 <span class="checkbox-icon"></span>
                                 Tunai
                             </label>
                         </div>
                         <div class="checkbox-box">
-                            <input type="radio" id="metode2" name="metode_pembayaran" value="non_tunai" required>
+                            <input type="radio" id="metode2" name="metode_pembayaran" value="Non Tunai" required>
                             <label for="metode2">
                                 <span class="checkbox-icon"></span>
                                 Non Tunai

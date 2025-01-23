@@ -7,6 +7,8 @@ use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
 
+use Pdf;
+
 class TransaksiController extends Controller
 {
     public function submit(Request $request)
@@ -18,11 +20,39 @@ class TransaksiController extends Controller
             'nama_pelanggan' => 'nullable|string',
             'aktivasi_tanggal' => 'nullable|date',
             'tanggal_transaksi' => 'nullable|date',
-            'nama_sales' => 'nullable|string',               
-            'jenis_paket' => 'nullable|array',               
-            'merchandise' => 'nullable|array',               
-            'metode_pembayaran' => 'nullable|string',         
         ]);
+
+        // Get selected values
+        $selectedProdukId = $request->input('produk');
+        $selectedMerchandiseId = $request->input('merchandise');
+
+        // Get complete data from database
+        $selectedProduk = Produk::find($selectedProdukId);
+        $selectedMerchandise = Merchandise::find($selectedMerchandiseId);
+
+        // Store form data in session
+        $request->session()->put('form_data', [
+            'id_transaksi' => $request->id_transaksi,
+            'nomor_telepon' => $request->nomor_telepon,
+            'nama_pelanggan' => $request->nama_pelanggan,
+            'aktivasi_tanggal' => $request->aktivasi_tanggal,
+            'tanggal_transaksi' => $request->tanggal_transaksi,
+            'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
+            'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
+            'produk_nama' => $selectedProduk->produk_nama,
+            'merch_nama' => $selectedMerchandise->merch_nama,
+            'metode_pembayaran' => $request->metode_pembayaran,
+        ]);
+
+        try {
+            // Create new transaction
+            Transaksi::create($validated);
+            return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                           ->withInput();
+        } 
 
         // try {
         //     // Buat data transaksi baru
@@ -56,6 +86,15 @@ class TransaksiController extends Controller
     {
         $produks = Produk::with('merchandises')->get(); // Ambil produk beserta merchandise terkait
         return view('sales.transaksi', compact('produks'));
+    }
+
+    public function kwitansi(Request $request)
+    {
+        $formData = $request->session()->get('form_data', []);
+        $pdf = Pdf::loadView('sales.kwitansi', ['formData' => $formData]);
+        return $pdf->download("trial.pdf");
+        $request->session()->forget('form_data');
+
     }
 
 }

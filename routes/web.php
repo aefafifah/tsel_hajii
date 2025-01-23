@@ -98,8 +98,12 @@ Route::middleware(['sales'])->group(function () {
         return view('sales.home');
     })->name('sales.home');
     Route::get('/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
-    Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales.transaksi.submit');
+    Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
     Route::get('sales/riwayat-transaksi', [TransaksiController::class, 'index'])->name('transactions.index');
+    Route::get('/sales/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('sales.transaksi.kwitansi');
+    Route::get('/sales/kwitansi', function () {
+        return view('sales.kwitansi');
+    })->name('sales.kwitansi');
 
 });
 
@@ -107,11 +111,6 @@ Route::middleware(['sales'])->group(function () {
 
 // --------------------------------------------
 // mainan
-
-Route::get('/kwitansi', function () {
-    return view('kwitansi');
-});
-
 
 // checklist sales
 Route::get('/checklist', function () {
