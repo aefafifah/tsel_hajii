@@ -3,7 +3,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RoleUsers;
+use App\Models\Produk;
+use App\Models\Merchandise;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -44,33 +47,39 @@ class SalesController extends Controller
         return view('supvis.sales_allow', compact('sales'));
     }
 
-public function updateIsSetoran(Request $request, $id)
-{
-    $salesperson = RoleUsers::findOrFail($id);
+    public function updateIsSetoran(Request $request, $id)
+    {
+        $salesperson = RoleUsers::findOrFail($id);
 
-    if ($salesperson->role === 'sales') {
-        $salesperson->is_setoran = $request->is_setoran;
-        $salesperson->save();
+        if ($salesperson->role === 'sales') {
+            $salesperson->is_setoran = $request->is_setoran;
+            $salesperson->save();
 
-        return response()->json(['success' => true]);
-    }
-
-    return response()->json(['success' => false, 'message' => 'Invalid role']);
-}
-
-public function transaksiPage(Request $request)
-{
-    $user = auth()->user();
-
-    if ($user->role === 'sales') {
-        if (!$user->is_setoran) {
-            return redirect()->back()->with('alert', 'Silahkan setoran dahulu ke supervisor');
+            return response()->json(['success' => true]);
         }
+
+        return response()->json(['success' => false, 'message' => 'Invalid role']);
     }
 
-   
-    return view('sales.transaksi');
-}
+    public function transaksiPage(Request $request)
+    {
+        $user = auth()->user();
+
+        if ($user->role === 'sales' && !$user->is_setoran) {
+            session()->flash('alert', 'Silahkan setoran dahulu ke supervisor.');
+            return redirect()->route('sales.home');
+        }
+        $produks = Produk::all();
+        $merchandises = Merchandise::all();
+        $merchandises->each(function ($merchandise) {
+            $merchandise->produk_ids = $merchandise->produks->pluck('id')->toArray();
+        });
+        return view('sales.transaksi', compact('produks', 'merchandises'));
+    }
+
+
+
+
 
 
 }

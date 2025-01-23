@@ -21,6 +21,7 @@ class RoleUsers extends Authenticatable
         'role',
         'phone',
         'is_superuser',
+        'is_setoran',
     ];
 
     /**

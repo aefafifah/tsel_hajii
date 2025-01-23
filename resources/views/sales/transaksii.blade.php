@@ -1,5 +1,4 @@
 <x-sales.saleslayouts>
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +10,6 @@
                 margin: 0;
                 padding: 0;
             }
-
             .container {
                 max-width: 1000px;
                 margin: 30px auto;
@@ -20,7 +18,6 @@
                 overflow: visible;
                 box-shadow: none;
             }
-
             .header {
                 text-align: right;
                 background-color: rgba(255, 0, 0, 0.72);
@@ -28,7 +25,6 @@
                 padding: 15px 25px;
                 font-size: 20px;
             }
-
             .title {
                 text-align: center;
                 margin: 25px 0;
@@ -36,22 +32,18 @@
                 font-weight: bold;
                 color: #333;
             }
-
             form {
                 padding: 30px;
             }
-
             .form-group {
                 margin-bottom: 25px;
             }
-
             .form-group label {
                 display: block;
                 font-size: 14px;
                 margin-bottom: 10px;
                 color: #333;
             }
-
             .form-group input,
             .form-group select {
                 width: 100%;
@@ -61,14 +53,12 @@
                 border-radius: 6px;
                 box-sizing: border-box;
             }
-
             .checkbox-group {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
                 gap: 15px;
                 padding: 10px;
             }
-
             .checkbox-box {
                 display: flex;
                 align-items: center;
@@ -80,17 +70,14 @@
                 cursor: pointer;
                 transition: 0.3s;
             }
-
             .checkbox-box:hover {
                 border-color: #0056b3;
                 background-color: #e0f0ff;
                 box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
             }
-
             .checkbox-box input {
                 display: none;
             }
-
             .checkbox-box label {
                 display: flex;
                 align-items: center;
@@ -100,38 +87,6 @@
                 color: #333;
                 flex-grow: 1;
             }
-
-<<<<<<< HEAD
-    <body>
-        <div class="container">
-            <div>
-                <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel" style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
-            </div>
-            <div class="title">
-                TRANSAKSI PEMBAYARAN
-            </div>
-            <form action="{{ route('sales.transaksi.submit') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    @php $id_transaksi = str()->random(); @endphp
-                    <label>No: {{ $id_transaksi }} </label>
-                    <input
-                        type="hidden"
-                        name="id_transaksi"
-                        id="id_transaksi"
-                        value="{{ $id_transaksi }}">
-                    <div class="form-group">
-                    <label>Nama Sales:</label>
-                    <input
-                        type="text"
-                        name="nama_sales"
-                        id="nama_sales"
-                        placeholder="Masukkan nama Sales"
-                        oninput="restrictNameInput(this)"
-                        required>
-                    <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf </small>
-                </div>
-=======
             .checkbox-icon {
                 display: inline-block;
                 width: 20px;
@@ -143,14 +98,11 @@
                 position: relative;
                 transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
             }
->>>>>>> 55807dc21d4ccf0514dc9de21554fe8ce5d1ed8e
-
             input:checked+label .checkbox-icon {
                 background-color: #007bff;
                 border-color: #007bff;
                 transform: scale(1.1);
             }
-
             input:checked+label .checkbox-icon::after {
                 content: '✔';
                 position: absolute;
@@ -161,7 +113,6 @@
                 font-size: 10px;
                 font-weight: bold;
             }
-
             button[type="submit"] {
                 padding: 10px 20px;
                 margin-right: 10px;
@@ -172,8 +123,6 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
-
-
             button[type="button"] {
                 padding: 10px 20px;
                 font-size: 16px;
@@ -183,18 +132,19 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
-
-
             button[type="submit"]:hover {
                 background-color: #0056b3;
             }
-
             button[type="button"]:hover {
                 background-color: #c82333;
             }
+
+            .checkbox-box.highlight {
+                background-color: #f0f9ff;
+                border: 2px solid #007bff;
+            }
         </style>
     </head>
-
     <body>
         <div class="container">
             <div>
@@ -243,7 +193,7 @@
                         @foreach ($produks as $index => $produk)
                             <div class="checkbox-box">
                                 <input type="radio" id="paket{{ $index + 1 }}" name="paket"
-                                    value="{{ $produk->produk_id }}">
+                                    value="{{ $produk->id }}" onchange="filterMerchandises({{ $produk->id }})">
                                 <label for="paket{{ $index + 1 }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
@@ -257,11 +207,11 @@
 
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>
-                    <div class="checkbox-group">
+                    <div class="checkbox-group" id="merchandise-container">
                         @foreach ($merchandises as $index => $merchandise)
-                            <div class="checkbox-box">
-                                <input type="radio" id="merch{{ $index + 1 }}" name="merchandise"
-                                    value="{{ $merchandise->merchandise_id }}">
+                            <div class="checkbox-box" data-produk-ids="{{ json_encode($merchandise->produk_ids) }}">
+                                <input type="radio" id="merch{{ $index + 1 }}" name="merchandises[]"
+                                    value="{{ $merchandise->id }}" disabled>
                                 <label for="merch{{ $index + 1 }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $merchandise->merch_nama }}
@@ -270,7 +220,6 @@
                         @endforeach
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Tanggal Pembelian:</label>
                     <input type="date" name="tanggal_pembelian">
@@ -343,8 +292,53 @@
                     document.getElementById("form-transaksi").reset();
                 }
             }
-        </script>
-    </body>
 
-    </html>
+            function filterMerchandises(selectedProdukId) {
+                const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
+
+
+                let isAnyChecked = Array.from(merchandises).some(merchandise =>
+                    merchandise.querySelector('input').checked
+                );
+
+                merchandises.forEach(merchandise => {
+                    const produkIds = JSON.parse(merchandise.getAttribute('data-produk-ids'));
+                    const checkbox = merchandise.querySelector('input');
+
+
+                    if (produkIds.includes(selectedProdukId)) {
+
+                        if (isAnyChecked && !checkbox.checked) {
+                            checkbox.disabled = true;
+                        } else {
+                            checkbox.disabled = false;
+                        }
+                        merchandise.classList.add('highlight');
+                    } else {
+                        checkbox.disabled = true;
+                        checkbox.checked = false;
+                        merchandise.classList.remove('highlight');
+                    }
+                });
+                if (isAnyChecked) {
+                    const checkedBox = document.querySelector('#merchandise-container input:checked');
+                    merchandises.forEach(merchandise => {
+                        const checkbox = merchandise.querySelector('input');
+                        if (checkbox !== checkedBox) {
+                            checkbox.disabled = true;
+                        }
+                    });
+                } else {
+                    const relatedMerchandises = Array.from(merchandises).filter(merchandise => {
+                        const produkIds = JSON.parse(merchandise.getAttribute('data-produk-ids'));
+                        return produkIds.includes(selectedProdukId);
+                    });
+
+                    relatedMerchandises.forEach(merchandise => {
+                        const checkbox = merchandise.querySelector('input');
+                        checkbox.disabled = false;
+                    });
+                }
+            }
+        </script>
 </x-sales.saleslayouts>

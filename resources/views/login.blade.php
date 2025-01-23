@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,23 +15,36 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f9f9f9;
+            padding: 15px;
         }
         .card {
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
+        .logo-container {
+            position: relative;
+            margin-bottom: -30px; 
+            z-index: 1; 
+        }
+        .logo-container img {
+            max-width: 200px;
+            position: relative;
+            top: -30px;
+            display: block;
+            margin: auto;
+        }
         .pin-display {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin: 20px 0;
         }
         .pin-display div {
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
             text-align: center;
-            line-height: 50px;
+            line-height: 45px;
             background-color: #eaeaea;
             border-radius: 50%;
             color: #333;
@@ -42,16 +54,16 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             justify-content: center;
-            max-width: 300px;
+            max-width: 280px;
             margin: auto;
         }
         .keypad button {
-            width: 80px;
-            height: 80px;
-            font-size: 24px;
+            width: 70px;
+            height: 70px;
+            font-size: 22px;
             font-weight: bold;
             color: #fff;
-            background: linear-gradient(135deg, #6A11CB, #2575FC);
+            background: linear-gradient(135deg,rgb(33, 226, 62), #2575FC);
             border: none;
             border-radius: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -63,6 +75,23 @@
         .btn-clear {
             background-color: #f44336 !important;
         }
+        @media (max-width: 576px) {
+            .pin-display div {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                line-height: 40px;
+            }
+            .keypad button {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+            .logo-container img {
+                max-width: 200px;
+                top: -8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -71,20 +100,24 @@
             <div class="row vh-100 m-0">
                 <div class="col-12 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
+
+                        <div class="logo-container">
+                            <img src="{{ asset('admin_asset/img/photos/icon_login.png') }}" alt="Logo Login">
+                        </div>
                         <div class="text-center mt-4">
                             <h1 class="h2">Masukkan Email dan PIN</h1>
                             <p class="lead">Gunakan email dan PIN untuk login.</p>
                         </div>
-                        <div class="card p-4">
+                        <div class="card p-3 p-md-4">
                             <div class="card-body">
                                 <form id="loginForm" action="{{ route('login') }}" method="POST">
                                     @csrf
-                                    <!-- Email Input -->
+                                    
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email:</label>
                                         <input type="email" id="email" name="email" class="form-control" placeholder="Email Anda" required>
                                     </div>
-                                    <!-- PIN Display -->
+                                    
                                     <div class="text-center">
                                         <label for="pin" class="form-label">PIN:</label>
                                         <div class="pin-display">
@@ -97,7 +130,7 @@
                                         </div>
                                         <input type="hidden" name="pin" id="hiddenPin">
                                     </div>
-                                    <!-- Keypad -->
+
                                     <div class="keypad mt-4">
                                         <button type="button" onclick="addDigit(1)">1</button>
                                         <button type="button" onclick="addDigit(2)">2</button>
