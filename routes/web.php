@@ -122,6 +122,11 @@ Route::get('/checklist', function () {
     return view('checklist_sales');
 });
 
+// checklist sales
+Route::get('/rekap', function () {
+    return view('rekap_penjualan');
+});
+
 // tambah sales
 Route::get('/tambah_sales', function () {
     return view('tambah_sales');
