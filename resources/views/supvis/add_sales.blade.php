@@ -104,7 +104,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="name">Nama Sales:</label>
-                    <input type="text" id="name" name="name" placeholder="Masukkan nama sales">
+                    <input type="text" id="name" name="name" oninput="validateName(this)" placeholder="Masukkan nama sales">
                     <div class="error" id="nameError"></div>
                 </div>
                 <div class="form-group">
@@ -119,7 +119,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pin">PIN:</label>
-                    <input type="text" id="pin" name="pin" placeholder="Masukkan PIN">
+                    <input type="text" id="pin" name="pin" oninput="validatePin(this)" placeholder="Masukkan PIN">
                     <div class="error" id="pinError"></div>
                 </div>
                 <div class="form-group">
@@ -136,6 +136,28 @@
         </div>
 
         <script>
+            
+            function validateName(input) {
+            const regex = /^[a-zA-Z\s]*$/;
+            const nameError = document.getElementById('nameError');
+            if (!regex.test(input.value)) {
+                input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+                nameError.textContent = '*Nama hanya boleh mengandung huruf dan spasi.';
+            } else {
+                nameError.textContent = '';
+            }
+        }
+
+            function validatePin(input) {
+                const regex = /^[0-9]*$/;
+                const pinError = document.getElementById('pinError');
+                if (!regex.test(input.value)) {
+                    input.value = input.value.replace(/[^0-9]/g, '');
+                    pinError.textContent = '*PIN hanya boleh mengandung angka.';
+                } else {
+                    pinError.textContent = ''; 
+                }
+            }
 
             function showAlert(event) {
                 event.preventDefault();

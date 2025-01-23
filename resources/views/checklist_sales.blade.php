@@ -1,4 +1,3 @@
-<x-layouts>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,32 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Checklist</title>
     <style>
-        /* Base Styles */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
         body {
             font-family: 'Inter', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f0f4ff, #d9eaff);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; 
             min-height: 100vh;
+            padding-top: 50px; 
         }
 
         h1 {
-            color: #004aad;
+            color: #01579b;
             margin-bottom: 10px;
             font-size: 28px;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
         }
 
         p {
-            color: #555;
+            color: #546e7a;
             font-size: 16px;
             margin-bottom: 30px;
             text-align: center;
@@ -39,89 +38,86 @@
         }
 
         .sales-list {
-            width: 90%;
-            max-width: 420px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 0px;  
         }
 
         .sales-item {
-            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            background-color: #ffffff;
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
         }
 
         .sales-item:hover {
-            background-color: #e8f4ff;
+            background-color: #f0f4c3;
             transform: translateY(-2px);
         }
 
         input[type="checkbox"] {
-            accent-color: #004aad;
-            transform: scale(1.3);
+            width: 20px;
+            height: 20px;
+            accent-color: #81c784;
+            margin-right: 15px;
             cursor: pointer;
         }
 
         label {
             font-size: 16px;
             font-weight: 500;
-            cursor: pointer;
-            flex: 1;
-            margin-left: 10px;
             color: #333;
-        }
-
-        .completed {
-            text-decoration: line-through;
-            color: #888;
+            flex: 1;
         }
 
         button {
             margin-top: 25px;
             padding: 12px 20px;
-            background: linear-gradient(135deg, #004aad, #007bff);
+            background: linear-gradient(135deg, #0288d1, #039be5);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: background 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
-            background: linear-gradient(135deg, #003b8b, #0056b3);
+            background: linear-gradient(135deg, #0277bd, #0288d1);
             transform: translateY(-2px);
         }
 
         #result {
-            width: 90%;
-            max-width: 420px;
+            width: 100%;
+            max-width: 400px;
             margin-top: 25px;
             padding: 20px;
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         #checked-names {
-            color: #004aad;
+            color: #01579b;
             font-weight: 600;
             font-size: 16px;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 22px;
+                font-size: 24px;
             }
 
             button {
@@ -131,6 +127,10 @@
 
             p {
                 font-size: 14px;
+            }
+
+            .sales-item {
+                padding: 10px 12px;
             }
         }
     </style>
@@ -192,4 +192,5 @@
             resultDiv.hidden = false;
         }
     </script>
-</x-layouts>
+</body>
+</html>

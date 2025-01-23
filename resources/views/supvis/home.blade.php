@@ -1,5 +1,12 @@
 <x-supvis.supvislayouts>
     <main class="content">
+
+            @if (Auth::user()->is_superuser)
+            <li class="list-group-item">
+                <a href="a">Menu tambahan khusus Superuser</a>
+            </li>
+            @endif
+
         <div class="container" style="text-align: center; padding: 20px; font-family: 'Poppins', sans-serif;">
 
             <div style="display: flex; flex-direction: column; align-items: center; background-color: #f3f4f6; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 800px;">
