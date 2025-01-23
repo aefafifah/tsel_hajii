@@ -88,9 +88,6 @@
                 color: #333;
                 flex-grow: 1;
             }
-<<<<<<< HEAD
-
-=======
             .checkbox-icon {
                 display: inline-block;
                 width: 20px;
@@ -102,7 +99,6 @@
                 position: relative;
                 transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
             }
->>>>>>> yuan
             input:checked+label .checkbox-icon {
                 background-color: #007bff;
                 border-color: #007bff;
@@ -198,15 +194,9 @@
                     <div class="checkbox-group">
                         @foreach ($produks as $produk)
                             <div class="checkbox-box">
-<<<<<<< HEAD
                                 <input type="radio" id="produk{{ $produk->id }}" name="produk"
                                     value="{{ $produk->id }}">
                                 <label for="produk{{ $produk->id }}">
-=======
-                                <input type="radio" id="paket{{ $index + 1 }}" name="paket"
-                                    value="{{ $produk->id }}" onchange="filterMerchandises({{ $produk->id }})">
-                                <label for="paket{{ $index + 1 }}">
->>>>>>> yuan
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
                                     {{ $produk->produk_detail }} <br>
@@ -219,21 +209,12 @@
 
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>
-<<<<<<< HEAD
                     <div class="checkbox-group">
                         @foreach ($merchandises as $merchandise)
                             <div class="checkbox-box">
                                 <input type="radio" id="merch{{ $merchandise->id }}" name="merchandise"
                                     value="{{ $merchandise->id }}">
                                 <label for="merch{{ $merchandise->id }}">
-=======
-                    <div class="checkbox-group" id="merchandise-container">
-                        @foreach ($merchandises as $index => $merchandise)
-                            <div class="checkbox-box" data-produk-ids="{{ json_encode($merchandise->produk_ids) }}">
-                                <input type="radio" id="merch{{ $index + 1 }}" name="merchandises[]"
-                                    value="{{ $merchandise->id }}" disabled>
-                                <label for="merch{{ $index + 1 }}">
->>>>>>> yuan
                                     <span class="checkbox-icon"></span>
                                     {{ $merchandise->merch_nama }}
                                 </label>
