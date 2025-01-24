@@ -11,5 +11,6 @@
 
             <x-nav-link href="/sales/home" :active="request()->is('sales/home')">Home</x-nav-link>
             <x-nav-link href="/sales/transaksi" :active="request()->is('sales/transaksi')">Transaksi</x-nav-link>
+            <x-nav-link href="/sales/rekap" :active="request()->is('sales/rekap')">Pendapatanmu</x-nav-link>
     </div>
 </nav>

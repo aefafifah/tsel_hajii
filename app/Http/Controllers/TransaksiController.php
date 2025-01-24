@@ -22,6 +22,7 @@ class TransaksiController extends Controller
             'tanggal_transaksi' => 'nullable|date',
             'produk' => 'required|exists:produks,id',
             'merchandise' => 'required|exists:merchandises,id',
+            'nama_sales' => 'required|string'
         ]);
 
         $selectedProdukId = $request->input('produk');
@@ -44,6 +45,7 @@ class TransaksiController extends Controller
             'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
+            'nama_sales' => $request->nama_sales
 
         ]);
 
@@ -53,6 +55,7 @@ class TransaksiController extends Controller
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'nama_sales'=> $request->nama_sales,
                 'aktivasi_tanggal' => $request->aktivasi_tanggal,
                 'tanggal_transaksi' => $request->tanggal_transaksi,
                 'jenis_paket' => $selectedProduk->produk_nama,
@@ -94,7 +97,7 @@ class TransaksiController extends Controller
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view('sales.RiwayatTransaksi', compact('transaksi'));
+        return view('supvis.RiwayatTransaksi', compact('transaksi'));
     }
     public function create()
     {
@@ -110,6 +113,15 @@ class TransaksiController extends Controller
         $request->session()->forget('form_data');
 
     }
+    public function dashboard(Request $request)
+{
+    $nama_sales = $request->user()->name;
+    $transaksi = Transaksi::where('nama_sales', $nama_sales)->get();
+    $merchandise_id = $request->input('merchandise_id');
+    $merchandise = Merchandise::with(['produk:id,produk_nama,produk_harga,produk_diskon,produk_harga_akhir'])
+        ->find($merchandise_id);
+    return view('rekap_penjualan', compact('transaksi', 'merchandise'));
+}
 
 }
 

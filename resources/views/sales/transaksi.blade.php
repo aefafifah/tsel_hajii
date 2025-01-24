@@ -100,10 +100,7 @@
                 color: #333;
                 flex-grow: 1;
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3c8955d4ec713f8d90ca1ed6725b52a2a435c81d
             .checkbox-icon {
                 display: inline-block;
                 width: 20px;
@@ -115,10 +112,7 @@
                 position: relative;
                 transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3c8955d4ec713f8d90ca1ed6725b52a2a435c81d
             input:checked+label .checkbox-icon {
                 background-color: #007bff;
                 border-color: #007bff;
@@ -189,8 +183,8 @@
 
                 <div class="form-group">
                     <label>Nama Sales:</label>
-                    <input type="text" name="nama_sales" id="nama_sales" placeholder="Masukkan nama Sales"
-                        oninput="restrictNameInput(this)" required>
+                    <input type="text" name="nama_sales" id="nama_sales" value="{{ Auth::user()->name }}"
+                        placeholder="Masukkan nama Sales" oninput="restrictNameInput(this)" required>
                     <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf</small>
                 </div>
 
@@ -220,11 +214,7 @@
                         @foreach ($produks as $produk)
                             <div class="checkbox-box">
                                 <input type="radio" id="produk{{ $produk->id }}" name="produk"
-<<<<<<< HEAD
-                                    value="{{ $produk->id }}">
-=======
                                     value="{{ $produk->id }}" onchange="filterMerchandises({{ $produk->id }})">
->>>>>>> 3c8955d4ec713f8d90ca1ed6725b52a2a435c81d
                                 <label for="produk{{ $produk->id }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
@@ -238,19 +228,11 @@
 
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>
-<<<<<<< HEAD
-                    <div class="checkbox-group">
-                        @foreach ($merchandises as $merchandise)
-                            <div class="checkbox-box">
-                                <input type="radio" id="merch{{ $merchandise->id }}" name="merchandise"
-                                    value="{{ $merchandise->id }}">
-=======
                     <div class="checkbox-group" id="merchandise-container">
                         @foreach ($merchandises as $merchandise)
                             <div class="checkbox-box" data-produk-ids="{{ json_encode($merchandise->produk_ids) }}">
                                 <input type="radio" id="merch{{ $merchandise->id }}" name="merchandise"
                                     value="{{ $merchandise->id }}" disabled>
->>>>>>> 3c8955d4ec713f8d90ca1ed6725b52a2a435c81d
                                 <label for="merch{{ $merchandise->id }}">
                                     <span class="checkbox-icon"></span>
                                     {{ $merchandise->merch_nama }}

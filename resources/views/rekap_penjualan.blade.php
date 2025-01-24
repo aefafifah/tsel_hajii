@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
+<x-sales.saleslayouts>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Penjualan dan Insentif</title>
@@ -19,7 +17,7 @@
             padding: 40px 20px;
         }
         .title-box {
-            background-color: #4a90e2; 
+            background-color: #4a90e2;
             color: white;
             border-radius: 15px;
             padding: 20px;
@@ -55,13 +53,13 @@
             background-color: #f1f1f1;
         }
         .total-penjualan-row {
-            background-color: rgb(153, 255, 153); 
-            color: rgb(0, 0, 0); 
+            background-color: rgb(153, 255, 153);
+            color: rgb(0, 0, 0);
             font-weight: bold;
         }
         .total-insentif-row {
-            background-color: #d1e7fd; 
-            color: #0d6efd; 
+            background-color: #d1e7fd;
+            color: #0d6efd;
             font-weight: bold;
         }
         .footer {
@@ -82,49 +80,30 @@
             <thead>
                 <tr>
                     <th>Deskripsi</th>
-                    <th>Jumlah</th>
+                    <th>Harga</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Paket A</td>
-                    <td>Rp 70.000</td>
-                </tr>
-                <tr>
-                    <td>Paket B</td>
-                    <td>Rp 30.000</td>
-                </tr>
-                <tr>
-                    <td>Paket C</td>
-                    <td>Rp 50.000</td>
-                </tr>
-                <tr>
-                    <td>Paket D</td>
-                    <td>Rp 90.000</td>
-                </tr>
-                <tr>
-                    <td>Paket E</td>
-                    <td>Rp 40.000</td>
-                </tr>
-                <tr>
-                    <td>Paket F</td>
-                    <td>Rp 60.000</td>
-                </tr>
+                @forelse ($transaksi as $item)
+                    <tr>
+                        <td>{{ $item->jenis_paket }}</td>
+                        <td>Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="2">Tidak ada transaksi.</td>
+                    </tr>
+                @endforelse
                 <tr class="total-penjualan-row">
                     <td>Total Penjualan</td>
-                    <td>Rp 340.000</td>
+                    <td>Rp </td>
                 </tr>
                 <tr class="total-insentif-row">
                     <td>Total Insentif (10%)</td>
-                    <td>Rp 34.000</td>
+                    <td>Rp </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="footer">
-        &copy; 2023 Dashboard Penjualan. Semua hak dilindungi.
-    </div>
 </div>
-
-</body>
-</html>
+</x-sales.saleslayouts>

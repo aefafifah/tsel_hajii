@@ -43,7 +43,7 @@ Route::middleware(['supervisor'])->group(function () {
      Route::get('/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
      ->name('supvis.transactions.index');
 
-     
+
     // Rute Insentif
     Route::prefix('insentif')->name('insentif.')->group(function () {
         Route::get('/', [InsentifController::class, 'index'])->name('index');
@@ -104,13 +104,15 @@ Route::middleware(['sales'])->group(function () {
     })->name('sales.home');
     Route::get('/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
-   
+
     Route::get('/sales/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('sales.transaksi.kwitansi');
     Route::get('/sales/kwitansi', function () {
         return view('sales.kwitansi');
     })->name('sales.kwitansi');
 
-});
+    Route::get('sales/rekap', [TransaksiController::class, 'dashboard'])->name('sales/rekap');
+    });
+
 
 
 
