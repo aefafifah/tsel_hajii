@@ -16,10 +16,10 @@
         @else
             <div class="row">
                 @foreach ($merchandises as $merchandise)
-                    <div class="col-md-4 mb-4">
+                    <div class="col-md-4 mb-1">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $merchandise->merch_nama }}</h5>
+                                <h5 class="card-text"><strong>{{ $merchandise->merch_nama }}</strong></h5>
                                 <p class="card-text">{{ $merchandise->merch_detail }}</p>
                                 <p class="card-text"><strong>Stok:</strong> {{ $merchandise->merch_stok }}</p>
                                 <div class="d-flex justify-content-between">

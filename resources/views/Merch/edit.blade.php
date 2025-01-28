@@ -21,7 +21,9 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary" style="flex: 1; margin-right: 10px;">Perbarui Merch</button>
+                <button type="submit" class="btn text-white" style="flex: 1; margin-right: 10px; background: linear-gradient(135deg, rgb(33, 226, 62), #2575FC); border: none;">
+                    Perbarui Merch
+                </button>
                 <a href="{{ route('merch.index') }}" class="btn btn-secondary" style="flex: 1; margin-left: 10px;">Batal</a>
             </div>
         </form>
