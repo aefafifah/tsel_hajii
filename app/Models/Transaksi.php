@@ -11,6 +11,10 @@ class Transaksi extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
+    protected $casts = [
+        'tanggal_transaksi' => 'datetime',
+    ];
+    protected $dates = ['tanggal_transaksi'];
 
     protected $fillable = [
         'id_transaksi',
@@ -23,9 +27,9 @@ class Transaksi extends Model
         'merchandise',
         'metode_pembayaran'
     ];
-    public function produks()
+    public function produk()
     {
-        return $this->belongsToMany(Produk::class, 'transaksi_produk', 'transaksi_id', 'produk_id');
+        return $this->belongsTo(Produk::class, 'jenis_paket', 'id');
     }
 
     public function merchandises()
@@ -33,4 +37,4 @@ class Transaksi extends Model
         return $this->belongsToMany(Merchandise::class, 'transaksi_merchandise', 'transaksi_id', 'merchandise_id');
     }
 
-}    
+}

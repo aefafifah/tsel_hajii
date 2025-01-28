@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
+use Carbon\Carbon;
 
 use Pdf;
 
@@ -55,10 +56,10 @@ class TransaksiController extends Controller
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
                 'nama_pelanggan' => $request->nama_pelanggan,
-                'nama_sales'=> $request->nama_sales,
+                'nama_sales' => $request->nama_sales,
                 'aktivasi_tanggal' => $request->aktivasi_tanggal,
                 'tanggal_transaksi' => $request->tanggal_transaksi,
-                'jenis_paket' => $selectedProduk->produk_nama,
+                'jenis_paket' => $selectedProduk->id,
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
             ]);
@@ -69,42 +70,35 @@ class TransaksiController extends Controller
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
         }
-
-
-        // try {
-        //     // Buat data transaksi baru
-        //     $transaksi = Transaksi::create($validated);
-
-        //     // Sync jenis_paket (produks) ke relasi produks
-        //     if ($request->has('jenis_paket')) {
-        //         $produkIds = Produk::whereIn('id', $request->jenis_paket)->pluck('id')->toArray();
-        //         $transaksi->produks()->sync($produkIds);
-        //     }
-
-        //     // Sync merchandise ke relasi merchandises
-        //     if ($request->has('merchandise')) {
-        //         $merchandiseIds = Merchandise::whereIn('id', $request->merchandise)->pluck('id')->toArray();
-        //         $transaksi->merchandises()->sync($merchandiseIds);
-        //     }
-
-        //     return redirect()->back()->with('success', 'Transaksi berhasil disimpan!');
-        // } catch (\Exception $e) {
-        //     return redirect()->back()
-        //                    ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-        //                    ->withInput();
-        // }
     }
+
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view('supvis.RiwayatTransaksi', compact('transaksi'));
+
+        $totalPenjualan = 0;
+
+        foreach ($transaksi as $item) {
+            if ($item->produk) {
+                $totalPenjualan += $item->produk->produk_harga_akhir;
+            }
+        }
+
+        $totalInsentif = 0;
+
+            foreach ($transaksi as $item) {
+                if ($item->produk) {
+                    $totalInsentif += $item->produk->produk_insentif;
+                }
+            }
+
+        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif'));
     }
     public function create()
     {
-        $produks = Produk::with('merchandises')->get(); // Ambil produk beserta merchandise terkait
+        $produks = Produk::with('merchandises')->get();
         return view('sales.transaksi', compact('produks'));
     }
-
     public function kwitansi(Request $request)
     {
         $formData = $request->session()->get('form_data', []);
@@ -115,14 +109,42 @@ class TransaksiController extends Controller
     }
     public function dashboard(Request $request)
 {
-    $nama_sales = $request->user()->name;
-    $transaksi = Transaksi::where('nama_sales', $nama_sales)->get();
-    $merchandise_id = $request->input('merchandise_id');
-    $merchandise = Merchandise::with(['produk:id,produk_nama,produk_harga,produk_diskon,produk_harga_akhir'])
-        ->find($merchandise_id);
-    return view('rekap_penjualan', compact('transaksi', 'merchandise'));
+    if ($request->user() && $request->user()->role == 'sales') {
+        $nama_sales = $request->user()->name;
+        $transaksi = Transaksi::with('produk')
+            ->where('nama_sales', $nama_sales)
+            ->get();
+        $totalPenjualan = $transaksi->sum(function ($item) {
+            return $item->produk ? $item->produk->produk_harga_akhir : 0;
+        });
+        $totalInsentif = $transaksi->sum(function ($item) {
+            return $item->produk ? $item->produk->produk_insentif : 0;
+        });
+        $transaksi = Transaksi::with('produk')->get();
+        $groupedTransaksi = $transaksi->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
+        });
+        $totalsPerDate = $groupedTransaksi->map(function ($items) {
+            $totalPenjualan = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_harga_akhir : 0;
+            });
+            $totalInsentif = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_insentif : 0;
+            });
+
+            return [
+                'totalPenjualan' => $totalPenjualan,
+                'totalInsentif' => $totalInsentif,
+            ];
+        });
+
+        $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
+        $totalInsentif = $totalsPerDate->sum('totalInsentif');
+
+        return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+    }
+    return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
 }
 
+
 }
-
-
