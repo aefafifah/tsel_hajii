@@ -7,94 +7,95 @@
         <title>Tambah Sales</title>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f0f2f5;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #43e97b, #2575FC);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+.container {
+    width: 100%;
+    max-width: 1090px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+    box-sizing: border-box;
+}
 
-            .container {
-                width: 100%;
-                max-width: 450px;
-                background: #ffffff;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-                animation: fadeIn 0.5s ease-in-out;
-                box-sizing: border-box;
-            }
+.container h2 {
+    margin-bottom: 20px;
+    color: #4a4a4a;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
 
-            .container h2 {
-                margin-bottom: 20px;
-                color: #4a4a4a;
-                text-align: center;
-                font-size: 24px;
-                font-weight: bold;
-            }
+.form-group {
+    margin-bottom: 20px;
+}
 
-            .form-group {
-                margin-bottom: 20px;
-            }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-weight: 600;
+}
 
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #666;
-                font-weight: 600;
-            }
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
 
-            .form-group input, .form-group select {
-                width: 100%;
-                padding: 12px 15px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                color: #333;
-                background-color: #f9f9f9;
-                transition: all 0.3s ease;
-                box-sizing: border-box;
-            }
+    .form-group input:focus, .form-group select:focus {
+    border-color: #2575FC;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
+}
+            
 
-            .form-group input:focus, .form-group select:focus {
-                border-color: #007bff;
-                background-color: #fff;
-                outline: none;
-                box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
-            }
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #43e97b, #2575FC);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+}
 
-            .btn {
-                width: 100%;
-                padding: 12px;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-                box-sizing: border-box;
-            }
+.btn:hover {
+    background: linear-gradient(45deg, #36c271, #1e66d9);
+}
 
-            .btn:hover {
-                background-color: #0056b3;
-            }
+.error {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
 
-            .error {
-                color: #ff4d4d;
-                font-size: 14px;
-                margin-top: 6px;
-                margin-bottom: 10px;
-            }
-
-            @keyframes fadeIn {
-                0% { opacity: 0; }
-                100% { opacity: 1; }
-            }
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
         </style>
     </head>
     <body>
