@@ -47,11 +47,18 @@ class TransaksiController extends Controller
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
             'nama_sales' => $request->nama_sales
-
         ]);
 
         try {
-            // Create new transaction
+            if ($selectedProduk->produk_stok <= 0) {
+                throw new \Exception('Stok produk habis');
+            }
+            if ($selectedMerchandise->merch_stok <= 0) {
+                throw new \Exception('Stok merchandise habis');
+            }
+            \DB::beginTransaction();
+            $selectedProduk->decrement('produk_stok', 1);
+            $selectedMerchandise->decrement('merch_stok', 1);
             Transaksi::create([
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
@@ -63,15 +70,15 @@ class TransaksiController extends Controller
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
             ]);
-
+            \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
         } catch (\Exception $e) {
+            \DB::rollBack();
             return redirect()->back()
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
         }
     }
-
     public function index()
     {
         $transaksi = Transaksi::all();
@@ -86,11 +93,11 @@ class TransaksiController extends Controller
 
         $totalInsentif = 0;
 
-            foreach ($transaksi as $item) {
-                if ($item->produk) {
-                    $totalInsentif += $item->produk->produk_insentif;
-                }
+        foreach ($transaksi as $item) {
+            if ($item->produk) {
+                $totalInsentif += $item->produk->produk_insentif;
             }
+        }
 
         return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif'));
     }
@@ -108,43 +115,43 @@ class TransaksiController extends Controller
 
     }
     public function dashboard(Request $request)
-{
-    if ($request->user() && $request->user()->role == 'sales') {
-        $nama_sales = $request->user()->name;
-        $transaksi = Transaksi::with('produk')
-            ->where('nama_sales', $nama_sales)
-            ->get();
-        $totalPenjualan = $transaksi->sum(function ($item) {
-            return $item->produk ? $item->produk->produk_harga_akhir : 0;
-        });
-        $totalInsentif = $transaksi->sum(function ($item) {
-            return $item->produk ? $item->produk->produk_insentif : 0;
-        });
-        $transaksi = Transaksi::with('produk')->get();
-        $groupedTransaksi = $transaksi->groupBy(function ($item) {
-            return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
-        });
-        $totalsPerDate = $groupedTransaksi->map(function ($items) {
-            $totalPenjualan = $items->sum(function ($item) {
+    {
+        if ($request->user() && $request->user()->role == 'sales') {
+            $nama_sales = $request->user()->name;
+            $transaksi = Transaksi::with('produk')
+                ->where('nama_sales', $nama_sales)
+                ->get();
+            $totalPenjualan = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_harga_akhir : 0;
             });
-            $totalInsentif = $items->sum(function ($item) {
+            $totalInsentif = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_insentif : 0;
             });
+            $transaksi = Transaksi::with('produk')->get();
+            $groupedTransaksi = $transaksi->groupBy(function ($item) {
+                return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
+            });
+            $totalsPerDate = $groupedTransaksi->map(function ($items) {
+                $totalPenjualan = $items->sum(function ($item) {
+                    return $item->produk ? $item->produk->produk_harga_akhir : 0;
+                });
+                $totalInsentif = $items->sum(function ($item) {
+                    return $item->produk ? $item->produk->produk_insentif : 0;
+                });
 
-            return [
-                'totalPenjualan' => $totalPenjualan,
-                'totalInsentif' => $totalInsentif,
-            ];
-        });
+                return [
+                    'totalPenjualan' => $totalPenjualan,
+                    'totalInsentif' => $totalInsentif,
+                ];
+            });
 
-        $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
-        $totalInsentif = $totalsPerDate->sum('totalInsentif');
+            $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
+            $totalInsentif = $totalsPerDate->sum('totalInsentif');
 
-        return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+            return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+        }
+        return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
     }
-    return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
-}
 
 
 }

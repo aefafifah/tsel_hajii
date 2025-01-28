@@ -190,7 +190,7 @@
 
                 <div class="form-group">
                     <label>Nomor Telepon:</label>
-                    <input type="text" name="nomor_telepon" placeholder="Masukkan nomor telepon"
+                    <input type="text" name="nomor_telepon" placeholder="Masukkan nomor telepon"value = "{{ Auth::user()->phone }}"
                         oninput="restrictPhoneInput(this)" required>
                     <small id="error-message-phone" style="color: red; display: none;">Harap masukkan hanya
                         angka</small>
@@ -205,7 +205,8 @@
 
                 <div class="form-group">
                     <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
-                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
+                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control"
+                        value="<?php echo date('Y-m-d'); ?>" readonly required>
                 </div>
 
                 <div class="form-group">
@@ -244,7 +245,8 @@
 
                 <div class="form-group">
                     <label>Tanggal Transaksi:</label>
-                    <input type="date" name="tanggal_transaksi" id="tanggal_transaksi">
+                    <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
+                        value="<?php echo date('Y-m-d'); ?>" readonly required>
                 </div>
 
                 <div class="form-group">
@@ -331,8 +333,55 @@
                     }
                 });
             }
+
+            function OkeForm() {
+                const inputs = document.querySelectorAll("input[required]");
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.style.borderColor = "red";
+                    } else {
+                        input.style.borderColor = "";
+                    }
+                });
+
+                if (isValid) {
+                    const selectedProduk = document.querySelector('input[name="produk"]:checked');
+                    if (!selectedProduk) {
+                        alert("Pilih produk terlebih dahulu!");
+                        return false;
+                    }
+                    fetch('/produk/update-stock', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                produk_id: selectedProduk.value
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Transaksi Sukses! Transaksi telah disimpan");
+                                document.getElementById("form-transaksi").reset();
+                            } else {
+                                alert("Error: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            alert("Error processing transaction: " + error);
+                        });
+                } else {
+                    alert("Lengkapi kolom!");
+                }
+
+                return false;
+            }
         </script>
     </body>
-
     </html>
 </x-sales.saleslayouts>

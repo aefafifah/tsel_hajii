@@ -6,7 +6,6 @@ use App\Models\RoleUsers;
 use App\Models\Produk;
 use App\Models\Merchandise;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -19,6 +18,7 @@ class SalesController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'pin' => 'required|digits_between:4,6',
             'role' => 'required|string',
+            'phone'=> 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -27,26 +27,23 @@ class SalesController extends Controller
 
 
         $photoPath = $request->file('photo')->store('sales_photos', 'public');
-
-
         RoleUsers::create([
             'name' => $request->name,
             'email' => $request->email,
             'photo' => $photoPath,
             'pin' => $request->pin,
             'role' => $request->role,
+            'phone'=> $request->phone,
         ]);
         return redirect()->route('add_sales')->with('success', 'Sales berhasil ditambahkan!');
 
     }
-
     public function showChecklist()
     {
         $sales = RoleUsers::where('role', operator: 'sales')->get();
 
         return view('supvis.sales_allow', compact('sales'));
     }
-
     public function updateIsSetoran(Request $request, $id)
     {
         $salesperson = RoleUsers::findOrFail($id);
@@ -60,7 +57,6 @@ class SalesController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Invalid role']);
     }
-
     public function transaksiPage(Request $request)
     {
         $user = auth()->user();
@@ -76,11 +72,5 @@ class SalesController extends Controller
         });
         return view('sales.transaksi', compact('produks', 'merchandises'));
     }
-
-
-
-
-
-
 }
 
