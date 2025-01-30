@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('produks', function (Blueprint $table) {
+            $table->softDeletes();
+
             $table->id();
             $table->string('produk_nama');
             $table->integer('produk_harga');
@@ -30,6 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        $table->dropSoftDeletes();
         Schema::dropIfExists('produks');
     }
 };
