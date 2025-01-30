@@ -64,6 +64,8 @@ Route::middleware(['supervisor'])->group(function () {
         Route::get('/{produk}/edit', [ProdukController::class, 'edit'])->name('edit');
         Route::put('/{produk}', [ProdukController::class, 'update'])->name('update');
         Route::delete('/{produk}', [ProdukController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/restore', [ProdukController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force-delete', [ProdukController::class, 'forceDelete'])->name('force-delete');
     });
 
     // Rute Merchandise

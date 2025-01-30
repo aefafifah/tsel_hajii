@@ -11,7 +11,7 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        $produks = Produk::with('merchandises')->get();
+        $produks = Produk::with('merchandises')->withTrashed()->get();
         return view('produk.index', compact('produks'));
     }
 
@@ -156,4 +156,22 @@ class ProdukController extends Controller
         $produk->delete();
         return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
+
+    public function restore($id)
+    {
+        $produk = Produk::withTrashed()->findOrFail($id);
+        $produk->restore();
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil direstore');
+    }
+
+    public function forceDelete($id)
+    {
+        $produk = Produk::withTrashed()->findOrFail($id);
+        $produk->forceDelete();
+        
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus permanen');
+    }
+
+    
 }
