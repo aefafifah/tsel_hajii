@@ -1,5 +1,6 @@
 <x-supvis.supvislayouts>
-    
+    <div class="container mt-5">
+    <h2 class="mb-4" style="text-align: center;">Daftar Produk</h2>
 
     <a href="{{ route('produk.create') }}" class="btn btn-success mb-3" style="background: linear-gradient(to right, #28a745, #2575FC); color: #fff; border: none;">Tambah Produk</a>
 
@@ -83,12 +84,6 @@ th, td {
     font-weight: bold;
 }
 
-/* .insentif {
-    background-color: #4CAF50;
-    color: white;
-    font-weight: bold;
-} */
-
 thead tr {
     background: linear-gradient(135deg, #2575FC, #43e97b);
     color: white;
@@ -158,7 +153,7 @@ tr:hover {
                 </tr>
             </thead>
             <tbody>
-                @foreach ($produks->whereNull('deleted_at') as $produk)
+                @foreach ($produks as $produk)
                     <tr>
                     <td data-label="No">{{ $loop->iteration }}</td>
                     <td data-label="Nama Produk">{{ $produk->produk_nama }}</td>
@@ -186,69 +181,10 @@ tr:hover {
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
-                            
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-
-        {{-- Display Deleted Products --}}
-        @if(Auth::user() && Auth::user()->is_superuser)
-
-        <h2 class="mb-4" style="text-align: center;">Produk Dihapus</h2>
-
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama Produk</th>
-                    <th>Harga</th>
-                    <th>Diskon</th>
-                    <th>Stok</th>
-                    <th>Merchandise</th>
-                    <th>Tanggal Dihapus</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($produks->whereNotNull('deleted_at') as $produk)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $produk->produk_nama }}</td>
-                        <td>Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
-                        <td>{{ $produk->produk_stok }}</td>
-                        <td>
-                            @if ($produk->merchandises->isNotEmpty())
-                                <ul>
-                                    @foreach ($produk->merchandises as $merchandise)
-                                        <li>{{ $merchandise->merch_nama }}</li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                Tidak ada merchandise
-                            @endif
-                        </td>
-                        <td>{{ $produk->deleted_at->format('d M Y H:i') }}</td>
-                        <td>
-                            <form action="{{ route('produk.restore', $produk->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                            </form>
-                            <form action="{{ route('produk.force-delete', $produk->id) }}" method="POST" class="d-inline"
-                                onsubmit="return confirm('Yakin ingin menghapus permanen produk ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus Permanen</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @endif
-
-
     </div>
 </x-supvis.supvislayouts>
