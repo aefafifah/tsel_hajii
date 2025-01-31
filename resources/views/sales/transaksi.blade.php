@@ -176,7 +176,7 @@
             <form action="{{ route('sales/transaksi/submit') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    @php $id_transaksi = str()->random(); @endphp
+                    @php $id_transaksi = uniqid(); @endphp
                     <label>No: {{ $id_transaksi }} </label>
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="{{ $id_transaksi }}">
                 </div>
