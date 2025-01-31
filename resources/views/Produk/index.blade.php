@@ -212,14 +212,15 @@
             <tbody>
                 @foreach ($produks->whereNotNull('deleted_at') as $produk)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $produk->produk_nama }}</td>
-                        <td>Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
-                        <td>{{ $produk->produk_stok }}</td>
-                        <td>
+                    <td data-label="No">{{ $loop->iteration }}</td>
+                    <td data-label="Nama Produk">{{ $produk->produk_nama }}</td>
+                    <td data-label="Harga">Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
+                    <td data-label="Diskon">Rp{{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
+                    <td data-label="Stok">{{ $produk->produk_stok }}</td>
+                    
+                        <td data-label="Merchandise">
                             @if ($produk->merchandises->isNotEmpty())
-                                <ul>
+                                <ul >
                                     @foreach ($produk->merchandises as $merchandise)
                                         <li>{{ $merchandise->merch_nama }}</li>
                                     @endforeach
@@ -228,7 +229,7 @@
                                 Tidak ada merchandise
                             @endif
                         </td>
-                        <td>{{ $produk->deleted_at->format('d M Y H:i') }}</td>
+                        <td data-label="Deleted At">{{ $produk->deleted_at->format('d M Y H:i') }}</td>
                         <td>
                             <form action="{{ route('produk.restore', $produk->id) }}" method="POST" class="d-inline">
                                 @csrf
