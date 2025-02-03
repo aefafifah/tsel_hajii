@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <td class="label">No. Tlp Pelanggan</td>
-                    <td>{{ $formData['nomor_telepon'] }}</td>
+                    <td>{{ $formData['nomor_injeksi'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">Aktivasi Tanggal</td>
@@ -128,7 +128,7 @@
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
                     <td>
-                        {{ $formData['produk_nama'] }}<br>
+                        {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s> <br> 
                         <span
                             style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
                             Rp {{ number_format($formData['produk_harga_akhir'], 0, ',', '.') }},-
