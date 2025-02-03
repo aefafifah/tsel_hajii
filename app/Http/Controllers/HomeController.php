@@ -3,26 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi;
+use App\Models\BudgetInsentif;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+        public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+        public function index()
     {
-        return view('home');
+        $transaksi = Transaksi::all();
+        $totalInsentif = 0;
+        foreach ($transaksi as $item) {
+            if ($item->produk && $item->produk->produk_insentif !== null) {
+                $totalInsentif += $item->produk->produk_insentif;
+            }
+        }
+        $budgetInsentif = BudgetInsentif::first();
+        $totalBudget = $budgetInsentif ? $budgetInsentif->total_insentif : 0;
+        $sisaBudget = $totalBudget - $totalInsentif;
+        return view('supvis.home', compact('totalInsentif', 'sisaBudget'));
     }
 }

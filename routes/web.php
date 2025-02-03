@@ -9,10 +9,9 @@ use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SupvisController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\BudgetInsentifController;
+use App\Http\Controllers\HomeController;
 
-
-use App\Models\Produk;
-use App\Models\Merchandise;
 
 
 
@@ -35,10 +34,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Grup rute untuk role supervisor
 Route::middleware(['supervisor'])->group(function () {
     // Dashboard Supervisor
-    Route::get('/supvis/home', function () {
-        return view('supvis.home');
-    })->name('supvis.home');
-
+    Route::get('/supvis/home', [HomeController::class, 'index'])->name('supvis.home');
      // Riwayat Transaksi
      Route::get('/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
      ->name('supvis.transactions.index');
@@ -95,6 +91,11 @@ Route::middleware(['supervisor'])->group(function () {
     Route::get('/sales-checklist', [SalesController::class, 'showChecklist'])->name('sales.checklist');
     Route::post('/update-is-setoran/{id}',[SalesController::class,'updateIsSetoran'])-> name ('is_setoran');
 
+    Route::prefix('supvis')->name('supvis.')->group(function () {
+        // Budget Insentif
+        Route::get('/budget-insentif', [BudgetInsentifController::class, 'index'])->name('budget_insentif.index');
+        Route::post('/budget-insentif/update', [BudgetInsentifController::class, 'update'])->name('budget_insentif.update');
+    });
 });
 
 

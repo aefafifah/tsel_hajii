@@ -115,12 +115,12 @@ class TransaksiController extends Controller
     {
         $formData = $request->session()->get('form_data', []);
         $pdf = Pdf::loadView('sales.kwitansi', ['formData' => $formData]);
-        
+
         // Clear session, supaya ga kecolong
         $request->session()->forget('form_data');
-        
+
         // Return based on action, sekarang blm ada action nya
-        return $action === 'download' 
+        return $action === 'download'
             ? $pdf->download("{$formData['id_transaksi']}.pdf")
             : $pdf->stream("{$formData['id_transaksi']}.pdf");
     }
@@ -163,7 +163,7 @@ class TransaksiController extends Controller
 
             return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
         }
-        return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
+        return redirect()->route('login')->withErrors(provider: ['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
     }
 
 

@@ -9,7 +9,7 @@
                 SuperVisor
             </li>
 
-            <x-nav-link href="/supvis/home" :active="request()->is('supvis/home')">Home</x-nav-link>
+            <x-nav-link href="{{ route('supvis.home') }}" :active="request()->is('supvis/home') || request()->is('supvis/budget-insentif')">Home</x-nav-link>
             <x-nav-link href="/produk" :active="request()->is('produk/*', 'produk')">Produk</x-nav-link>
             <x-nav-link href="/merch" :active="request()->is('merch', 'merch/*')">Merch</x-nav-link>
             <x-nav-link href="/tambah-sales" :active="request()->is('tambah-sales')">Add Sales</x-nav-link>
