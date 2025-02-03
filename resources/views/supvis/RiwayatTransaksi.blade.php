@@ -197,6 +197,7 @@ tr:hover {
         <select id="filter-transaksi">
             <option value="all">Riwayat</option>
             <option value="1">ID Transaksi</option>
+            <option value="7">Nomor telepon</option>
             <option value="7">Nama Pelanggan</option>
             <option value="30">Nama Transaksi</option>
             <option value="365-sales">Nama Sales</option>
@@ -213,10 +214,7 @@ tr:hover {
 
 
 
-
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-
         <div class="container d-flex justify-content-center align-items-center mt-3">
             <div class="row w-100">
                 <!-- Total Penjualan Card -->
