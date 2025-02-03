@@ -15,7 +15,7 @@ class SalesController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:role_users,email',
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'pin' => 'required|digits_between:4,6',
             'role' => 'required|string',
             'phone'=> 'required|numeric',
@@ -25,8 +25,11 @@ class SalesController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-
-        $photoPath = $request->file('photo')->store('sales_photos', 'public');
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('sales_photos', 'public');
+        }
+        
         RoleUsers::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -38,6 +41,7 @@ class SalesController extends Controller
         return redirect()->route('add_sales')->with('success', 'Sales berhasil ditambahkan!');
 
     }
+
     public function showChecklist()
     {
         $sales = RoleUsers::where('role', operator: 'sales')->get();
