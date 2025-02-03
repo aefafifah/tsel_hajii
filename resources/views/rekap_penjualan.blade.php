@@ -6,90 +6,129 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #2575FC, #43e97b);
+    margin: 0;
+    padding: 0;
+}
 
-        .dashboard {
-            padding: 20px;
-        }
+.dashboard {
+    padding: 20px;
+}
 
+.filter-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-select, .search-input {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin: 5px;
+    width: 200px; 
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-container i {
+    position: absolute;
+    right: 20px; 
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999; 
+    cursor: pointer; 
+}
+
+.search-input {
+    padding-right: 30px; 
+}
+
+.table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: linear-gradient(135deg, #2575FC, #43e97b);
+    color: white;
+    font-weight: bold;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.total-row {
+    background: linear-gradient(135deg, #2575FC, #43e97b);
+    font-weight: bold;
+    color: white;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    display: none; 
+}
+@media (max-width: 768px) {
         .filter-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            align-items: stretch;
         }
 
         .filter-select, .search-input {
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            margin: 5px;
-            width: 200px; 
-        }
-
-        .search-container {
-            position: relative;
-        }
-
-        .search-container i {
-            position: absolute;
-            right: 20px; 
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999; 
-            cursor: pointer; 
-        }
-
-        .search-input {
-            padding-right: 30px; 
+            width: 100%;
+            margin: 10px 0;
         }
 
         .table-container {
-            overflow-x: auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
 
         table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
+            min-width: 300px; /* Mengurangi lebar minimum untuk layar kecil */
         }
 
         th, td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            font-size: 12px;
         }
 
-        th {
-            background-color: #4a90e2;
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .total-row {
-            background-color: rgb(153, 255, 153);
-            font-weight: bold;
+        .search-input {
+            font-size: 16px;
         }
 
         .no-results {
-            text-align: center;
-            padding: 20px;
-            color: #999;
-            display: none; 
+            padding: 10px;
+            font-size: 14px;
         }
+
+        .total-row {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+
     </style>
 
     <div class="dashboard">
