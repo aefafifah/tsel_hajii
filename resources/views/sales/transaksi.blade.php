@@ -5,166 +5,165 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Form Transaksi</title>
         <style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-}
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+            }
 
-.container {
-    max-width: 1000px;
-    margin: 30px auto;
-    background: none;
-    border-radius: 0;
-    overflow: visible;
-    box-shadow: none;
-}
+            .container {
+                max-width: 1000px;
+                margin: 30px auto;
+                background: none;
+                border-radius: 0;
+                overflow: visible;
+                box-shadow: none;
+            }
 
-.header {
-    text-align: right;
-    background: linear-gradient(45deg, #2575FC, #00C853);
-    color: #fff;
-    padding: 15px 25px;
-    font-size: 20px;
-}
+            .header {
+                text-align: right;
+                background: linear-gradient(45deg, #2575FC, #00C853);
+                color: #fff;
+                padding: 15px 25px;
+                font-size: 20px;
+            }
 
-.title {
-    text-align: center;
-    margin: 25px 0;
-    font-size: 23px;
-    font-weight: bold;
-    color: #333;
-}
+            .title {
+                text-align: center;
+                margin: 25px 0;
+                font-size: 23px;
+                font-weight: bold;
+                color: #333;
+            }
 
-form {
-    padding: 30px;
-}
+            form {
+                padding: 30px;
+            }
 
-.form-group {
-    margin-bottom: 25px;
-}
+            .form-group {
+                margin-bottom: 25px;
+            }
 
-.form-group label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 10px;
-    color: #333;
-}
+            .form-group label {
+                display: block;
+                font-size: 14px;
+                margin-bottom: 10px;
+                color: #333;
+            }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    font-size: 13px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                padding: 12px;
+                font-size: 13px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                box-sizing: border-box;
+            }
 
-.checkbox-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    padding: 10px;
-}
+            .checkbox-group {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 15px;
+                padding: 10px;
+            }
 
-.checkbox-box {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fefefe;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: 0.3s;
-}
+            .checkbox-box {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                background-color: #fefefe;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                transition: 0.3s;
+            }
 
-.checkbox-box:hover {
-    border-color: #2575FC;
-    background: linear-gradient(45deg, #2575FC, #00C853);
-    box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
-}
+            .checkbox-box:hover {
+                border-color: #2575FC;
+                background: linear-gradient(45deg, #2575FC, #00C853);
+                box-shadow: 0 4px 8px rgba(0, 86, 179, 0.2);
+            }
 
-.checkbox-box input {
-    display: none;
-}
+            .checkbox-box input {
+                display: none;
+            }
 
-.checkbox-box label {
-    display: flex;
-    align-items: center;
-    font-size: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #333;
-    flex-grow: 1;
-}
+            .checkbox-box label {
+                display: flex;
+                align-items: center;
+                font-size: 8px;
+                font-weight: bold;
+                cursor: pointer;
+                color: #333;
+                flex-grow: 1;
+            }
 
-.checkbox-icon {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    position: relative;
-    transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-}
+            .checkbox-icon {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                position: relative;
+                transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            }
 
-input:checked+label .checkbox-icon {
-    background: linear-gradient(45deg, #2575FC, #00C853);
-    border-color: #2575FC;
-    transform: scale(1.1);
-}
+            input:checked+label .checkbox-icon {
+                background: linear-gradient(45deg, #2575FC, #00C853);
+                border-color: #2575FC;
+                transform: scale(1.1);
+            }
 
-input:checked+label .checkbox-icon::after {
-    content: '✔';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-}
+            input:checked+label .checkbox-icon::after {
+                content: '✔';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #fff;
+                font-size: 10px;
+                font-weight: bold;
+            }
 
 
-button[type="submit"] {
-    padding: 10px 20px;
-    margin-right: 10px;
-    font-size: 16px;
-    border: none;
-    background-color: #2575FC;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
+            button[type="submit"] {
+                padding: 10px 20px;
+                margin-right: 10px;
+                font-size: 16px;
+                border: none;
+                background-color: #2575FC;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-button[type="button"] {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #00C853;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
+            button[type="button"] {
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                background-color: #00C853;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
-}
+            button[type="submit"]:hover {
+                background-color: #0056b3;
+            }
 
-button[type="button"]:hover {
-    background-color: #009624;
-}
+            button[type="button"]:hover {
+                background-color: #009624;
+            }
 
-.checkbox-box.highlight {
-    background-color: #f0f9ff;
-    border: 2px solid #00C853;
-}
-
+            .checkbox-box.highlight {
+                background-color: #f0f9ff;
+                border: 2px solid #00C853;
+            }
         </style>
     </head>
 
@@ -192,7 +191,8 @@ button[type="button"]:hover {
 
                 <div class="form-group">
                     <label>Nomor Telepon:</label>
-                    <input type="text" name="nomor_telepon" placeholder="Masukkan nomor telepon"value = "{{ Auth::user()->phone }}"
+                    <input type="text" name="nomor_telepon"
+                        placeholder="Masukkan nomor telepon"value="{{ Auth::user()->phone }}"
                         oninput="restrictPhoneInput(this)" required>
                     <small id="error-message-phone" style="color: red; display: none;">Harap masukkan hanya
                         angka</small>
@@ -204,13 +204,17 @@ button[type="button"]:hover {
                         oninput="restrictNameInput(this)" required>
                     <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf</small>
                 </div>
-
+                <div class="form-group">
+                    <label>Nomor Injeksi:</label>
+                    <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
+                        oninput="validateInjectionNumber(this)" required>
+                    <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
+                        maksimal 12 digit</small>
+                </div>
                 <div class="form-group">
                     <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
-                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control"
-                        value="<?php echo date('Y-m-d'); ?>" readonly required>
+                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
                 </div>
-
                 <div class="form-group">
                     <label>Pilih Paket Internet:</label>
                     <div class="checkbox-group">
@@ -279,6 +283,12 @@ button[type="button"]:hover {
         </div>
 
         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
+                const dateInput = document.getElementById("aktivasi-tanggal");
+                dateInput.setAttribute("min", today); // Set batas minimal tanggal ke hari ini
+            });
+
             function restrictNameInput(input) {
                 const errorMessage = document.getElementById('error-message-name');
                 const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, '');
@@ -321,7 +331,6 @@ button[type="button"]:hover {
 
             function filterMerchandises(selectedProdukId) {
                 const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
-
                 merchandises.forEach(merchandise => {
                     const produkIds = JSON.parse(merchandise.getAttribute('data-produk-ids'));
                     const checkbox = merchandise.querySelector('input');
@@ -383,7 +392,15 @@ button[type="button"]:hover {
 
                 return false;
             }
+
+            function validateInjectionNumber(input) {
+                const errorMessage = document.getElementById('error-message-injeksi');
+                let value = input.value.replace(/\D/g, '');
+                if (value.length > 12) {
+                    value = value.slice(0, 12);
+                }
+                input.value = value;
+                errorMessage.style.display = value.length === 0 ? 'none' : 'block';
+            }
         </script>
-    </body>
-    </html>
 </x-sales.saleslayouts>
