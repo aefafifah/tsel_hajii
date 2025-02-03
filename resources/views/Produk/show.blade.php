@@ -22,7 +22,11 @@
             @if ($produk->merchandises->isEmpty())
                 <p>Tidak ada merchandise terkait.</p>
             @else
-                <pre>{{ json_encode($produk->merchandises->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+            <ul class="list-group">
+                @foreach ($produk->merchandises as $merchandise)
+                    <li class="list-group-item">{{ $merchandise->merch_nama }}</li>
+                @endforeach
+            </ul>
             @endif
         </div>
 

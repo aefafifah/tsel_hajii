@@ -72,7 +72,7 @@
     }
 
     .penjualan {
-        background: linear-gradient(135deg, #2575FC, #43e97b); /* Warna gradasi hijau-biru */
+        background: linear-gradient(135deg, #2575FC, #43e97b); 
         color: white;
         font-weight: bold;
     }
@@ -130,7 +130,7 @@
         text-align: left;
         padding: 5px;
         }
-    }  
+    }
 </style>
 
     <div class="container mt-5">
@@ -150,6 +150,7 @@
                     <th>Nama Produk</th>
                     <th>Harga</th>
                     <th>Diskon</th>
+                    <th>Insentif</th>
                     <th>Stok</th>
                     <th>Merchandise</th>
                     <th>Aksi</th>
@@ -162,8 +163,9 @@
                     <td data-label="Nama Produk">{{ $produk->produk_nama }}</td>
                     <td data-label="Harga">Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
                     <td data-label="Diskon">Rp{{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
+                    <td data-label="Insentif">Rp{{ number_format($produk->produk_insentif ?? 0, 0, ',', '.') }}</td>
                     <td data-label="Stok">{{ $produk->produk_stok }}</td>
-                    
+
                         <td data-label="Merchandise">
                             @if ($produk->merchandises->isNotEmpty())
                                 <ul >
@@ -217,7 +219,7 @@
                     <td data-label="Harga">Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
                     <td data-label="Diskon">Rp{{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
                     <td data-label="Stok">{{ $produk->produk_stok }}</td>
-                    
+
                         <td data-label="Merchandise">
                             @if ($produk->merchandises->isNotEmpty())
                                 <ul >

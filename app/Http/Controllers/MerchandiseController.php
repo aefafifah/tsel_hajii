@@ -40,17 +40,26 @@ class MerchandiseController extends Controller
         return view('merch.edit', compact('merchandise'));
     }
 
-    public function update(Request $request, Merchandise $merchandise)
-    {
-        $request->validate([
-            'merch_nama' => 'required|string|max:255',
-            'merch_detail' => 'required|string',
-            'merch_stok' => 'required|integer|min:0',
-        ]);
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'merch_nama' => 'required|string|max:255',
+        'merch_detail' => 'required|string',
+        'merch_stok' => 'required|integer',
+        'stok_option' => 'required|in:ganti,tambah',
+    ]);
 
-        $merchandise->update($request->all());
-        return redirect()->route('merch.index')->with('success', 'Merchandise berhasil diperbarui.');
+    $merchandise = Merchandise::findOrFail($id);
+    $merchandise->merch_nama = $request->merch_nama;
+    $merchandise->merch_detail = $request->merch_detail;
+    if ($request->stok_option === 'ganti') {
+        $merchandise->merch_stok = $request->merch_stok;
+    } elseif ($request->stok_option === 'tambah') {
+        $merchandise->merch_stok += $request->merch_stok;
     }
+    $merchandise->save();
+    return redirect()->route('merch.index')->with('success', 'Merchandise berhasil diperbarui.');
+}
 
     public function destroy(Merchandise $merchandise)
     {
