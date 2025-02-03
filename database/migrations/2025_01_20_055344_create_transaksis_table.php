@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->string('id_transaksi');
-            $table->string('nama_pelanggan')->nullable();            
+            $table->string('nama_pelanggan')->nullable();
             $table->string('nomor_telepon')->nullable();
             $table->date('aktivasi_tanggal')->nullable();
             $table->date('tanggal_transaksi')->nullable();
-            $table->string('nama_sales')->nullable();   
-            $table->string('jenis_paket')->nullable();              
-            $table->string('merchandise')->nullable();              
-            $table->string('metode_pembayaran')->nullable();  
+            $table->string('nama_sales')->nullable();
+            $table->string('jenis_paket')->nullable();
+            $table->string('merchandise')->nullable();
+            $table->string('metode_pembayaran')->nullable();
+            $table->string('nomor_injeksi')->nullable();
         });
     }
 

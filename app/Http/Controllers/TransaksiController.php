@@ -23,7 +23,8 @@ class TransaksiController extends Controller
             'tanggal_transaksi' => 'nullable|date',
             'produk' => 'required|exists:produks,id',
             'merchandise' => 'required|exists:merchandises,id',
-            'nama_sales' => 'required|string'
+            'nama_sales' => 'required|string',
+            'nomor_injeksi' => 'required|string|max:12'
         ]);
 
         $selectedProdukId = $request->input('produk');
@@ -46,7 +47,8 @@ class TransaksiController extends Controller
             'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'nama_sales' => $request->nama_sales
+            'nama_sales' => $request->nama_sales,
+            'nomor_injeksi' => $request->nomor_injeksi
         ]);
 
         try {
@@ -69,6 +71,7 @@ class TransaksiController extends Controller
                 'jenis_paket' => $selectedProduk->id,
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
+                'nomor_injeksi' => $request->nomor_injeksi,
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
@@ -118,9 +121,11 @@ class TransaksiController extends Controller
     {
         if ($request->user() && $request->user()->role == 'sales') {
             $nama_sales = $request->user()->name;
-            $transaksi = Transaksi::with('produk')
-                ->where('nama_sales', $nama_sales)
-                ->get();
+            $transaksi = Transaksi::with('produk');
+            if (!empty($nama_sales)) {
+                $transaksi = $transaksi->where('nama_sales', $nama_sales);
+            }
+            $transaksi = $transaksi->get();
             $totalPenjualan = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_harga_akhir : 0;
             });
