@@ -44,6 +44,7 @@ class TransaksiController extends Controller
             'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
             'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
             'produk_nama' => $selectedProduk->produk_nama,
+            'produk_harga' => $selectedProduk->produk_harga,
             'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
@@ -109,14 +110,21 @@ class TransaksiController extends Controller
         $produks = Produk::with('merchandises')->get();
         return view('sales.transaksi', compact('produks'));
     }
-    public function kwitansi(Request $request)
+
+    public function kwitansi(Request $request, $action = 'stream')
     {
         $formData = $request->session()->get('form_data', []);
         $pdf = Pdf::loadView('sales.kwitansi', ['formData' => $formData]);
-        return $pdf->download("trial.pdf");
+        
+        // Clear session, supaya ga kecolong
         $request->session()->forget('form_data');
-
+        
+        // Return based on action, sekarang blm ada action nya
+        return $action === 'download' 
+            ? $pdf->download("{$formData['id_transaksi']}.pdf")
+            : $pdf->stream("{$formData['id_transaksi']}.pdf");
     }
+
     public function dashboard(Request $request)
     {
         if ($request->user() && $request->user()->role == 'sales') {

@@ -174,28 +174,22 @@
                     style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
             </div>
             <div class="title">TRANSAKSI PEMBAYARAN</div>
-            <form action="{{ route('sales/transaksi/submit') }}" method="POST">
+            <form action="{{ route('sales/transaksi/submit') }}" method="POST" formtarget="_blank" target="_blank">
                 @csrf
                 <div class="form-group">
-                    @php $id_transaksi = uniqid(); @endphp
+                    @php $id_transaksi = 'T' . date('dmy') . substr(uniqid(), -4); @endphp
                     <label>No: {{ $id_transaksi }} </label>
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="{{ $id_transaksi }}">
                 </div>
 
                 <div class="form-group">
-                    <label>Nama Sales:</label>
-                    <input type="text" name="nama_sales" id="nama_sales" value="{{ Auth::user()->name }}"
-                        placeholder="Masukkan nama Sales" oninput="restrictNameInput(this)" required>
-                    <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf</small>
+                    <label>Nama Sales: {{ Auth::user()->name }}</label>
+                    <input type="hidden" name="nama_sales" id="nama_sales" value="{{ Auth::user()->name }}">
                 </div>
 
                 <div class="form-group">
-                    <label>Nomor Telepon:</label>
-                    <input type="text" name="nomor_telepon"
-                        placeholder="Masukkan nomor telepon"value="{{ Auth::user()->phone }}"
-                        oninput="restrictPhoneInput(this)" required>
-                    <small id="error-message-phone" style="color: red; display: none;">Harap masukkan hanya
-                        angka</small>
+                    <label>Nomor Telepon: {{ Auth::user()->phone }}</label>
+                    <input type="hidden" name="nomor_telepon" id="nomor_telepon" value="{{ Auth::user()->phone }}">
                 </div>
 
                 <div class="form-group">

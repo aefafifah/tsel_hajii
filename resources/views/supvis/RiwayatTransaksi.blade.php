@@ -23,41 +23,61 @@ h1 {
     text-align: center;
 }
 
+.dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Container utama */
 .search-container {
     display: flex;
     justify-content: center;
-    margin: 10px auto;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    margin: 30px auto;
+}
+
+.filter-box {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.filter-box select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color: #fff;
+    cursor: pointer;
 }
 
 .search-box {
     display: flex;
     align-items: center;
-    width: 140%;
-    max-width: 800px;
-    border: 1px solid #ccc;
-    border-radius: 80px;
-    padding: 7px 15px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.search-box i {
-    color: #aaa;
-    margin-right: 10px;
-    font-size: 16px;
+    position: relative;
+    flex: 2;
 }
 
 .search-box input {
-    border: none;
-    outline: none;
     width: 100%;
-    font-size: 14px;
-    color: #333;
+    padding: 5px 30px 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
-.search-box input::placeholder {
-    color: #aaa;
+.search-box i {
+    position: absolute;
+    right: 8px;
+    color: #888;
+    font-size: 14px;
 }
+
+
 
 table {
     width: 100%;
@@ -83,11 +103,7 @@ th, td {
     font-weight: bold;
 }
 
-/* .insentif {
-    background-color: #4CAF50;
-    color: white;
-    font-weight: bold;
-} */
+
 
 thead tr {
     background: linear-gradient(135deg, #2575FC, #43e97b);
@@ -142,6 +158,27 @@ tr:hover {
     text-align: left;
     padding: 5px;
 }
+@media (max-width: 768px) {
+    .search-container {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .filter-box,
+    .search-box {
+        flex: 1;
+    }
+
+    .search-box input {
+        font-size: 14px;
+        padding: 5px 20px 5px 8px;
+    }
+
+    .search-box i {
+        font-size: 16px;
+    }
+}
+
 }  
         </style>
     </head>
@@ -156,15 +193,28 @@ tr:hover {
         @endif
 
         <div class="search-container">
-            <div class="search-box">
-                <i class="fa fa-search"></i>
-                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search" />
-            </div>
-        </div>
+    <div class="filter-box">
+        <select id="filter-transaksi">
+            <option value="all">Riwayat</option>
+            <option value="1">ID Transaksi</option>
+            <option value="7">Nomor telepon</option>
+            <option value="7">Nama Pelanggan</option>
+            <option value="30">Nama Transaksi</option>
+            <option value="365-sales">Nama Sales</option>
+            <option value="365-package">Jenis Paket</option>
+            <option value="365-merchandise">Merchandise</option>
+            <option value="365-payment">Metode Pembayaran</option>
+        </select>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari...">
+        <i class="fa fa-search"></i>
+    </div>
+</div>
+
+
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-
         <div class="container d-flex justify-content-center align-items-center mt-3">
             <div class="row w-100">
                 <!-- Total Penjualan Card -->
