@@ -2,166 +2,214 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-	<title>Login</title>
-    <link href="BILLY FRONT END/css/app.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f9f9f9;
-            padding: 15px;
         }
+
+        .main-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
         .card {
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            width: 100%;
+            max-width: 400px;
         }
+
         .logo-container {
-            position: relative;
-            margin-bottom: -30px; 
-            z-index: 1; 
+            text-align: center;
+            margin-bottom: 0.5rem;
         }
+
         .logo-container img {
-            max-width: 200px;
-            position: relative;
-            top: -30px;
-            display: block;
-            margin: auto;
+            max-width: 150px;
+            height: auto;
+            margin: 0 auto;
         }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-section h1 {
+            font-size: calc(1.2rem + 0.6vw);
+            margin-bottom: 0.25rem;
+        }
+
+        .title-section p {
+            font-size: calc(0.8rem + 0.3vw);
+            margin-bottom: 0.5rem;
+        }
+
         .pin-display {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin: 20px 0;
+            gap: min(1.5vw, 8px);
+            margin: 0.5rem 0;
         }
+
         .pin-display div {
-            width: 45px;
-            height: 45px;
-            font-size: 20px;
-            text-align: center;
-            line-height: 45px;
+            width: min(40px, 10vw);
+            height: min(40px, 10vw);
+            font-size: min(18px, 5vw);
+            line-height: min(40px, 10vw);
             background-color: #eaeaea;
             border-radius: 50%;
             color: #333;
         }
+
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            justify-content: center;
-            max-width: 280px;
-            margin: auto;
+            gap: min(2vw, 10px);
+            max-width: min(280px, 90vw);
+            margin: 0.5rem auto;
         }
+
         .keypad button {
-            width: 70px;
-            height: 70px;
-            font-size: 22px;
+            width: min(60px, 20vw);
+            height: min(60px, 20vw);
+            font-size: min(20px, 6vw);
             font-weight: bold;
             color: #fff;
-            background: linear-gradient(135deg,rgb(33, 226, 62), #2575FC);
+            background: linear-gradient(135deg, rgb(33, 226, 62), #2575FC);
             border: none;
             border-radius: 50%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.1s ease;
+            padding: 0;
         }
-        .keypad button:active {
-            transform: scale(0.95);
+
+        .card-body {
+            padding: min(1rem, 3vw);
         }
+
+        .form-control {
+            height: min(45px, 12vw);
+            font-size: min(16px, 4.5vw);
+        }
+
         .btn-clear {
-            background-color: #f44336 !important;
+            background: linear-gradient(135deg, #ff4b4b, #ff0000) !important;
         }
-        @media (max-width: 576px) {
-            .pin-display div {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                line-height: 40px;
-            }
-            .keypad button {
-                width: 60px;
-                height: 60px;
-                font-size: 20px;
-            }
+
+        @media (max-height: 600px) {
             .logo-container img {
-                max-width: 200px;
-                top: -8px;
+                max-width: 100px;
+            }
+            
+            .title-section {
+                margin-bottom: 0.25rem;
+            }
+
+            .title-section h1 {
+                font-size: 1rem;
+                margin-bottom: 0.1rem;
+            }
+
+            .title-section p {
+                font-size: 0.8rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .card-body {
+                padding: 0.5rem;
+            }
+
+            .form-control {
+                height: 35px;
+                margin-bottom: 0.25rem;
             }
         }
     </style>
 </head>
 <body>
-    <main class="d-flex w-100">
-        <div class="container d-flex flex-column">
-            <div class="row vh-100 m-0">
-                <div class="col-12 mx-auto d-table h-100">
-                    <div class="d-table-cell align-middle">
-
-                        <div class="logo-container">
-                            <img src="{{ asset('admin_asset/img/photos/icon_login.png') }}" alt="Logo Login">
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div class="logo-container">
+                <img src="{{ asset('admin_asset/img/photos/icon_login.png') }}" alt="Logo Login">
+            </div>
+            <div class="title-section">
+                <h1>Masukkan Email dan PIN</h1>
+                <p>Gunakan email dan PIN untuk login.</p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form id="loginForm" action="{{ route('login') }}" method="POST">
+                        @csrf
+                        <div class="mb-2">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email Anda" required>
                         </div>
-                        <div class="text-center mt-4">
-                            <h1 class="h2">Masukkan Email dan PIN</h1>
-                            <p class="lead">Gunakan email dan PIN untuk login.</p>
-                        </div>
-                        <div class="card p-3 p-md-4">
-                            <div class="card-body">
-                                <form id="loginForm" action="{{ route('login') }}" method="POST">
-                                    @csrf
-                                    
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email:</label>
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="Email Anda" required>
-                                    </div>
-                                    
-                                    <div class="text-center">
-                                        <label for="pin" class="form-label">PIN:</label>
-                                        <div class="pin-display">
-                                            <div id="digit1">•</div>
-                                            <div id="digit2">•</div>
-                                            <div id="digit3">•</div>
-                                            <div id="digit4">•</div>
-                                            <div id="digit5">•</div>
-                                            <div id="digit6">•</div>
-                                        </div>
-                                        <input type="hidden" name="pin" id="hiddenPin">
-                                    </div>
-
-                                    <div class="keypad mt-4">
-                                        <button type="button" onclick="addDigit(1)">1</button>
-                                        <button type="button" onclick="addDigit(2)">2</button>
-                                        <button type="button" onclick="addDigit(3)">3</button>
-                                        <button type="button" onclick="addDigit(4)">4</button>
-                                        <button type="button" onclick="addDigit(5)">5</button>
-                                        <button type="button" onclick="addDigit(6)">6</button>
-                                        <button type="button" onclick="addDigit(7)">7</button>
-                                        <button type="button" onclick="addDigit(8)">8</button>
-                                        <button type="button" onclick="addDigit(9)">9</button>
-                                        <button type="button" class="btn-clear" onclick="clearPin()">C</button>
-                                        <button type="button" onclick="addDigit(0)">0</button>
-                                        <button type="submit" class="btn btn-primary">OK</button>
-                                    </div>
-                                </form>
-                                @if ($errors->any())
-                                    <div class="alert alert-danger mt-3">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
+                        
+                        <div class="text-center">
+                            <label for="pin" class="form-label">PIN:</label>
+                            <div class="pin-display">
+                                <div id="digit1">•</div>
+                                <div id="digit2">•</div>
+                                <div id="digit3">•</div>
+                                <div id="digit4">•</div>
+                                <div id="digit5">•</div>
+                                <div id="digit6">•</div>
                             </div>
+                            <input type="hidden" name="pin" id="hiddenPin">
                         </div>
-                    </div>
+
+                        <div class="keypad">
+                            <button type="button" onclick="addDigit(1)">1</button>
+                            <button type="button" onclick="addDigit(2)">2</button>
+                            <button type="button" onclick="addDigit(3)">3</button>
+                            <button type="button" onclick="addDigit(4)">4</button>
+                            <button type="button" onclick="addDigit(5)">5</button>
+                            <button type="button" onclick="addDigit(6)">6</button>
+                            <button type="button" onclick="addDigit(7)">7</button>
+                            <button type="button" onclick="addDigit(8)">8</button>
+                            <button type="button" onclick="addDigit(9)">9</button>
+                            <button type="button" class="btn-clear" onclick="clearPin()">C</button>
+                            <button type="button" onclick="addDigit(0)">0</button>
+                            <button type="submit">OK</button>
+                        </div>
+                    </form>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-2">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         let pin = "";
