@@ -233,87 +233,175 @@
             }
         }
 
-        function validateName(input) {
-            const regex = /^[a-zA-Z\s]*$/;
-            const nameError = document.getElementById('nameError');
-            if (!regex.test(input.value)) {
-                input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
-                nameError.textContent = '*Nama hanya boleh mengandung huruf dan spasi.';
+        // Form validation helper functions
+        const ValidationRules = {
+            name: {
+                validate: (value) => {
+                    if (!value) return 'Nama sales wajib diisi';
+                    if (value.length > 255) return 'Nama tidak boleh lebih dari 255 karakter';
+                    if (!/^[a-zA-Z\s]*$/.test(value)) return 'Nama hanya boleh mengandung huruf dan spasi';
+                    return null;
+                }
+            },
+            email: {
+                validate: (value) => {
+                    if (!value) return 'Email wajib diisi';
+                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Format email tidak valid';
+                    return null;
+                }
+            },
+            photo: {
+                validate: (file) => {
+                    if (!file) return null; // Photo is optional
+                    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                    const maxSize = 2048 * 1024; // 2048KB in bytes
+                    
+                    if (!validTypes.includes(file.type)) {
+                        return 'File harus berformat JPEG, PNG, atau JPG';
+                    }
+                    if (file.size > maxSize) {
+                        return 'Ukuran file tidak boleh lebih dari 2MB';
+                    }
+                    return null;
+                }
+            },
+            pin: {
+                validate: (value) => {
+                    if (!value) return 'PIN wajib diisi';
+                    if (!/^\d+$/.test(value)) return 'PIN hanya boleh berisi angka';
+                    if (value.length < 4 || value.length > 6) return 'PIN harus terdiri dari 4-6 digit';
+                    return null;
+                }
+            },
+            phone: {
+                validate: (value) => {
+                    if (!value) return 'Nomor telepon wajib diisi';
+                    if (!/^\d+$/.test(value)) return 'Nomor telepon hanya boleh berisi angka';
+                    if (value.length > 15) return 'Nomor telepon tidak boleh lebih dari 15 digit';
+                    return null;
+                }
+            },
+            role: {
+                validate: (value) => {
+                    if (!value) return 'Role wajib dipilih';
+                    const validRoles = ['Sales', 'Supervisor'];
+                    if (!validRoles.includes(value)) return 'Role tidak valid';
+                    return null;
+                }
+            }
+        };
+
+        // Real-time validation function
+        function validateField(fieldName, value) {
+            const error = ValidationRules[fieldName].validate(value);
+            const errorElement = document.getElementById(`${fieldName}Error`);
+            const inputElement = document.getElementById(fieldName);
+            
+            if (error) {
+                errorElement.textContent = error;
+                inputElement.classList.add('invalid');
+                return false;
             } else {
-                nameError.textContent = '';
+                errorElement.textContent = '';
+                inputElement.classList.remove('invalid');
+                return true;
             }
         }
 
-        function validatePin(input) {
-            const regex = /^[0-9]*$/;
-            const pinError = document.getElementById('pinError');
-            if (!regex.test(input.value)) {
-                input.value = input.value.replace(/[^0-9]/g, '');
-                pinError.textContent = '*PIN hanya boleh mengandung angka.';
-            } else {
-                pinError.textContent = '';
-            }
-        }
-
-        function validatePhone(input) {
-            input.value = input.value.replace(/\D/g, '');
-            const phoneError = document.getElementById('phoneError');
-            if (input.value.length > 15) {
-                phoneError.textContent = 'Nomor telepon tidak boleh lebih dari 15 digit.';
-            } else {
-                phoneError.textContent = '';
-            }
-        }
-
-        function showAlert(event) {
+        // Enhanced form submission handler
+        function handleSubmit(event) {
             event.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const pin = document.getElementById('pin').value;
-            const role = document.getElementById('role').value;
-
-            if (!name) {
+            
+            const form = document.getElementById('addSalesForm');
+            const formData = new FormData(form);
+            let isValid = true;
+            
+            // Validate all fields
+            for (const [fieldName, value] of formData.entries()) {
+                if (fieldName === 'photo') {
+                    const file = document.getElementById('photo').files[0];
+                    if (file && !validateField('photo', file)) {
+                        isValid = false;
+                    }
+                } else if (!validateField(fieldName, value)) {
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Nama sales wajib diisi!',
+                    title: 'Validasi Gagal',
+                    text: 'Mohon periksa kembali form isian Anda',
                 });
                 return;
             }
-            if (!email) {
+            
+            // Submit form via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errors) {
+                    // Handle server-side validation errors
+                    const errorMessages = Object.values(data.errors).flat();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validasi Gagal',
+                        text: errorMessages[0]
+                    });
+                } else {
+                    // Success
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses!',
+                        text: 'Data sales berhasil disimpan!'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                }
+            })
+            .catch(error => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'Email wajib diisi!',
+                    title: 'Error',
+                    text: 'Terjadi kesalahan. Silakan coba lagi.'
                 });
-                return;
-            }
-            if (!pin) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'PIN wajib diisi!',
-                });
-                return;
-            }
-            if (!role) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Role wajib dipilih!',
-                });
-                return;
-            }
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Sukses!',
-                text: 'Data sales berhasil disimpan!',
-            }).then(() => {
-                document.getElementById('addSalesForm').submit();
             });
         }
+
+        // Event listeners setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('addSalesForm');
+            
+            // Add real-time validation for each field
+            form.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.id === 'photo') {
+                        validateField('photo', e.target.files[0]);
+                    } else {
+                        validateField(e.target.id, e.target.value);
+                    }
+                });
+                
+                input.addEventListener('blur', (e) => {
+                    if (e.target.id === 'photo') {
+                        validateField('photo', e.target.files[0]);
+                    } else {
+                        validateField(e.target.id, e.target.value);
+                    }
+                });
+            });
+            
+            // Replace the form's submit handler
+            form.removeEventListener('submit', showAlert);
+            form.addEventListener('submit', handleSubmit);
+        });
     </script>
 </body>
 </x-supvis.supvislayouts>
