@@ -96,6 +96,11 @@ Route::middleware(['supervisor'])->group(function () {
         Route::get('/budget-insentif', [BudgetInsentifController::class, 'index'])->name('budget_insentif.index');
         Route::post('/budget-insentif/update', [BudgetInsentifController::class, 'update'])->name('budget_insentif.update');
     });
+
+    Route::get('supvis/void', [TransaksiController::class, 'supvisvoid'])->name('supvis.void');
+    Route::delete('/supvis/void/{id}', [TransaksiController::class, 'supvisdestroy'])->name('supvis.void.supvisdestroy');
+
+    
 });
 
 
@@ -107,7 +112,7 @@ Route::middleware(['sales'])->group(function () {
     })->name('sales.home');
     Route::get('/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
-
+    Route::post('/transaksi/{id}/toggle-void', [TransaksiController::class, 'toggleVoid']);
     Route::get('/sales/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('sales.transaksi.kwitansi');
     Route::get('/sales/kwitansi', function () {
         return view('sales.kwitansi');

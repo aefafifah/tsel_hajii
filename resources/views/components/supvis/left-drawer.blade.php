@@ -18,6 +18,7 @@
             @if(Auth::user() && Auth::user()->is_superuser)
                 <x-nav-link href="/tambah-supvis" :active="request()->is('tambah-supvis')">Add Supervisor</x-nav-link>
             @endif
+            <x-nav-link href="/supvis/void" :active="request()->is('supvis/void')">Void Transaksi</x-nav-link>
 
 
     </div>

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaksi extends Model
 {
+    use SoftDeletes;
     protected $primaryKey = 'id_transaksi';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -37,5 +39,7 @@ class Transaksi extends Model
     {
         return $this->belongsToMany(Merchandise::class, 'transaksi_merchandise', 'transaksi_id', 'merchandise_id');
     }
+
+    
 
 }
