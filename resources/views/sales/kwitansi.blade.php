@@ -9,10 +9,9 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0:
     background: transparent;
 }
-
         .container {
             width: 80mm;
             height: 125mm;
