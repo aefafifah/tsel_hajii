@@ -1,4 +1,4 @@
-<x-sales.saleslayouts>
+<x-supvis.supvislayouts>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -127,11 +127,6 @@
             }
         }
 
-        .voided td {
-            text-decoration: line-through;
-            color: #999;
-        }
-
     </style>
 
     <div class="dashboard">
@@ -154,7 +149,7 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>Void</th>
+                        <th>Action</th>
                         <th>ID Transaksi</th>
                         <th>Nomor Telepon</th>
                         <th>Nama Pelanggan</th>
@@ -178,9 +173,16 @@
                                 <th colspan="11">Tanggal: {{ $tanggal }}</th>
                             </tr>
                             @foreach ($items as $item)
-                                <tr class="transaksi-row {{ $item->trashed() ? 'voided' : '' }}" data-id="{{ $item->id_transaksi }}">
+                                <tr>
                                     <td>
-                                        <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}" {{ $item->trashed() ? 'checked' : '' }}>
+                                        <form action="{{ route('supvis.void.supvisdestroy', $item->id_transaksi) }}" method="POST" 
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link text-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
                                     <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
@@ -210,34 +212,7 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".void-checkbox").forEach(function (checkbox) {
-                checkbox.addEventListener("change", function () {
-                    let row = this.closest(".transaksi-row");
-                    let transaksiId = this.getAttribute("data-id");
-
-                    if (this.checked) {
-                        row.classList.add("voided");
-                    } else {
-                        row.classList.remove("voided");
-                    }
-
-                    fetch(`/transaksi/${transaksiId}/toggle-void`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({ is_void: this.checked })
-                    });
-                });
-
-                // Apply strikethrough on page load if checked
-                if (checkbox.checked) {
-                    checkbox.closest(".transaksi-row").classList.add("voided");
-                }
-            });
-        });
+        
         $(document).ready(function () {
             function calculateTotals() {
                 let totalPenjualan = 0;
@@ -280,4 +255,4 @@
             calculateTotals(); 
         });
     </script>
-</x-sales.saleslayouts>
+</x-supvis.supvislayouts>

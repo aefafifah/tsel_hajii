@@ -7,6 +7,8 @@ use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 use Pdf;
 
@@ -129,18 +131,27 @@ class TransaksiController extends Controller
     {
         if ($request->user() && $request->user()->role == 'sales') {
             $nama_sales = $request->user()->name;
-            $transaksi = Transaksi::with('produk');
+            $transaksi = Transaksi::withTrashed()
+                        ->with('produk')
+                        ->orderBy('tanggal_transaksi', 'desc')
+                        ->get();
             if (!empty($nama_sales)) {
                 $transaksi = $transaksi->where('nama_sales', $nama_sales);
             }
-            $transaksi = $transaksi->get();
+            $transaksi = Transaksi::withTrashed()
+                        ->with('produk')
+                        ->orderBy('tanggal_transaksi', 'desc')
+                        ->get();
             $totalPenjualan = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_harga_akhir : 0;
             });
             $totalInsentif = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_insentif : 0;
             });
-            $transaksi = Transaksi::with('produk')->get();
+            $transaksi = Transaksi::withTrashed()
+                        ->with('produk')
+                        ->orderBy('tanggal_transaksi', 'desc')
+                        ->get();
             $groupedTransaksi = $transaksi->groupBy(function ($item) {
                 return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
             });
@@ -165,6 +176,76 @@ class TransaksiController extends Controller
         }
         return redirect()->route('login')->withErrors(provider: ['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
     }
+
+    public function toggleVoid(Request $request, $id) {
+        $transaksi = Transaksi::withTrashed()->findOrFail($id);
+    
+        if ($request->is_void) {
+            $transaksi->delete(); // Soft delete
+        } else {
+            $transaksi->restore(); // Restore from soft delete
+        }
+    
+        return response()->json(['message' => 'Transaction status updated successfully']);
+    }
+
+    public function supvisvoid(Request $request)
+    {
+        $transaksi = Transaksi::onlyTrashed()
+                    ->with('produk')
+                    ->orderBy('tanggal_transaksi', 'desc')
+                    ->get();
+        $totalPenjualan = $transaksi->sum(function ($item) {
+            return $item->produk ? $item->produk->produk_harga_akhir : 0;
+        });
+        $totalInsentif = $transaksi->sum(function ($item) {
+            return $item->produk ? $item->produk->produk_insentif : 0;
+        });
+        $groupedTransaksi = $transaksi->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
+        });
+        $totalsPerDate = $groupedTransaksi->map(function ($items) {
+            $totalPenjualan = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_harga_akhir : 0;
+            });
+            $totalInsentif = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_insentif : 0;
+            });
+
+            return [
+                'totalPenjualan' => $totalPenjualan,
+                'totalInsentif' => $totalInsentif,
+            ];
+        });
+
+        $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
+        $totalInsentif = $totalsPerDate->sum('totalInsentif');
+
+        return view('supvis/void', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+        
+    }
+
+    public function supvisdestroy($id)
+    {
+        try {
+            // Find the transaction
+            $transaksi = Transaksi::withTrashed()->findOrFail($id);
+            
+            // Perform the hard delete
+            $transaksi->forceDelete();
+            
+            return redirect()
+                ->back()
+                ->with('success', 'Transaksi berhasil dihapus.');
+                
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
+        }
+    }
+
+
 
 
 }
