@@ -32,7 +32,7 @@
         @endif
 
         <div class="card custom-card p-4">
-            <form action="{{ route('produk.store') }}" method="POST">
+            <form action="{{ route('produk.store') }}" method="POST" onsubmit="removeFormatBeforeSubmit()">
                 @csrf
 
                 <div class="form-group mb-3">
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="produk_insentif">Insentif</label>
+                    <label for="produk_insentif">Insentif (Rp)</label>
                     <input type="text" name="produk_insentif" id="produk_insentif" class="form-control"
                         value="{{ old('produk_insentif') }}">
                 </div>
@@ -128,5 +128,16 @@
         document.getElementById('produk_insentif').addEventListener('input', function(e) {
             this.value = formatRupiah(this.value);
         });
+        function removeFormatBeforeSubmit() {
+            const hargaInput = document.getElementById('produk_harga');
+            const diskonInput = document.getElementById('produk_diskon');
+            const insentifInput = document.getElementById('produk_insentif');
+            const hargaValue = hargaInput.value.replace(/\./g, '').replace(',', '.');
+            const diskonValue = diskonInput.value.replace(/\./g, '').replace(',', '.');
+            const insentifValue = insentifInput.value.replace(/\./g, '').replace(',', '.');
+            hargaInput.value = hargaValue;
+            diskonInput.value = diskonValue === '' ? 0 : parseInt(diskonValue);
+            insentifInput.value = insentifValue === '' ? 0 : parseInt(insentifValue);
+        }
     </script>
 </x-supvis.supvislayouts>

@@ -67,6 +67,7 @@
                                     <h5 class="card-title font-weight-bold" style="color: black;">{{ $produk->produk_nama }}</h5>
                                     <p class="card-text"><strong>Harga:</strong> Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</p>
                                     <p class="card-text"><strong>Diskon:</strong> Rp {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Insentif:</strong> Rp{{ number_format($produk->produk_insentif ?? 0, 0, ',', '.') }}</p>
                                     <p class="card-text"><strong>Stok:</strong> {{ $produk->produk_stok }}</p>
                                     <p class="card-text">
                                         <strong>Merchandise:</strong>
