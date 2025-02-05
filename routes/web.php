@@ -11,6 +11,7 @@ use App\Http\Controllers\SupvisController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\BudgetInsentifController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleUsersController;
 
 
 
@@ -100,7 +101,12 @@ Route::middleware(['supervisor'])->group(function () {
     Route::get('supvis/void', [TransaksiController::class, 'supvisvoid'])->name('supvis.void');
     Route::delete('/supvis/void/{id}', [TransaksiController::class, 'supvisdestroy'])->name('supvis.void.supvisdestroy');
 
-    
+
+});
+// ALL IN
+Route::middleware(['auth'])->group(function () {
+    Route::get('role_users/{roleUsers}/edit', [RoleUsersController::class, 'edit'])->name('role_users.edit');
+    Route::put('role_users/{roleUsers}', [RoleUsersController::class, 'update'])->name('role_users.update');
 });
 
 
