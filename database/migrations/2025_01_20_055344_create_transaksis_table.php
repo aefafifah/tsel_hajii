@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transaksis', function (Blueprint $table) {
+            $table->softDeletes();
             $table->string('id_transaksi');
             $table->string('nama_pelanggan')->nullable();
             $table->string('nomor_telepon')->nullable();
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('merchandise')->nullable();
             $table->string('metode_pembayaran')->nullable();
             $table->string('nomor_injeksi')->nullable();
+            
         });
     }
 
@@ -31,5 +33,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transaksis');
+        $table->dropSoftDeletes();
     }
 };

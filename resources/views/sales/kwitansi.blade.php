@@ -12,7 +12,7 @@
             padding: 0;
             background: transparent;
 }
-        .container {
+g        .container {
             width: 80mm;
             height: 125mm;
             margin: auto;

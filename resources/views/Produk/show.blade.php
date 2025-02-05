@@ -46,20 +46,16 @@
                     <div class="col-md-6">
                         <p class="h5"><strong>Detail:</strong> {{ $produk->produk_detail ?? 'Tidak ada detail' }}</p>
                         <p class="h5"><strong>Insentif:</strong> <span class="custom-text-success">Rp {{ number_format($produk->produk_insentif, 0, ',', '.') ?? 'Tidak ada insentif' }}</span></p>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h3 class="text-center">Merchandise:</h3>
-                    @if ($produk->merchandises->isEmpty())
-                        <p class="text-center">Tidak ada merchandise terkait.</p>
-                    @else
-                        <p class="h5">
-                            @foreach ($produk->merchandises as $merchandise)
-                                <span>{{ $merchandise->merch_nama }}</span>@if (!$loop->last), @endif
-                            @endforeach
+                        <p class="h5"><strong>Merchandise:</strong> 
+                            <span>
+                                @if ($produk->merchandises->isEmpty())
+                                    Tidak ada merchandise terkait.
+                                @else
+                                    {{ $produk->merchandises->pluck('merch_nama')->join(', ') }}
+                                @endif
+                            </span>
                         </p>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>
