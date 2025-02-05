@@ -33,11 +33,11 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 9px;
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 50%;
-    margin: 30px auto;
+    margin: 9px auto;
 }
 
 .filter-box {
