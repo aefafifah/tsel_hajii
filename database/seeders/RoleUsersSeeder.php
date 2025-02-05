@@ -48,6 +48,7 @@ class RoleUsersSeeder extends Seeder
                 'pin' => Hash::make('123456'),
                 'role' => 'supervisor',
                 'is_superuser' => false,
+                'is_setoran' => false,
 
             ],
             [
@@ -56,6 +57,7 @@ class RoleUsersSeeder extends Seeder
                 'pin' => Hash::make('123456'),
                 'role' => 'supervisor',
                 'is_superuser' => true,
+                'is_setoran' => false,
 
             ],
             [
@@ -64,6 +66,7 @@ class RoleUsersSeeder extends Seeder
                 'pin' => Hash::make('123456'),
                 'role' => 'sales',
                 'is_superuser' => false,
+                'is_setoran' => true,
             ],
         ]);
     }

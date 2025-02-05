@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             RoleUsersSeeder::class,
             MerchandiseSeeder::class,
             ProdukSeeder::class,
+            PivotMerchandiseProdukSeeder::class,
         ]);
 
     }
