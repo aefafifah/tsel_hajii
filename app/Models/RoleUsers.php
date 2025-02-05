@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class RoleUsers extends Authenticatable
 {
     use HasFactory;
@@ -42,4 +43,10 @@ class RoleUsers extends Authenticatable
     // {
     //     return $this->role === 'supervisor' && $this->is_superuser;
     // }
+
+    // In your RoleUsers model or User model
+public function hasRole($role)
+{
+    return $this->role === $role;
+}
 }
