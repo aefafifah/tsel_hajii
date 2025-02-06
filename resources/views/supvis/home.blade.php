@@ -6,7 +6,7 @@
             </li>
         @endif
 
-        <div class="container" style="text-align: center; padding: 20px; font-family: 'Poppins', sans-serif;">
+        <div class="container" style="text-align: center; padding: 18px; font-family: 'Poppins', sans-serif;">
             <div class="welcome-card">
                 <div class="welcome-text">
                     <h1>Selamat, {{ Auth::user()->name }}! 🎉</h1>
@@ -21,13 +21,13 @@
                 <div class="info-box">
                     <h3>Pembayaran</h3>
                     <p class="amount negative">IDR 2,468</p>
-                    <p class="percentage">14.82% lebih rendah dari bulan lalu</p>
+                    <p class="percentage">14.82% lebih rendah dari minggu lalu</p>
                 </div>
 
                 <div class="info-box">
                     <h3>Transaksi</h3>
                     <p class="amount">IDR 14,857</p>
-                    <p class="percentage">28.14% lebih tinggi dari bulan lalu</p>
+                    <p class="percentage">28.14% lebih tinggi dari minggu lalu</p>
                 </div>
             </div>
 
@@ -56,10 +56,9 @@
         margin-bottom: 30px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s;
-    }
-
-    .welcome-card:hover {
-        transform: scale(1.02);
+        position: sticky;
+        top: 20px;
+        z-index: 100;
     }
 
     .welcome-text {
@@ -88,7 +87,6 @@
         gap: 20px;
     }
 
-    /* INFO BOX */
     .info-box {
         border-radius: 12px;
         padding: 20px;
@@ -122,7 +120,6 @@
         margin-top: 20px;
     }
 
-    /* RESPONSIVE DESIGN */
     @media (max-width: 768px) {
         .welcome-card {
             flex-direction: column;
