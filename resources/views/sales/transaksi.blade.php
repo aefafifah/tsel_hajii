@@ -177,7 +177,7 @@
             <form action="{{ route('sales/transaksi/submit') }}" method="POST" formtarget="_blank" target="_blank">
                 @csrf
                 <div class="form-group">
-                    @php $id_transaksi = 'T' . date('dmy') . substr(uniqid(), -4); @endphp
+                    @php $id_transaksi = 'T' . str_pad(Auth::user()->id, 3, '0', STR_PAD_LEFT) . date('dmy') . substr(uniqid(), -4); @endphp
                     <label>No: {{ $id_transaksi }} </label>
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="{{ $id_transaksi }}">
                 </div>
