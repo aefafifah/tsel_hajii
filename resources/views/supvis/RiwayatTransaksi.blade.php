@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>All Transactions</title>
         <style>
-           body {
+    body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #43e97b, #2575FC);
     color: #333;
