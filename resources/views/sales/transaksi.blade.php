@@ -244,9 +244,10 @@
                 </div>
 
                 <div class="form-group">
-                 <label for="tanggal_transaksi">Tanggal Transaksi:</label>
-                 <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control" required>
-              </div>
+                    <label>Tanggal Transaksi:</label>
+                    <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
+                        value="<?php echo date('Y-m-d'); ?>" readonly required>
+                </div>
                 <div class="form-group">
                     <label>Metode Pembayaran:</label>
                     <div class="checkbox-group">

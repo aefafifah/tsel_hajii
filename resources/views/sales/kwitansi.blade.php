@@ -6,61 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwitansi Pembayaran</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: transparent;
-        }
+        
+@page {
+    size: 80mm 125mm;
+    margin: 0;
+}
 
-        .container {
-            width: 80mm;
-            height: 125mm;
-            margin: auto;
-            background: #fff;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
+body {
+    font-family: Arial, sans-serif;
+    width: 80mm;
+    height: 125mm;
+    margin: 0 auto;
+    padding: 2mm;
+    background: #fff;
+    position: relative;
+}
 
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.1;
-            z-index: 0;
-            width: 60mm;
-            height: 60mm;
-        }
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 5px;
-            position: relative;
-            z-index: 1;
-        }
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.1;
+    z-index: 0;
+    width: 80mm;
+    height: 80mm;
+}
 
-        .header h1 {
-            margin: 5px 0;
-            font-size: 14px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+}
 
-        .header img {
-            max-width: 35mm;
-            margin-bottom: 5px;
-        }
+.header h1 {
+    margin: 5px 0;
+    font-size: 14px;
+}
 
-        .content {
-            margin-bottom: 5px;
-            position: relative;
-            z-index: 1;
-        }
+.header img {
+    max-width: 35mm;
+    margin-bottom: 5px;
+}
 
-        .content table {
+.content {
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.content table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 5px;
@@ -75,18 +81,19 @@
         .content table td.label {
             font-weight: bold;
             width: 40%;
-        }
+ }
+.footer {
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+    z-index: 1;
+}
 
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            position: relative;
-            z-index: 1;
-        }
+.footer p {
+    margin: 2px 0;
+}
 
-        .footer p {
-            margin: 2px 0;
-        }
+
     </style>
 </head>
 
@@ -157,5 +164,5 @@
             <p>No Tlp : {{ Auth::user()->phone }}</p>
         </div>
     </div>
-</body>
+    </body>
 </html>
