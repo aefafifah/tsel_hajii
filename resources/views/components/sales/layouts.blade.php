@@ -11,7 +11,7 @@
 		<x-sales.salesleftdrawer></x-sales.salesleftdrawer>
 
 		<div class="main">
-            <x-sales.salestop-drawer></x-sales.salestop-drawer>
+            <x-top-drawer></x-top-drawer>
 
 			{{ $slot }}
 
