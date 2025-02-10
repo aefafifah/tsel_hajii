@@ -3,7 +3,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
         body {
-            font-family: 'Inter', Arial, sans-serif;
             margin: 0;
             padding: 0;
             background: linear-gradient(135deg, #6a11cb, #2575FC);

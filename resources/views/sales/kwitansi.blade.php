@@ -8,16 +8,15 @@
     <style>
         
 @page {
-    size: 80mm 125mm;
+    size: 80mm 135mm;
     margin: 0;
 }
 
 body {
     font-family: Arial, sans-serif;
-    width: 80mm;
-    height: 125mm;
+    width: 70mm;
     margin: 0 auto;
-    padding: 2mm;
+    padding: 1mm;
     background: #fff;
     position: relative;
 }
@@ -92,8 +91,6 @@ body {
 .footer p {
     margin: 2px 0;
 }
-
-
     </style>
 </head>
 
@@ -131,7 +128,7 @@ body {
                     <td>{{ $formData['aktivasi_tanggal'] }}</td>
                 </tr>
             </table>
-            <h3 style="font-size: 12px; margin: 5px 0;">Paket Internet Haji</h3>
+            <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Paket Internet Haji</h3>
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
                     <td>
@@ -144,14 +141,14 @@ body {
                 </tr>
             </table>
 
-            <h3 style="font-size: 12px; margin: 5px 0;">Merchandise</h3>
+            <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Merchandise</h3>
             <table>
                 <tr>
                     <td class="label">Barang</td>
                     <td>{{ $formData['merch_nama'] }}</td>
                 </tr>
             </table>
-            <h3 style="font-size: 12px; margin: 5px 0;">Pembayaran</h3>
+            <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Pembayaran</h3>
             <table>
                 <tr>
                     <td class="label">Metode</td>

@@ -15,7 +15,6 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
             background-color: #f9f9f9;
         }
 

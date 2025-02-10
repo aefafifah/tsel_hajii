@@ -8,7 +8,6 @@
         <title>All Transactions</title>
         <style>
     body {
-    font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #43e97b, #2575FC);
     color: #333;
     margin: 0;
