@@ -8,7 +8,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
             body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
                 background-color: #f0f2f5;

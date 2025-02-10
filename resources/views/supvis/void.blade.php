@@ -5,7 +5,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #2575FC, #43e97b);
             margin: 0;
             padding: 0;
