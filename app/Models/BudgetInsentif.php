@@ -11,4 +11,9 @@ class BudgetInsentif extends Model
 
     protected $table = 'budget_insentif';
     protected $fillable = ['total_insentif'];
+
+    public function histories()
+    {
+        return $this->hasMany(BudgetHistory::class, 'budget_insentif_id');
+    }
 }

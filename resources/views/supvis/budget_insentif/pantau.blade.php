@@ -1,34 +1,31 @@
 <x-supvis.supvislayouts>
-    <div class="container">
-        <h2 class="text-center mt-5"><strong>Riwayat Perubahan Stok</strong></h2>
 
-        <table id="stock-table" class="table table-bordered">
+    <div class="container">
+        <h2 class="text-center mt-5"><strong>Riwayat Perubahan Budget</strong></h2>
+
+        <table id="budget-table" class="table table-bordered">
             <thead>
                 <tr class="text-center">
                     <th>ID</th>
-                    <th>Produk/Merchandise</th>
-                    <th>Perubahan Stok</th>
-                    <th>Stok Sebelum</th>
-                    <th>Stok Sesudah</th>
+                    <th>Perubahan Budget</th>
+                    <th>Budget Sebelum</th>
+                    <th>Budget Sesudah</th>
                     <th>Aksi</th>
                     <th>Tanggal</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stockHistories as $history)
+                @foreach ($budgetHistories as $history)
                     <tr class="text-center">
                         <td>{{ $history->id }}</td>
-                        <td>
-                            {{ $history->product->produk_nama ?? ($history->merchandise->merch_nama ?? 'Tidak Ditemukan') }}
-                        </td>
                         <td class="{{ $history->change_amount > 0 ? 'text-success' : 'text-danger' }}">
-                            {{ $history->change_amount }}
+                            {{ number_format($history->change_amount, 2) }}
                         </td>
-                        <td>{{ $history->previous_stock ?? 'N/A' }}</td>
-                        <td>{{ $history->current_stock ?? 'N/A' }}</td>
+                        <td>{{ number_format($history->previous_budget, 2) }}</td>
+                        <td>{{ number_format($history->current_budget, 2) }}</td>
                         <td>
                             <span class="badge {{ $history->action === 'add' ? 'bg-success' : 'bg-warning' }}">
-                                {{ $history->action === 'add' ? 'Penambahan' : 'Penggantian' }}
+                                {{ $history->action === 'add' ? 'Penambahan' : 'Perubahan' }}
                             </span>
                         </td>
                         <td>{{ $history->created_at->format('d-m-Y H:i') }}</td>
@@ -47,7 +44,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#stock-table').DataTable({
+            $('#budget-table').DataTable({
                 paging: true,
                 searching: true,
                 ordering: true,
@@ -66,4 +63,5 @@
             });
         });
     </script>
+
 </x-supvis.supvislayouts>

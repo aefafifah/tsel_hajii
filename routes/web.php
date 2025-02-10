@@ -97,6 +97,7 @@ Route::middleware(['supervisor'])->group(function () {
         // Budget Insentif
         Route::get('/budget-insentif', [BudgetInsentifController::class, 'index'])->name('budget_insentif.index');
         Route::post('/budget-insentif/update', [BudgetInsentifController::class, 'update'])->name('budget_insentif.update');
+        Route::get('/budget-insentif/pantau', [BudgetInsentifController::class, 'pantau'])->name('supvis.budget_insentif.pantau');
     });
 
     Route::get('supvis/void', [TransaksiController::class, 'supvisvoid'])->name('supvis.void');
