@@ -29,13 +29,13 @@
             <div
                 style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Total Pemesanan</h3>
-                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">6.29k</p>
+                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</p>
                 <p style="font-size: 0.75rem; color: green; margin: 5px 0;">⬆ 0.43% (1 Minggu)</p>
             </div>
             <div
                 style="background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <h3 style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Total Pendapatan</h3>
-                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">Rp 800m</p>
+                <p style="font-size: 1.5rem; font-weight: bold; color:rgb(0, 0, 0); margin: 0;">{{ 'Rp ' . number_format($totalInsentif, 0, ',', '.') }}</p>
                 <p style="font-size: 0.75rem; color: red; margin: 5px 0;">⬇ 0.43% (1 Minggu)</p>
             </div>
         </div>
