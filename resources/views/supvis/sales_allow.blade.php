@@ -2,141 +2,123 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-body {
-    font-family: 'Inter', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #43e97b, #2575FC);
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575FC);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-h1 {
-    color: rgb(255, 255, 255);
-    margin-bottom: 10px;
-    font-size: 28px;
-    font-weight: 600;
-    text-align: center;
-    background: linear-gradient(135deg, #43e97b, #2575FC);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        h1 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            background: linear-gradient(135deg, #6a11cb, #2575FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
+        p {
+            color: #eef6ff;
+            font-size: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 0 20px;
+        }
 
-p {
-    color: #eef6ff;
-    font-size: 16px;
-    margin-bottom: 30px;
-    text-align: center;
-    padding: 0 20px;
-}
+        .sales-list {
+            width: 90%;
+            max-width: 450px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
 
-.sales-list {
-    width: 90%;
-    max-width: 420px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
+        .sales-item {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.sales-item {
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        .sales-item:hover {
+            background-color: #e0f5eb;
+            transform: translateY(-2px);
+        }
 
-.sales-item:hover {
-    background-color: #e0f5eb;
-    transform: translateY(-2px);
-}
+        input[type="checkbox"] {
+            accent-color: #2575FC;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
 
-input[type="checkbox"] {
-    accent-color: #2575FC;
-    transform: scale(1.3);
-    cursor: pointer;
-}
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+            margin-left: 10px;
+            color: #333;
+        }
 
-label {
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    flex: 1;
-    margin-left: 10px;
-    color: #333;
-}
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
 
-.completed {
-    text-decoration: line-through;
-    color: #888;
-}
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575FC);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
 
-button {
-    margin-top: 25px;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #43e97b, #2575FC);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background 0.3s ease, transform 0.2s ease;
-}
+        button:hover {
+            background: linear-gradient(135deg, #541ea0, #1a63c7);
+            transform: translateY(-2px);
+        }
 
-button:hover {
-    background: linear-gradient(135deg, #36c06d, #1a63c7);
-    transform: translateY(-2px);
-}
+        #result {
+            width: 90%;
+            max-width: 450px;
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-#result {
-    width: 90%;
-    max-width: 420px;
-    margin-top: 25px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-#checked-names {
-    color: #2575FC;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 22px;
-    }
-
-    button {
-        font-size: 14px;
-        padding: 10px 15px;
-    }
-
-    p {
-        font-size: 14px;
-    }
-}
-
+        #checked-names {
+            color: #2575FC;
+            font-weight: 600;
+            font-size: 16px;
+        }
     </style>
-    </head>
 
     <body>
         <h1>Sales Checklist</h1>
-        <p>Pilih nama sales yang sudah setorannn </p>
+        <p>Pilih nama sales yang sudah setor</p>
 
         <div class="sales-list">
             @foreach ($sales as $salesperson)
@@ -170,43 +152,11 @@ button:hover {
                     }
                 });
 
-                const resultDiv = document.getElementById('result');
-                const namesParagraph = document.getElementById('checked-names');
-
-                if (checkedNames.length > 0) {
-                    namesParagraph.textContent = `Sales yang sudah dichecklist: ${checkedNames.join(', ')}`;
-                } else {
-                    namesParagraph.textContent = 'Tidak ada sales yang dichecklist.';
-                }
-
-                resultDiv.hidden = false;
+                document.getElementById('checked-names').textContent = checkedNames.length > 0 
+                    ? `Sales yang sudah dichecklist: ${checkedNames.join(', ')}` 
+                    : 'Tidak ada sales yang dichecklist.';
+                document.getElementById('result').hidden = false;
             }
-
-            document.querySelectorAll('.setoran-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const salesId = this.dataset.salesId;
-                    const isSetoran = this.checked;
-
-                    fetch(`/update-is-setoran/${salesId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                is_setoran: isSetoran
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                console.log('Setoran updated successfully.');
-                            } else {
-                                console.error('Failed to update setoran.');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
         </script>
+    </body>
 </x-supvis.supvislayouts>

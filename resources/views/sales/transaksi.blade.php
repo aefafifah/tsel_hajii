@@ -177,7 +177,7 @@
             <form action="{{ route('sales/transaksi/submit') }}" method="POST" formtarget="_blank" target="_blank">
                 @csrf
                 <div class="form-group">
-                    @php $id_transaksi = 'T' . date('dmy') . substr(uniqid(), -4); @endphp
+                    @php $id_transaksi = 'T' . str_pad(Auth::user()->id, 3, '0', STR_PAD_LEFT) . date('dmy') . substr(uniqid(), -4); @endphp
                     <label>No: {{ $id_transaksi }} </label>
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="{{ $id_transaksi }}">
                 </div>
@@ -244,9 +244,10 @@
                 </div>
 
                 <div class="form-group">
-                 <label for="tanggal_transaksi">Tanggal Transaksi:</label>
-                 <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control" required>
-              </div>
+                    <label>Tanggal Transaksi:</label>
+                    <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
+                        value="<?php echo date('Y-m-d'); ?>" readonly required>
+                </div>
                 <div class="form-group">
                     <label>Metode Pembayaran:</label>
                     <div class="checkbox-group">
