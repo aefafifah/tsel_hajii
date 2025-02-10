@@ -13,9 +13,10 @@ class SupvisController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:role_users,email',
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'pin' => 'required|digits_between:4,6',
             'role' => 'required|string',
+            
         ]);
 
         if ($validator->fails()) {
@@ -23,7 +24,10 @@ class SupvisController extends Controller
         }
 
 
-        $photoPath = $request->file('photo')->store('sales_photos', 'public');
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('profile_photos', 'public');
+        }
 
 
         RoleUsers::create([
