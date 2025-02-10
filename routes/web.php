@@ -116,9 +116,7 @@ Route::middleware(['auth'])->group(function () {
 // -------------
 // SALES
 Route::middleware(['sales'])->group(function () {
-    Route::get('/sales/home', function () {
-        return view('sales.home');
-    })->name('sales.home');
+    Route::get('/sales/home', [SalesController::class, 'index'])->name('sales.home');
     Route::get('/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
     Route::post('/transaksi/{id}/toggle-void', [TransaksiController::class, 'toggleVoid']);

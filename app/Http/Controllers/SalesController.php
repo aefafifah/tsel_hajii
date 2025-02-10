@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\RoleUsers;
 use App\Models\Produk;
 use App\Models\Merchandise;
+use App\Models\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class SalesController extends Controller
@@ -75,6 +77,37 @@ class SalesController extends Controller
             $merchandise->produk_ids = $merchandise->produks->pluck('id')->toArray();
         });
         return view('sales.transaksi', compact('produks', 'merchandises'));
+    }
+
+    public function index(Request $request)
+    {
+        $transaksi = Transaksi::withTrashed()
+                        ->with('produk')
+                        ->orderBy('tanggal_transaksi', 'desc')
+                        ->get();
+
+        $groupedTransaksi = $transaksi->groupBy(function ($item) {
+            return Carbon::today()->format('Y-m-d');
+        });
+
+        $totalsPerDate = $groupedTransaksi->map(function ($items) {
+            $totalPenjualan = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_harga_akhir : 0;
+            });
+            $totalInsentif = $items->sum(function ($item) {
+                return $item->produk ? $item->produk->produk_insentif : 0;
+            });
+
+            return [
+                'totalPenjualan' => $totalPenjualan,
+                'totalInsentif' => $totalInsentif,
+            ];
+        });
+
+        $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
+        $totalInsentif = $totalsPerDate->sum('totalInsentif');
+
+        return view('sales/home', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
     }
 }
 
