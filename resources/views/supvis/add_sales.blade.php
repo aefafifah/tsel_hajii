@@ -182,13 +182,13 @@
             </div>
             <div class="form-group">
                 <label for="name">Nama Sales:</label>
-                <input type="text" id="name" name="name" oninput="validateName(this)"
+                <input required type="text" id="name" name="name" oninput="validateName(this)"
                     placeholder="Masukkan nama sales">
                 <div class="error" id="nameError"></div>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Masukkan email">
+                <input required type="email" id="email" name="email" placeholder="Masukkan email">
                 <div class="error" id="emailError"></div>
             </div>
             <div class="form-group">
@@ -200,7 +200,7 @@
 
             <div class="form-group">
                 <label for="pin">PIN:</label>
-                <input type="text" id="pin" name="pin" oninput="validatePin(this)" value=123456>
+                <input type="text" id="pin" name="pin" oninput="validatePin(this)" value=123456 maxlength="6" minlength="4">
                 <div class="error" id="pinError"></div>
             </div>
             <div class="form-group">
