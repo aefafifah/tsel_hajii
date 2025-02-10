@@ -296,30 +296,14 @@
                 errorMessage.style.display = input.value === onlyNumbers ? 'none' : 'block';
             }
 
-            function OkeForm() {
-                const inputs = document.querySelectorAll("input[required]");
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.style.borderColor = "red";
-                    } else {
-                        input.style.borderColor = "";
-                    }
-                });
-                if (isValid) {
-                    alert("Transaksi Sukses! Transaksi telah disimpan");
-                    document.getElementById("form-transaksi").reset();
-                } else {
-                    alert("Lengkapi kolom!");
+            function validateInjectionNumber(input) {
+                const errorMessage = document.getElementById('error-message-injeksi');
+                let value = input.value.replace(/\D/g, '');
+                if (value.length > 12) {
+                    value = value.slice(0, 12);
                 }
-            }
-
-            function cancelForm() {
-                if (confirm("Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?")) {
-                    alert("Form Transaksi telah dibatalkan.");
-                    document.getElementById("form-transaksi").reset();
-                }
+                input.value = value;
+                errorMessage.style.display = value.length === 0 ? 'none' : 'block';
             }
 
             function filterMerchandises(selectedProdukId) {
@@ -338,62 +322,40 @@
                 });
             }
 
-            function OkeForm() {
-                const inputs = document.querySelectorAll("input[required]");
-                let isValid = true;
+function OkeForm() {
+    const form = document.getElementById("transactionForm");
+    const inputs = form.querySelectorAll("input[required]");
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = "red";
+        } else {
+            input.style.borderColor = "";
+        }
+    });
+    
+    if (isValid) {
+        alert("Transaksi Sukses! Transaksi telah disimpan");
+        form.reset();
+        form.querySelectorAll("input[type='checkbox'], input[type='radio']").forEach(input => {
+            input.checked = false;
+        });
+    } else {
+        alert("Lengkapi kolom!");
+    }
+}
 
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.style.borderColor = "red";
-                    } else {
-                        input.style.borderColor = "";
-                    }
-                });
-
-                if (isValid) {
-                    const selectedProduk = document.querySelector('input[name="produk"]:checked');
-                    if (!selectedProduk) {
-                        alert("Pilih produk terlebih dahulu!");
-                        return false;
-                    }
-                    fetch('/produk/update-stock', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            },
-                            body: JSON.stringify({
-                                produk_id: selectedProduk.value
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Transaksi Sukses! Transaksi telah disimpan");
-                                document.getElementById("form-transaksi").reset();
-                            } else {
-                                alert("Error: " + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            alert("Error processing transaction: " + error);
-                        });
-                } else {
-                    alert("Lengkapi kolom!");
-                }
-
-                return false;
-            }
-
-            function validateInjectionNumber(input) {
-                const errorMessage = document.getElementById('error-message-injeksi');
-                let value = input.value.replace(/\D/g, '');
-                if (value.length > 12) {
-                    value = value.slice(0, 12);
-                }
-                input.value = value;
-                errorMessage.style.display = value.length === 0 ? 'none' : 'block';
-            }
+function cancelForm() {
+    const form = document.getElementById("transactionForm");
+    if (confirm("Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?")) {
+        alert("Form Transaksi telah dibatalkan.");
+        form.reset();
+        form.querySelectorAll("input[type='checkbox'], input[type='radio']").forEach(input => {
+            input.checked = false;
+        });
+    }
+}
         </script>
 </x-sales.saleslayouts>
