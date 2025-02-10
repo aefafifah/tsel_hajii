@@ -44,7 +44,6 @@
     <style>
     body {
         background-color: #f9f9f9;
-        font-family: 'Poppins', sans-serif;
     }
 
     .welcome-card {
