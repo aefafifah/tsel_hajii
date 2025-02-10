@@ -12,6 +12,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\BudgetInsentifController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleUsersController;
+use App\Http\Controllers\StockHistoryController;
 
 
 
@@ -107,6 +108,7 @@ Route::middleware(['supervisor'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('role_users/{roleUsers}/edit', [RoleUsersController::class, 'edit'])->name('role_users.edit');
     Route::put('role_users/{roleUsers}', [RoleUsersController::class, 'update'])->name('role_users.update');
+    Route::get('/pantau-stok', [StockHistoryController::class, 'index'])->name('pantau.stok');
 });
 
 
