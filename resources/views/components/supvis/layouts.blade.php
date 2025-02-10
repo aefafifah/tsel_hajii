@@ -11,7 +11,7 @@
 		<x-supvis.supvisleftdrawer></x-supvis.supvisleftdrawer>
 
 		<div class="main">
-            <x-supvis.supvistop-drawer></x-supvis.supvistop-drawer>
+            <x-top-drawer></x-top-drawer>
 
 			{{ $slot }}
 
