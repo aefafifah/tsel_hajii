@@ -52,6 +52,9 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
+            'options' => [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET time_zone="+07:00"'
+            ],
         ],
 
         'mariadb' => [

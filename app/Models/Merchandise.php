@@ -13,6 +13,7 @@ class Merchandise extends Model
         'merch_nama',
         'merch_detail',
         'merch_stok',
+        'merch_terambil_history'
     ];
 
     /**

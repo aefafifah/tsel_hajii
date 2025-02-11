@@ -8,9 +8,6 @@ use App\Models\BudgetHistory;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
-
-
-
 class BudgetInsentifController extends Controller
 {
     public function index()
@@ -18,7 +15,6 @@ class BudgetInsentifController extends Controller
         $transaksi = Transaksi::all();
         $totalInsentif = 0;
         foreach ($transaksi as $item) {
-
             if ($item->produk && $item->produk->produk_insentif !== null) {
                 $totalInsentif += $item->produk->produk_insentif;
             }
@@ -28,6 +24,7 @@ class BudgetInsentifController extends Controller
         $sisaBudget = $totalBudget - $totalInsentif;
         return view('supvis.budget_insentif.index', compact('totalInsentif', 'sisaBudget', 'totalBudget'));
     }
+
     public function update(Request $request)
     {
         $request->validate([
@@ -63,8 +60,32 @@ class BudgetInsentifController extends Controller
     {
         $budgetInsentif = BudgetInsentif::first();
         $totalBudget = $budgetInsentif ? $budgetInsentif->total_insentif : 0;
-        $budgetHistories = BudgetHistory::orderBy('id', 'asc')->paginate(10);
-        return view('supvis.budget_insentif.pantau', compact('totalBudget', 'budgetHistories'));
-    }
-}
 
+
+        $transaksi = Transaksi::all();
+        $totalInsentif = 0;
+        foreach ($transaksi as $item) {
+            if ($item->produk && $item->produk->produk_insentif !== null) {
+                $totalInsentif += $item->produk->produk_insentif;
+            }
+        }
+
+
+        $sisaBudget = $totalBudget - $totalInsentif;
+
+
+        $budgetHistories = BudgetHistory::orderBy('created_at', 'asc')->get();
+
+
+        $previousSisaBudget = $totalBudget;
+        foreach ($budgetHistories as $history) {
+            $history->previous_budget = $previousSisaBudget;
+            $previousSisaBudget += $history->change_amount;
+        }
+
+        return view('supvis.budget_insentif.pantau', compact('totalBudget', 'totalInsentif', 'sisaBudget', 'budgetHistories'));
+    }
+
+
+
+}

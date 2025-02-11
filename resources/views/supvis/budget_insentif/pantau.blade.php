@@ -1,8 +1,33 @@
 <x-supvis.supvislayouts>
-
     <div class="container">
         <h2 class="text-center mt-5"><strong>Riwayat Perubahan Budget</strong></h2>
 
+        <div class="row my-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Budget</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ number_format($totalBudget, 2) }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Total Insentif Digunakan</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ number_format($totalInsentif, 2) }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Sisa Budget</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ number_format($sisaBudget, 2) }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table id="budget-table" class="table table-bordered">
             <thead>
                 <tr class="text-center">
@@ -15,6 +40,9 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $currentTotalBudget = $totalBudget;
+                @endphp
                 @foreach ($budgetHistories as $history)
                     <tr class="text-center">
                         <td>{{ $history->id }}</td>
@@ -22,7 +50,7 @@
                             {{ number_format($history->change_amount, 2) }}
                         </td>
                         <td>{{ number_format($history->previous_budget, 2) }}</td>
-                        <td>{{ number_format($history->current_budget, 2) }}</td>
+                        <td>{{ number_format($currentTotalBudget, 2) }}</td>
                         <td>
                             <span class="badge {{ $history->action === 'add' ? 'bg-success' : 'bg-warning' }}">
                                 {{ $history->action === 'add' ? 'Penambahan' : 'Perubahan' }}
@@ -33,6 +61,9 @@
                 @endforeach
             </tbody>
         </table>
+
+
+
     </div>
 
     {{-- Script DataTables --}}
@@ -63,5 +94,4 @@
             });
         });
     </script>
-
 </x-supvis.supvislayouts>

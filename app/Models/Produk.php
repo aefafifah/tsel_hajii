@@ -14,12 +14,16 @@ class Produk extends Model
 
     protected $fillable = [
         'produk_nama', 'produk_harga', 'produk_diskon', 'produk_stok',
-        'produk_detail', 'produk_insentif', 'is_active'
+        'produk_detail', 'produk_insentif', 'is_active','produk_terjual_history'
     ];
 
-    
+
     public function merchandises()
     {
         return $this->belongsToMany(Merchandise::class, 'merchandise_produk');
     }
+    protected $casts = [
+        'produk_terjual_history' => 'array',
+    ];
+
 }

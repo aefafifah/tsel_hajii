@@ -16,6 +16,7 @@
             <x-nav-link href="/sales-checklist" :active="request()->is('sales-checklist')">Checklist Sales </x-nav-link>
             <x-nav-link href="/supvis/riwayat-transaksi" :active="request()->is('supvis/riwayat-transaksi')">Riwayat Transaksi</x-nav-link>
             <x-nav-link href="/pantau-stok" :active="request()->is('pantau-stok')">Pantau Stok</x-nav-link>
+            <x-nav-link href="/supvis/budget-insentif/pantau" :active="request()->is('supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>
             @if(Auth::user() && Auth::user()->is_superuser)
                 <x-nav-link href="/tambah-supvis" :active="request()->is('tambah-supvis')">Add Supervisor</x-nav-link>
             @endif
