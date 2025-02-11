@@ -63,7 +63,29 @@ class TransaksiController extends Controller
             }
             \DB::beginTransaction();
             $selectedProduk->decrement('produk_stok', 1);
+            $selectedProduk->increment('produk_terjual', 1);
             $selectedMerchandise->decrement('merch_stok', 1);
+            $selectedMerchandise->increment('merch_terambil', 1);
+            $history = json_decode($selectedProduk->produk_terjual_history ?? '[]', true);
+            $history[] = [
+                'tanggal' => now()->toDateTimeString(),
+                'jumlah' => 1,
+                'produk_nama' => $selectedProduk->produk_nama
+            ];
+            $selectedProduk->update([
+                'produk_terjual_history' => json_encode($history)
+            ]);
+            $selectedProduk->refresh();
+            $merchHistory = json_decode($selectedMerchandise->merch_terambil_history ?? '[]', true);
+            $merchHistory[] = [
+                'tanggal' => now()->toDateTimeString(),
+                'jumlah' => 1,
+                'merch_nama' => $selectedMerchandise->merch_nama
+            ];
+            $selectedMerchandise->update([
+                'merch_terambil_history' => json_encode($merchHistory)
+            ]);
+
             Transaksi::create([
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
@@ -78,15 +100,6 @@ class TransaksiController extends Controller
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
-
-            // Tambahkan flag untuk mereset form
-            return redirect()->route('sales.transaksi.kwitansi')
-            ->with([
-                'success' => 'Transaksi berhasil disimpan!',
-                'resetForm' => true
-            ]);
-
-        
         } catch (\Exception $e) {
             \DB::rollBack();
             return redirect()->back()
@@ -141,16 +154,16 @@ class TransaksiController extends Controller
         if ($request->user() && $request->user()->role == 'sales') {
             $nama_sales = $request->user()->name;
             $transaksi = Transaksi::withTrashed()
-                        ->with('produk')
-                        ->orderBy('tanggal_transaksi', 'desc')
-                        ->get();
+                ->with('produk')
+                ->orderBy('tanggal_transaksi', 'desc')
+                ->get();
             if (!empty($nama_sales)) {
                 $transaksi = $transaksi->where('nama_sales', $nama_sales);
             }
             $transaksi = Transaksi::withTrashed()
-                        ->with('produk')
-                        ->orderBy('tanggal_transaksi', 'desc')
-                        ->get();
+                ->with('produk')
+                ->orderBy('tanggal_transaksi', 'desc')
+                ->get();
             $totalPenjualan = $transaksi->sum(function ($item) {
                 return $item->produk ? $item->produk->produk_harga_akhir : 0;
             });
@@ -158,9 +171,9 @@ class TransaksiController extends Controller
                 return $item->produk ? $item->produk->produk_insentif : 0;
             });
             $transaksi = Transaksi::withTrashed()
-                        ->with('produk')
-                        ->orderBy('tanggal_transaksi', 'desc')
-                        ->get();
+                ->with('produk')
+                ->orderBy('tanggal_transaksi', 'desc')
+                ->get();
             $groupedTransaksi = $transaksi->groupBy(function ($item) {
                 return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
             });
@@ -186,24 +199,25 @@ class TransaksiController extends Controller
         return redirect()->route('login')->withErrors(provider: ['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
     }
 
-    public function toggleVoid(Request $request, $id) {
+    public function toggleVoid(Request $request, $id)
+    {
         $transaksi = Transaksi::withTrashed()->findOrFail($id);
-    
+
         if ($request->is_void) {
             $transaksi->delete(); // Soft delete
         } else {
             $transaksi->restore(); // Restore from soft delete
         }
-    
+
         return response()->json(['message' => 'Transaction status updated successfully']);
     }
 
     public function supvisvoid(Request $request)
     {
         $transaksi = Transaksi::onlyTrashed()
-                    ->with('produk')
-                    ->orderBy('tanggal_transaksi', 'desc')
-                    ->get();
+            ->with('produk')
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get();
         $totalPenjualan = $transaksi->sum(function ($item) {
             return $item->produk ? $item->produk->produk_harga_akhir : 0;
         });
@@ -231,7 +245,7 @@ class TransaksiController extends Controller
         $totalInsentif = $totalsPerDate->sum('totalInsentif');
 
         return view('supvis/void', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
-        
+
     }
 
     public function supvisdestroy($id)
@@ -239,22 +253,18 @@ class TransaksiController extends Controller
         try {
             // Find the transaction
             $transaksi = Transaksi::withTrashed()->findOrFail($id);
-            
+
             // Perform the hard delete
             $transaksi->forceDelete();
-            
+
             return redirect()
                 ->back()
                 ->with('success', 'Transaksi berhasil dihapus.');
-                
+
         } catch (\Exception $e) {
             return redirect()
                 ->back()
                 ->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
-
-
-
-
 }
