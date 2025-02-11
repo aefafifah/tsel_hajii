@@ -20,13 +20,13 @@
             <div class="dashboard-container">
                 <div class="info-box">
                     <h3>Pembayaran</h3>
-                    <p class="amount negative">IDR 2,468</p>
+                    <p class="amount">{{ 'Rp ' . number_format($nominalTransaksi, 0, ',', '.') }}</p>
                     <p class="percentage">14.82% lebih rendah dari minggu lalu</p>
                 </div>
 
                 <div class="info-box">
                     <h3>Transaksi</h3>
-                    <p class="amount">IDR 14,857</p>
+                     <p class="amount">{{ $kaliTransaksi }}</p>
                     <p class="percentage">28.14% lebih tinggi dari minggu lalu</p>
                 </div>
             </div>

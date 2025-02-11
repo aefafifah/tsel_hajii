@@ -78,6 +78,15 @@ class TransaksiController extends Controller
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
+
+            // Tambahkan flag untuk mereset form
+            return redirect()->route('sales.transaksi.kwitansi')
+            ->with([
+                'success' => 'Transaksi berhasil disimpan!',
+                'resetForm' => true
+            ]);
+
+        
         } catch (\Exception $e) {
             \DB::rollBack();
             return redirect()->back()
