@@ -212,6 +212,7 @@
 
     <script>
         let pin = "";
+        const correctPin = "123456";
 
         function addDigit(digit) {
             if (pin.length < 6) {
@@ -239,11 +240,19 @@
         }
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            if (pin.length !== 4 && pin.length !== 6) {
-                event.preventDefault();
-                alert('PIN harus terdiri dari 4 atau 6 digit!');
-            }
-        });
+        if (pin.length !== 4 && pin.length !== 6) {
+            event.preventDefault();
+            alert('PIN harus terdiri dari 4 atau 6 digit!');
+        } else if (pin !== correctPin) {
+            event.preventDefault();
+            alert('PIN salah! Silakan coba lagi.');
+            clearPin();
+        } else {
+            setTimeout(() => {
+                alert('Login berhasil!');
+            }, 500);
+        }
+    });
     </script>
 </body>
 </html>
