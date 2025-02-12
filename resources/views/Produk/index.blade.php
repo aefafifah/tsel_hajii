@@ -50,7 +50,7 @@
         <h2 class="mb-4 text-center"><strong>Produk Dihapus</strong></h2>
 
             @if ($produks->whereNotNull('deleted_at')->isEmpty())
-                <div class="alert alert-warning text-center">Belum ada produk yang tersedia.</div>
+                <div class="alert alert-warning text-center">Belum ada produk yang terhapus.</div>
             @else
                 <div class="row">
                     @foreach ($produks->whereNotNull('deleted_at') as $produk)
