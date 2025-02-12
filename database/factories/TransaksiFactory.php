@@ -8,28 +8,24 @@ use App\Models\Transaksi;
 class TransaksiFactory extends Factory
 {
     protected $model = Transaksi::class;
+    
 
     public function definition(): array
     {
+        $produk = \App\Models\Produk::inRandomOrder()->first();
+        $merchandise = \App\Models\Merchandise::inRandomOrder()->first();
+            
         return [
-            'id_transaksi' => 'T' . now()->format('dmy') . substr(uniqid(), -4),
+            'id_transaksi' => 'T' . '003' . date('dmy') . substr(uniqid(), -4),
             'nama_pelanggan' => fake()->name(),
-            'nomor_telepon' => fake()->numerify('08##########'),
+            'nomor_telepon' => '081231780991',
             'aktivasi_tanggal' => fake()->dateTimeBetween('now', '+30 days'),
             'tanggal_transaksi' => fake()->dateTimeBetween('-30 days', 'now'),
-            'nama_sales' => fake()->name(),
-            'jenis_paket' => fake()->randomElement([
-                '1',
-                '2',
-                '3',
-            ]),
-            'merchandise' => fake()->randomElement([
-                '1',
-                '2',
-                '3',
-            ]),
+            'nama_sales' => "Sales",
+            'jenis_paket' => $produk ? $produk->id : null,
+            'merchandise' => $merchandise ? $merchandise->merch_nama : null,
             'metode_pembayaran' => fake()->randomElement(['Tunai', 'Non Tunai']),
-            'nomor_injeksi' => fake()->numerify('############'),
+            'nomor_injeksi' => fake()->numerify('08##########'),
         ];
     }
 }

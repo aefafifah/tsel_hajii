@@ -3,10 +3,6 @@
         <h2 class="mb-4 text-center"><strong>Daftar Produk</strong></h2>
         <a href="{{ route('produk.create') }}" class="btn btn-success mb-3">Tambah Produk</a>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
         @if ($produks->whereNull('deleted_at')->isEmpty())
             <div class="alert alert-warning text-center">Belum ada produk yang tersedia.</div>
         @else
@@ -48,61 +44,64 @@
             </div>
         @endif
 
+
         {{-- Display Deleted Products --}}
         @if (Auth::user() && Auth::user()->is_superuser)
-            <h2 class="mb-4" style="text-align: center;">Produk Dihapus</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Diskon</th>
-                        <th>Stok</th>
-                        <th>Merchandise</th>
-                        <th>Tanggal Dihapus</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <h2 class="mb-4 text-center"><strong>Produk Dihapus</strong></h2>
+
+            @if ($produks->whereNotNull('deleted_at')->isEmpty())
+                <div class="alert alert-warning text-center">Belum ada produk yang tersedia.</div>
+            @else
+                <div class="row">
                     @foreach ($produks->whereNotNull('deleted_at') as $produk)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $produk->produk_nama }}</td>
-                            <td>Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
-                            <td>{{ $produk->produk_stok }}</td>
-                            <td>
-                                @if ($produk->merchandises->isNotEmpty())
-                                    <ul>
-                                        @foreach ($produk->merchandises as $merchandise)
-                                            <li>{{ $merchandise->merch_nama }}</li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    Tidak ada merchandise
-                                @endif
-                            </td>
-                            <td>{{ $produk->deleted_at->format('d M Y H:i') }}</td>
-                            <td>
-                                <form action="{{ route('produk.restore', $produk->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                                </form>
-                                <form action="{{ route('produk.force-delete', $produk->id) }}" method="POST"
-                                    class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus permanen produk ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Hapus Permanen</button>
-                                </form>
-                            </td>
-                        </tr>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bold" style="color: black;">{{ $produk->produk_nama }}
+                                    </h5>
+                                    <p class="card-text"><strong>Harga:</strong> Rp
+                                        {{ number_format($produk->produk_harga, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Diskon:</strong> Rp
+                                        {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Insentif:</strong> Rp
+                                        {{ number_format($produk->produk_insentif, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Harga Final:</strong> Rp
+                                        {{ number_format($produk->produk_harga_akhir, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Stok:</strong> {{ $produk->produk_stok }}</p>
+                                    <p class="card-text"><strong>Jumlah Terjual:</strong> <span
+                                            class="badge bg-primary">{{ $produk->produk_terjual }}</span></p>
+                                    <p class="card-text"><strong>Tanggal Dihapus:</strong> <span
+                                    class="badge bg-primary">{{ $produk->deleted_at->format('d M Y H:i') }}</span></p>
+                                    <div class="d-flex justify-content-between mt-3">
+
+                                        <form action="{{ route('produk.restore', $produk->id) }}" method="POST"
+                                        class="d-inline">
+                                        
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
+    
+                                        </form>
+
+                                        <!-- Gk usah pake Hapus Permanen karena butuh ambil harga untuk Riwayat Transaksi - billy
+                                         
+                                        <form action="{{ route('produk.force-delete', $produk->id) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus permanen produk ini?');">
+
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus Permanen</button>
+
+                                        </form> -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
-                </tbody>
-            </table>
-        @endif
+                </div>
+            @endif
+        @endif 
+        
     </div>
 
     <!-- Tabel Riwayat Penjualan -->
