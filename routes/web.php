@@ -75,6 +75,8 @@ Route::middleware(['supervisor'])->group(function () {
         Route::get('/{merchandise}/edit', [MerchandiseController::class, 'edit'])->name('edit');
         Route::put('/{merchandise}', [MerchandiseController::class, 'update'])->name('update');
         Route::delete('/{merchandise}', [MerchandiseController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/restore', [MerchandiseController::class, 'restore'])->name('restore');
+        Route::delete('/{id}/force-delete', [MerchandiseController::class, 'forceDelete'])->name('force-delete');
     });
 
     // Tambah Sales Backend

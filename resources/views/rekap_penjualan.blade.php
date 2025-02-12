@@ -187,7 +187,7 @@
                                     <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
                                     <td class="tanggal">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="nama-sales">{{ $item->nama_sales }}</td>
-                                    <td class="jenis-paket">{{ $item->jenis_paket }}</td>
+                                    <td class="jenis-paket">{{ $item->produk->produk_nama }}</td>
                                     <td class="jenis-paket">{{ $item->nomor_injeksi}}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
                                     <td class="metode-pembayaran">{{ $item->metode_pembayaran }}</td>
