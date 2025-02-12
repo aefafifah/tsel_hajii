@@ -171,9 +171,11 @@ class TransaksiController extends Controller
                 return $item->produk ? $item->produk->produk_insentif : 0;
             });
             $transaksi = Transaksi::withTrashed()
-                ->with('produk')
-                ->orderBy('tanggal_transaksi', 'desc')
-                ->get();
+                        ->with(['produk' => function($query) {
+                            $query->withTrashed(); // Add this to include trashed products
+                        }])
+                        ->orderBy('tanggal_transaksi', 'desc')
+                        ->get();
             $groupedTransaksi = $transaksi->groupBy(function ($item) {
                 return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
             });
