@@ -109,7 +109,11 @@ class TransaksiController extends Controller
     }
     public function index()
     {
-        $transaksi = Transaksi::all();
+        $transaksi = Transaksi::withTrashed()
+                    ->with(['produk' => function($query) {
+                        $query->withTrashed(); // Add this to include trashed products
+                    }])
+                    ->get();
 
         $totalPenjualan = 0;
 
