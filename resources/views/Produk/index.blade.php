@@ -48,85 +48,142 @@
             </div>
         @endif
 
-        <!-- Tabel Riwayat Penjualan -->
-        <h3 class="mt-5 text-center"><strong>📊 Riwayat Penjualan</strong></h3>
-
-        @php
-            $allHistory = collect();
-            foreach ($produks as $produk) {
-                $history = json_decode($produk->produk_terjual_history, true);
-                if (is_array($history)) {
-                    $allHistory = $allHistory->merge($history);
-                }
-            }
-
-            $groupedHistory = $allHistory
-                ->groupBy(function ($item) {
-                    return \Carbon\Carbon::parse($item['tanggal'])->format('Y-m-d');
-                })
-                ->map(function ($items) {
-                    return [
-                        'tanggal' => $items->first()['tanggal'] ?? '-',
-                        'total_jumlah' => $items->sum('jumlah'),
-                    ];
-                });
-
-            $uniqueDates = $groupedHistory->keys();
-        @endphp
-
-        <!-- Filter Total Penjualan -->
-        <div class="mb-3">
-            <label for="filterTanggal" class="form-label"><strong>📅 Filter Berdasarkan Tanggal:</strong></label>
-            <select id="filterTanggal" class="form-select">
-                <option value="all">Semua Tanggal</option>
-                @foreach ($uniqueDates as $date)
-                    <option value="{{ $date }}">{{ \Carbon\Carbon::parse($date)->format('d M Y') }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Tabel Total Penjualan Per Tanggal -->
-        <div class="table-responsive">
-            <table class="table table-striped table-hover mt-3">
-                <thead class="table-dark">
-                    <tr class="text-center">
-                        <th style="width: 50%;">📅 Tanggal</th>
-                        <th style="width: 50%;">📦 Total Jumlah Terjual</th>
-                    </tr>
-                </thead>
-                <tbody id="totalPenjualanBody">
-                    @foreach ($groupedHistory as $entry)
-                        <tr class="text-center" data-tanggal="{{ $entry['tanggal'] }}">
-                            <td><strong>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y') }}</strong></td>
-                            <td><span class="badge bg-success fs-6">{{ $entry['total_jumlah'] }}</span></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Tabel Detail Riwayat Penjualan -->
-        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat Penjualan</strong></h4>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped mt-3">
-                <thead class="table-dark">
-                    <tr class="text-center">
-                        <th>📅 Tanggal & Waktu</th>
-                        <th>📦 Jumlah</th>
-                        <th>🛍️ Produk</th>
+        {{-- Display Deleted Products --}}
+        @if (Auth::user() && Auth::user()->is_superuser)
+            <h2 class="mb-4" style="text-align: center;">Produk Dihapus</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                        <th>Diskon</th>
+                        <th>Stok</th>
+                        <th>Merchandise</th>
+                        <th>Tanggal Dihapus</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($allHistory as $entry)
-                        <tr class="text-center">
-                            <td>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y H:i:s') }}</td>
-                            <td><span class="badge bg-primary">{{ $entry['jumlah'] ?? '-' }}</span></td>
-                            <td>{{ $entry['produk_nama'] ?? '-' }}</td>
+                    @foreach ($produks->whereNotNull('deleted_at') as $produk)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $produk->produk_nama }}</td>
+                            <td>Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($produk->produk_diskon ?? 0, 0, ',', '.') }}</td>
+                            <td>{{ $produk->produk_stok }}</td>
+                            <td>
+                                @if ($produk->merchandises->isNotEmpty())
+                                    <ul>
+                                        @foreach ($produk->merchandises as $merchandise)
+                                            <li>{{ $merchandise->merch_nama }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    Tidak ada merchandise
+                                @endif
+                            </td>
+                            <td>{{ $produk->deleted_at->format('d M Y H:i') }}</td>
+                            <td>
+                                <form action="{{ route('produk.restore', $produk->id) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                </form>
+                                <form action="{{ route('produk.force-delete', $produk->id) }}" method="POST"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Yakin ingin menghapus permanen produk ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus Permanen</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
+        @endif
+    </div>
+
+    <!-- Tabel Riwayat Penjualan -->
+    <h3 class="mt-5 text-center"><strong>📊 Riwayat Penjualan</strong></h3>
+
+    @php
+        $allHistory = collect();
+        foreach ($produks as $produk) {
+            $history = json_decode($produk->produk_terjual_history, true);
+            if (is_array($history)) {
+                $allHistory = $allHistory->merge($history);
+            }
+        }
+
+        $groupedHistory = $allHistory
+            ->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item['tanggal'])->format('Y-m-d');
+            })
+            ->map(function ($items) {
+                return [
+                    'tanggal' => $items->first()['tanggal'] ?? '-',
+                    'total_jumlah' => $items->sum('jumlah'),
+                ];
+            });
+
+        $uniqueDates = $groupedHistory->keys();
+    @endphp
+
+    <!-- Filter Total Penjualan -->
+    <div class="mb-3">
+        <label for="filterTanggal" class="form-label"><strong>📅 Filter Berdasarkan Tanggal:</strong></label>
+        <select id="filterTanggal" class="form-select">
+            <option value="all">Semua Tanggal</option>
+            @foreach ($uniqueDates as $date)
+                <option value="{{ $date }}">{{ \Carbon\Carbon::parse($date)->format('d M Y') }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- Tabel Total Penjualan Per Tanggal -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover mt-3">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th style="width: 50%;">📅 Tanggal</th>
+                    <th style="width: 50%;">📦 Total Jumlah Terjual</th>
+                </tr>
+            </thead>
+            <tbody id="totalPenjualanBody">
+                @foreach ($groupedHistory as $entry)
+                    <tr class="text-center" data-tanggal="{{ $entry['tanggal'] }}">
+                        <td><strong>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y') }}</strong></td>
+                        <td><span class="badge bg-success fs-6">{{ $entry['total_jumlah'] }}</span></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tabel Detail Riwayat Penjualan -->
+    <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat Penjualan</strong></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th>📅 Tanggal & Waktu</th>
+                    <th>📦 Jumlah</th>
+                    <th>🛍️ Produk</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($allHistory as $entry)
+                    <tr class="text-center">
+                        <td>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y H:i:s') }}</td>
+                        <td><span class="badge bg-primary">{{ $entry['jumlah'] ?? '-' }}</span></td>
+                        <td>{{ $entry['produk_nama'] ?? '-' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     </div>
 

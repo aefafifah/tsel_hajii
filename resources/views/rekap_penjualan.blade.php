@@ -27,7 +27,7 @@
             border-radius: 8px;
             border: 1px solid #ccc;
             margin: 5px;
-            width: 200px; 
+            width: 200px;
         }
 
         .search-container {
@@ -36,15 +36,15 @@
 
         .search-container i {
             position: absolute;
-            right: 20px; 
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999; 
-            cursor: pointer; 
+            color: #999;
+            cursor: pointer;
         }
 
         .search-input {
-            padding-right: 30px; 
+            padding-right: 30px;
         }
 
         .table-container {
@@ -85,7 +85,7 @@
             text-align: center;
             padding: 20px;
             color: #999;
-            display: none; 
+            display: none;
         }
         @media (max-width: 768px) {
             .filter-box {
@@ -160,6 +160,7 @@
                         <th>Tanggal Transaksi</th>
                         <th>Nama Sales</th>
                         <th>Jenis Paket</th>
+                        <th>No Injeksi</th>
                         <th>Merchandise</th>
                         <th>Metode Pembayaran</th>
                         <th>Harga</th>
@@ -174,7 +175,7 @@
                     @else
                         @foreach ($groupedTransaksi as $tanggal => $items)
                             <tr>
-                                <th colspan="11">Tanggal: {{ $tanggal }}</th>
+                                <th colspan="12">Tanggal: {{ $tanggal }}</th>
                             </tr>
                             @foreach ($items as $item)
                                 <tr class="transaksi-row {{ $item->trashed() ? 'voided' : '' }}" data-id="{{ $item->id_transaksi }}">
@@ -187,6 +188,7 @@
                                     <td class="tanggal">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="nama-sales">{{ $item->nama_sales }}</td>
                                     <td class="jenis-paket">{{ $item->jenis_paket }}</td>
+                                    <td class="jenis-paket">{{ $item->nomor_injeksi}}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
                                     <td class="metode-pembayaran">{{ $item->metode_pembayaran }}</td>
                                     <td class="harga">{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
@@ -198,7 +200,7 @@
                 </tbody>
                 <tfoot>
                     <tr class="total-row" id="total-row">
-                        <td colspan="9">Total Keseluruhan:</td>
+                        <td colspan="10">Total Keseluruhan:</td>
                         <td id="total-penjualan">Rp 0</td>
                         <td id="total-insentif">Rp 0</td>
                     </tr>
@@ -261,13 +263,13 @@
                     const isVisible = $(this).text().toLowerCase().indexOf(value) > -1;
                     $(this).toggle(isVisible);
                     if (isVisible) {
-                        hasResults = true; 
+                        hasResults = true;
                     }
                 });
 
                 if (hasResults) {
                     $('.no-results').hide();
-                    $('#total-row').show(); 
+                    $('#total-row').show();
                 } else {
                     $('.no-results').show();
                     $('#total-row').hide();
@@ -276,7 +278,7 @@
                 calculateTotals();
             });
 
-            calculateTotals(); 
+            calculateTotals();
         });
     </script>
 </x-sales.saleslayouts>
