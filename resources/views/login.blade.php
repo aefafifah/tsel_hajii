@@ -6,6 +6,7 @@
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     <style>
         html, body {
             height: 100%;
@@ -13,18 +14,15 @@
             padding: 0;
             overflow: hidden;
         }
-
         body {
             background-color: #f9f9f9;
         }
-
         .main-container {
             height: 100vh;
             display: flex;
             flex-direction: column;
             padding: 0.5rem;
         }
-
         .content-wrapper {
             flex: 1;
             display: flex;
@@ -33,7 +31,6 @@
             max-height: 100%;
             overflow-y: auto;
         }
-
         .card {
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -41,40 +38,29 @@
             width: 100%;
             max-width: 400px;
         }
-
         .logo-container {
             text-align: center;
             margin-bottom: 0.5rem;
         }
-
         .logo-container img {
             max-width: 150px;
             height: auto;
             margin: 0 auto;
         }
-
         .title-section {
             text-align: center;
             margin-bottom: 0.5rem;
         }
-
         .title-section h1 {
             font-size: calc(1.2rem + 0.6vw);
             margin-bottom: 0.25rem;
         }
-
-        .title-section p {
-            font-size: calc(0.8rem + 0.3vw);
-            margin-bottom: 0.5rem;
-        }
-
         .pin-display {
             display: flex;
             justify-content: center;
             gap: min(1.5vw, 8px);
             margin: 0.5rem 0;
         }
-
         .pin-display div {
             width: min(40px, 10vw);
             height: min(40px, 10vw);
@@ -84,7 +70,6 @@
             border-radius: 50%;
             color: #333;
         }
-
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -92,7 +77,6 @@
             max-width: min(280px, 90vw);
             margin: 0.5rem auto;
         }
-
         .keypad button {
             width: min(60px, 20vw);
             height: min(60px, 20vw);
@@ -105,47 +89,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 0;
         }
-
         .card-body {
             padding: min(1rem, 3vw);
         }
-
-        .form-control {
-            height: min(45px, 12vw);
-            font-size: min(16px, 4.5vw);
-        }
-
         .btn-clear {
             background: linear-gradient(135deg, #ff4b4b, #ff0000) !important;
-        }
-
-        @media (max-height: 600px) {
-            .logo-container img {
-                max-width: 100px;
-            }
-            
-            .title-section {
-                margin-bottom: 0.25rem;
-            }
-
-            .title-section h1 {
-                font-size: 1rem;
-                margin-bottom: 0.1rem;
-            }
-
-            .title-section p {
-                font-size: 0.8rem;
-                margin-bottom: 0.25rem;
-            }
-
-            .card-body {
-                padding: 0.5rem;
-            }
-
-            .form-control {
-                height: 35px;
-                margin-bottom: 0.25rem;
-            }
         }
     </style>
 </head>
@@ -196,15 +144,6 @@
                             <button type="submit">OK</button>
                         </div>
                     </form>
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-2">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -227,32 +166,29 @@
         }
 
         function updateDisplay() {
-            const pinLength = pin.length;
             for (let i = 1; i <= 6; i++) {
-                const digitElement = document.getElementById(`digit${i}`);
-                if (i <= pinLength) {
-                    digitElement.textContent = "*";
-                } else {
-                    digitElement.textContent = "•";
-                }
+                document.getElementById(`digit${i}`).textContent = i <= pin.length ? "*" : "•";
             }
             document.getElementById("hiddenPin").value = pin;
         }
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-        if (pin.length !== 4 && pin.length !== 6) {
             event.preventDefault();
-            alert('PIN harus terdiri dari 4 atau 6 digit!');
-        } else if (pin !== correctPin) {
-            event.preventDefault();
-            alert('PIN salah! Silakan coba lagi.');
-            clearPin();
-        } else {
-            setTimeout(() => {
-                alert('Login berhasil!');
-            }, 500);
-        }
-    });
+            if (pin.length !== 4 && pin.length !== 6) {
+                Swal.fire("PIN Tidak Valid!", "PIN harus terdiri dari 4 atau 6 digit!", "warning");
+            } else if (pin !== correctPin) {
+                Swal.fire("PIN Salah!", "Silakan coba lagi.", "error");
+                clearPin();
+            } else {
+                Swal.fire({
+                    title: "Login Berhasil!",
+                    text: "Selamat datang!",
+                    icon: "success"
+                }).then(() => {
+                    this.submit();
+                });
+            }
+        });
     </script>
 </body>
 </html>
