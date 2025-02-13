@@ -8,6 +8,7 @@
             background: #f1f1f1
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         .dashboard {
