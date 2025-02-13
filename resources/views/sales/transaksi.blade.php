@@ -322,7 +322,7 @@
                 });
             }
 
-            function OkeForm() {
+function OkeForm() {
     const inputs = document.querySelectorAll("input[required]");
     let isValid = true;
 
@@ -335,29 +335,24 @@
         }
     });
 
+    const selectedProduk = document.querySelector("input[name='produk']:checked");
+    const selectedMerchandise = document.querySelector("input[name='merchandise']:checked");
+    const errorMessage = "Harap lengkapi semua kolom!";
+
+    if (!selectedProduk) {
+        Swal.fire({ title: "Peringatan!", text: errorMessage, icon: "warning" });
+        return false;
+    }
+
+    if (!selectedMerchandise) {
+        Swal.fire({ title: "Peringatan!", text: "Harap pilih merchandise yang tersedia!", icon: "warning" });
+        return false;
+    }
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
-
-        const form = document.getElementById("form-transaksi");
-        if (form) {
-            form.reset();
-            inputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-                input.style.borderColor = "";
-            });
-        }
-    } else {
-        Swal.fire({
-            title: "Peringatan!",
-            text: "Lengkapi kolom!",
-            icon: "warning"
-        });
     }
+
 }
 
 function cancelForm() {
@@ -370,17 +365,12 @@ function cancelForm() {
         cancelButtonText: "Tidak"
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Dibatalkan",
-                text: "Form Transaksi telah dibatalkan.",
-                icon: "info"
-            });
+            Swal.fire({ title: "Dibatalkan", text: "Form Transaksi telah dibatalkan.", icon: "info" });
 
             const form = document.getElementById("form-transaksi");
             if (form) {
                 form.reset();
-                const inputs = form.querySelectorAll("input, select, textarea");
-                inputs.forEach(input => {
+                document.querySelectorAll("input, select, textarea").forEach(input => {
                     if (input.type === "checkbox" || input.type === "radio") {
                         input.checked = false;
                     } else {
@@ -389,16 +379,6 @@ function cancelForm() {
                     input.style.borderColor = "";
                 });
             }
-
-            const additionalInputs = document.querySelectorAll("input, select, textarea");
-            additionalInputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-                input.style.borderColor = "";
-            });
         }
     });
 }

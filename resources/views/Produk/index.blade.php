@@ -29,13 +29,36 @@
                                         Detail</a>
                                     <a href="{{ route('produk.edit', $produk->id) }}" class="btn btn-warning btn-sm">✏️
                                         Edit</a>
-                                    <form action="{{ route('produk.destroy', $produk->id) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">🗑️ Hapus</button>
-                                    </form>
+                                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">🗑️ Hapus</button>
+                                        </form>
+
+                                        <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            document.querySelectorAll('.delete-form').forEach(form => {
+                                                form.addEventListener('submit', function (event) {
+                                                    event.preventDefault(); 
+
+                                                    Swal.fire({
+                                                        title: "Apakah Anda yakin?",
+                                                        text: "Produk ini akan dihapus secara permanen!",
+                                                        icon: "warning",
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: "#d33",
+                                                        cancelButtonColor: "#3085d6",
+                                                        confirmButtonText: "Ya, hapus!",
+                                                        cancelButtonText: "Batal"
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            form.submit(); 
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
