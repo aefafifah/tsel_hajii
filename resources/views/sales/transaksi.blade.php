@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Form Transaksi</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
             body {
                 background-color: #f4f4f9;
@@ -337,6 +338,7 @@
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
+<<<<<<< HEAD
 
         const form = document.getElementById("form-transaksi");
         if (form) {
@@ -358,6 +360,66 @@
         });
     }
 }
+
+function cancelForm() {
+    Swal.fire({
+        title: "Konfirmasi",
+        text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, batalkan!",
+        cancelButtonText: "Tidak"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Dibatalkan",
+                text: "Form Transaksi telah dibatalkan.",
+                icon: "info"
+            });
+
+            const form = document.getElementById("form-transaksi");
+            if (form) {
+                form.reset();
+                const inputs = form.querySelectorAll("input, select, textarea");
+=======
+            const form = document.getElementById("form-transaksi");
+            if (form) {
+                form.reset();
+>>>>>>> 7725f1129a2e45a83a3156b215c30d6f66fb89f4
+                inputs.forEach(input => {
+                    if (input.type === "checkbox" || input.type === "radio") {
+                        input.checked = false;
+                    } else {
+                        input.value = "";
+                    }
+                    input.style.borderColor = "";
+                });
+            }
+<<<<<<< HEAD
+
+            const additionalInputs = document.querySelectorAll("input, select, textarea");
+            additionalInputs.forEach(input => {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = false;
+                } else {
+                    input.value = "";
+                }
+                input.style.borderColor = "";
+            });
+        }
+    });
+=======
+    } else {
+        Swal.fire({
+            title: "Peringatan!",
+            text: "Harap lengkapi semua kolom yang diperlukan!",
+            icon: "warning",
+            confirmButtonText: "OK"
+        });
+    }
+>>>>>>> 7725f1129a2e45a83a3156b215c30d6f66fb89f4
+}
+
 
 function cancelForm() {
     Swal.fire({

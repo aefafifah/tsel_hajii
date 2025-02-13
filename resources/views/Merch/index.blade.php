@@ -3,15 +3,11 @@
         <h2 class="mb-4 text-center"><strong>Daftar Merchandise</strong></h2>
         <a href="{{ route('merch.create') }}" class="btn btn-success mb-3">Tambah Merchandise</a>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if ($merchandises->isEmpty())
+        @if ($merchandises->whereNull('deleted_at')->isEmpty())
             <div class="alert alert-warning text-center">Belum ada merchandise yang tersedia.</div>
         @else
             <div class="row">
-                @foreach ($merchandises as $merchandise)
+                @foreach ($merchandises->whereNull('deleted_at') as $merchandise)
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm border-0">
                             <div class="card-body">
@@ -34,6 +30,40 @@
                 @endforeach
             </div>
         @endif
+
+        {{-- Display Deleted Merchs --}}
+        <h2 class="mb-4 text-center"><strong>Merchandise Terhapus</strong></h2>
+        @if ($merchandises->whereNotNull('deleted_at')->isEmpty())
+            <div class="alert alert-warning text-center">Belum ada merch yang terhapus.</div>
+        @else
+            <div class="row">
+                @foreach ($merchandises->whereNotNull('deleted_at') as $merch)
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold" style="color: black;">{{ $merch->merch_nama }}
+                                </h5>
+                                <p class="card-text"><strong>Deskripsi:</strong> {{ $merchandise->merch_detail }}</p>
+                                <p class="card-text"><strong>Stok:</strong> {{ $merchandise->merch_stok }}</p>
+                                <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merchandise->merch_terambil }}</span></p>
+                                <div class="d-flex justify-content-between mt-3">
+                                    
+                                    <form action="{{ route('merch.restore', $merch->id) }}" method="POST"
+                                        class="d-inline">
+                                        
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
+        
         <h3 class="mt-5 text-center"><strong>📊 Riwayat Pengambilan Merchandise</strong></h3>
 
         @php

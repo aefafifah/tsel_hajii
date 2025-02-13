@@ -10,7 +10,7 @@ class MerchandiseController extends Controller
 {
     public function index()
     {
-        $merchandises = Merchandise::all();
+        $merchandises = Merchandise::withTrashed()->get();;
         return view('merch.index', compact('merchandises'));
     }
 
@@ -90,5 +90,21 @@ class MerchandiseController extends Controller
     {
         $merchandise->delete();
         return redirect()->route('merch.index')->with('success', 'Merchandise berhasil dihapus.');
+    }
+
+    public function restore($id)
+    {
+        $merchandise = Merchandise::withTrashed()->findOrFail($id);
+        $merchandise->restore();
+
+        return redirect()->route('merch.index')->with('success', 'Merchandise berhasil direstore');
+    }
+
+    public function forceDelete($id)
+    {
+        $merchandise = Merchandise::withTrashed()->findOrFail($id);
+        $merchandise->forceDelete();
+
+        return redirect()->route('merch.index')->with('success', 'Merchandise berhasil dihapus permanen');
     }
 }
