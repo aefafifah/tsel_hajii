@@ -1,127 +1,121 @@
 <x-supvis.supvislayouts>
     <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>All Transactions</title>
         <style>
-    body {
-    background: linear-gradient(135deg, #43e97b, #2575FC);
-    color: #333;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-}
+            body {
+                background: linear-gradient(135deg, #43e97b, #2575FC);
+                color: #333;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
 
-h1 {
-    color:#2575FC;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
+            h1 {
+                color: rgb(0, 0, 0);
+                font-size: 2.5rem;
+                margin: 40px 0 20px;
+                text-align: center;
+            }
 
-.dashboard {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
+            .dashboard {
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }
 
-/* Container utama */
-.search-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 9px;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    margin: 9px auto;
-}
+            .search-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 9px;
+                background-color: #f8f9fa;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 50%;
+                margin: 9px auto;
+            }
 
-.filter-box {
-    flex: 1;
-    margin-right: 5px;
-}
+            .filter-box {
+                flex: 1;
+                margin-right: 5px;
+            }
 
-.filter-box select {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 12px;
-    background-color: #fff;
-    cursor: pointer;
-}
+            .filter-box select {
+                width: 100%;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 12px;
+                background-color: #fff;
+                cursor: pointer;
+            }
 
-.search-box {
-    display: flex;
-    align-items: center;
-    position: relative;
-    flex: 2;
-}
+            .search-box {
+                display: flex;
+                align-items: center;
+                position: relative;
+                flex: 2;
+            }
 
-.search-box input {
-    width: 100%;
-    padding: 5px 30px 5px 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 12px;
-}
+            .search-box input {
+                width: 100%;
+                padding: 5px 30px 5px 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 12px;
+            }
 
-.search-box i {
-    position: absolute;
-    right: 8px;
-    color: #888;
-    font-size: 14px;
-}
+            .search-box i {
+                position: absolute;
+                right: 8px;
+                color: #888;
+                font-size: 14px;
+            }
 
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 8px;
+            }
 
+            th, td {
+                padding: 9px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-}
+            .insentif th {
+                padding: 9px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
 
-th, td {
-    padding: 9px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
+            .penjualan {
+                background: linear-gradient(135deg, #2575FC, #43e97b);
+                color: white;
+                font-weight: bold;
+            }
 
-.insentif th {
-    padding: 9px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
+            thead tr {
+                background: linear-gradient(135deg, #2575FC, #43e97b);
+                color: white;
+                font-weight: bold;
+            }
 
-.penjualan {
-    background: linear-gradient(135deg, #2575FC, #43e97b); /* Warna gradasi hijau-biru */
-    color: white;
-    font-weight: bold;
-}
+            th {
+                color: white;
+                font-weight: bold;
+            }
 
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
 
-
-thead tr {
-    background: linear-gradient(135deg, #2575FC, #43e97b);
-    color: white;
-    font-weight: bold;
-}
-th {
-    color: white;
-    font-weight: bold;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: #ddd;
-}
-
+            tr:hover {
+                background-color: #ddd;
+            }
 
             @media screen and (max-width: 600px) {
                 table {
@@ -148,42 +142,42 @@ tr:hover {
                     border-bottom: 1px solid #ddd;
                 }
 
-    td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    background: linear-gradient(135deg, #2575FC, #43e97b);
-    -webkit-background-clip: text;
-    color: transparent;
-    text-align: left;
-    padding: 5px;
-}
-@media (max-width: 768px) {
-    .search-container {
-        width: 90%;
-        margin: 20px auto;
-    }
+                td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                background: linear-gradient(135deg, #2575FC, #43e97b);
+                -webkit-background-clip: text;
+                color: transparent;
+                text-align: left;
+                padding: 5px;
+                }
+            
+                @media (max-width: 768px) {
+                    .search-container {
+                        width: 90%;
+                        margin: 20px auto;
+                    }
 
-    .filter-box,
-    .search-box {
-        flex: 1;
-    }
+                    .filter-box,
+                        .search-box {
+                        flex: 1;
+                    }
 
-    .search-box input {
-        font-size: 14px;
-        padding: 5px 20px 5px 8px;
-    }
+                    .search-box input {
+                        font-size: 14px;
+                        padding: 5px 20px 5px 8px;
+                    }
 
-    .search-box i {
-        font-size: 16px;
-    }
-}
-
-}  
+                    .search-box i {
+                        font-size: 16px;
+                    }
+                }
+            }  
         </style>
     </head>
 
     <body>
-        <h1>Riwayat Transaksi</h1>
+        <h1><b>Riwayat Transaksi</b></h1>
 
         @if (session('success'))
             <p style="color: green;">{{ session('success') }}</p>
@@ -192,31 +186,29 @@ tr:hover {
         @endif
 
         <div class="search-container">
-    <div class="filter-box">
-        <select id="filter-transaksi">
-            <option value="all">Riwayat</option>
-            <option value="1">ID Transaksi</option>
-            <option value="7">Nomor telepon</option>
-            <option value="7">Nama Pelanggan</option>
-            <option value="30">Nama Transaksi</option>
-            <option value="365-sales">Nama Sales</option>
-            <option value="365-package">Jenis Paket</option>
-            <option value="365-merchandise">Merchandise</option>
-            <option value="365-payment">Metode Pembayaran</option>
-        </select>
-    </div>
-    <div class="search-box">
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari...">
-        <i class="fa fa-search"></i>
-    </div>
-</div>
-
-
+            <div class="filter-box">
+                <select id="filter-transaksi">
+                    <option value="all">Riwayat</option>
+                    <option value="1">ID Transaksi</option>
+                    <option value="7">Nomor telepon</option>
+                    <option value="7">Nama Pelanggan</option>
+                    <option value="30">Nama Transaksi</option>
+                    <option value="365-sales">Nama Sales</option>
+                    <option value="365-package">Jenis Paket</option>
+                    <option value="365-merchandise">Merchandise</option>
+                    <option value="365-payment">Metode Pembayaran</option>
+                </select>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari...">
+                <i class="fa fa-search"></i>
+            </div>
+        </div>
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <div class="container d-flex justify-content-center align-items-center mt-3">
             <div class="row w-100">
-                <!-- Total Penjualan Card -->
+
                 <div class="col-md-6">
                     <div class="card text-center shadow-sm">
                         <div class="card-body">
@@ -226,7 +218,6 @@ tr:hover {
                     </div>
                 </div>
 
-                <!-- Total Insentif Card -->
                 <div class="col-md-6">
                     <div class="card text-center shadow-sm">
                         <div class="card-body">
