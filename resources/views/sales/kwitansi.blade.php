@@ -8,13 +8,13 @@
     <style>
         
 @page {
-    size: 80mm 135mm;
+    size: 80mm 150mm;
     margin: 0;
 }
 
 body {
     font-family: Arial, sans-serif;
-    width: 70mm;
+    width: 65mm;
     margin: 0 auto;
     padding: 1mm;
     background: #fff;
