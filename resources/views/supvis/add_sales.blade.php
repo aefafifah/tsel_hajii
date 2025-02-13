@@ -242,6 +242,7 @@
                     return null;
                 }
             },
+
             email: {
                 validate: (value) => {
                     if (!value) return 'Email wajib diisi';
@@ -249,11 +250,12 @@
                     return null;
                 }
             },
+
             photo: {
                 validate: (file) => {
-                    if (!file) return null; // Photo is optional
+                    if (!file) return null; 
                     const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                    const maxSize = 2048 * 1024; // 2048KB in bytes
+                    const maxSize = 2048 * 1024; 
                     
                     if (!validTypes.includes(file.type)) {
                         return 'File harus berformat JPEG, PNG, atau JPG';
@@ -264,6 +266,7 @@
                     return null;
                 }
             },
+
             pin: {
                 validate: (value) => {
                     if (!value) return 'PIN wajib diisi';
@@ -272,6 +275,7 @@
                     return null;
                 }
             },
+
             phone: {
                 validate: (value) => {
                     if (!value) return 'Nomor telepon wajib diisi';
@@ -280,6 +284,7 @@
                     return null;
                 }
             },
+
             role: {
                 validate: (value) => {
                     if (!value) return 'Role wajib dipilih';
@@ -290,7 +295,6 @@
             }
         };
 
-        // Real-time validation function
         function validateField(fieldName, value) {
             const error = ValidationRules[fieldName].validate(value);
             const errorElement = document.getElementById(`${fieldName}Error`);
@@ -307,7 +311,6 @@
             }
         }
 
-        // Enhanced form submission handler
         function handleSubmit(event) {
             event.preventDefault();
             
@@ -315,7 +318,6 @@
             const formData = new FormData(form);
             let isValid = true;
             
-            // Validate all fields
             for (const [fieldName, value] of formData.entries()) {
                 if (fieldName === 'photo') {
                     const file = document.getElementById('photo').files[0];
@@ -336,7 +338,6 @@
                 return;
             }
             
-            // Submit form via AJAX
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
@@ -344,10 +345,10 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             })
+
             .then(response => response.json())
             .then(data => {
                 if (data.errors) {
-                    // Handle server-side validation errors
                     const errorMessages = Object.values(data.errors).flat();
                     Swal.fire({
                         icon: 'error',
@@ -355,7 +356,6 @@
                         text: errorMessages[0]
                     });
                 } else {
-                    // Success
                     Swal.fire({
                         icon: 'success',
                         title: 'Sukses!',
@@ -365,6 +365,7 @@
                     });
                 }
             })
+            
             .catch(error => {
                 Swal.fire({
                     icon: 'error',
@@ -374,11 +375,9 @@
             });
         }
 
-        // Event listeners setup
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('addSalesForm');
             
-            // Add real-time validation for each field
             form.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', (e) => {
                     if (e.target.id === 'photo') {
@@ -397,7 +396,6 @@
                 });
             });
             
-            // Replace the form's submit handler
             form.removeEventListener('submit', showAlert);
             form.addEventListener('submit', handleSubmit);
         });

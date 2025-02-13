@@ -1,6 +1,6 @@
 <x-supvis.supvislayouts>
     <div class="container">
-        <h2 class="text-center mt-5"><strong>Riwayat Perubahan Budget</strong></h2>
+        <h2 class="text-center mt-5 mb-5"><b>Riwayat Perubahan Budget</b></h2>
 
         <div class="row my-4">
             <div class="col-md-4">
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card text-white bg-danger mb-3">
+                <div class="card text-white bg-secondary mb-3">
                     <div class="card-header">Total Insentif Digunakan</div>
                     <div class="card-body">
                         <h5 class="card-title">{{ number_format($totalInsentif, 2) }}</h5>

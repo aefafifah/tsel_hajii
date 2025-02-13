@@ -1,6 +1,6 @@
 <x-supvis.supvislayouts>
     <div class="container">
-        <h2 class="text-center mt-5"><strong>Riwayat Perubahan Stok</strong></h2>
+        <h2 class="text-center mt-5 mb-5"><b>Riwayat Perubahan Stok</b></h2>
 
         <table id="stock-table" class="table table-bordered">
             <thead>
