@@ -338,7 +338,6 @@
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
-<<<<<<< HEAD
 
         const form = document.getElementById("form-transaksi");
         if (form) {
@@ -381,11 +380,6 @@ function cancelForm() {
             if (form) {
                 form.reset();
                 const inputs = form.querySelectorAll("input, select, textarea");
-=======
-            const form = document.getElementById("form-transaksi");
-            if (form) {
-                form.reset();
->>>>>>> 7725f1129a2e45a83a3156b215c30d6f66fb89f4
                 inputs.forEach(input => {
                     if (input.type === "checkbox" || input.type === "radio") {
                         input.checked = false;
@@ -395,7 +389,6 @@ function cancelForm() {
                     input.style.borderColor = "";
                 });
             }
-<<<<<<< HEAD
 
             const additionalInputs = document.querySelectorAll("input, select, textarea");
             additionalInputs.forEach(input => {
@@ -408,16 +401,6 @@ function cancelForm() {
             });
         }
     });
-=======
-    } else {
-        Swal.fire({
-            title: "Peringatan!",
-            text: "Harap lengkapi semua kolom yang diperlukan!",
-            icon: "warning",
-            confirmButtonText: "OK"
-        });
-    }
->>>>>>> 7725f1129a2e45a83a3156b215c30d6f66fb89f4
 }
 
 
