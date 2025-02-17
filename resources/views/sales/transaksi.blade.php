@@ -322,7 +322,7 @@
                 });
             }
 
-            function OkeForm() {
+function OkeForm() {
     const inputs = document.querySelectorAll("input[required]");
     let isValid = true;
 
@@ -335,9 +335,23 @@
         }
     });
 
+    const selectedProduk = document.querySelector("input[name='produk']:checked");
+    const selectedMerchandise = document.querySelector("input[name='merchandise']:checked");
+    const errorMessage = "Harap lengkapi semua kolom!";
+
+    if (!selectedProduk) {
+        Swal.fire({ title: "Peringatan!", text: errorMessage, icon: "warning" });
+        return false;
+    }
+
+    if (!selectedMerchandise) {
+        Swal.fire({ title: "Peringatan!", text: "Harap pilih merchandise yang tersedia!", icon: "warning" });
+        return false;
+    }
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
+<<<<<<< HEAD
 
         const form = document.getElementById("form-transaksi");
         if (form) {
@@ -357,7 +371,10 @@
             text: "Lengkapi kolom!",
             icon: "warning"
         });
+=======
+>>>>>>> da90ce02c948a0ff1b00d5d88aff2ee5d7f44d3f
     }
+
 }
 
 function cancelForm() {
@@ -370,11 +387,7 @@ function cancelForm() {
         cancelButtonText: "Tidak"
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Dibatalkan",
-                text: "Form Transaksi telah dibatalkan.",
-                icon: "info"
-            });
+            Swal.fire({ title: "Dibatalkan", text: "Form Transaksi telah dibatalkan.", icon: "info" });
 
             const form = document.getElementById("form-transaksi");
             if (form) {
@@ -446,5 +459,49 @@ function cancelForm() {
         }
     });
 }
+
+
+// function cancelForm() {
+//     Swal.fire({
+//         title: "Konfirmasi",
+//         text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Ya, batalkan!",
+//         cancelButtonText: "Tidak"
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             Swal.fire({
+//                 title: "Dibatalkan",
+//                 text: "Form Transaksi telah dibatalkan.",
+//                 icon: "info"
+//             });
+
+//             const form = document.getElementById("form-transaksi");
+//             if (form) {
+//                 form.reset();
+//                 const inputs = form.querySelectorAll("input, select, textarea");
+//                 inputs.forEach(input => {
+//                     if (input.type === "checkbox" || input.type === "radio") {
+//                         input.checked = false;
+//                     } else {
+//                         input.value = "";
+//                     }
+//                     input.style.borderColor = "";
+//                 });
+//             }
+
+//             const additionalInputs = document.querySelectorAll("input, select, textarea");
+//             additionalInputs.forEach(input => {
+//                 if (input.type === "checkbox" || input.type === "radio") {
+//                     input.checked = false;
+//                 } else {
+//                     input.value = "";
+//                 }
+//                 input.style.borderColor = "";
+//             });
+//         }
+//     });
+// }
         </script>
 </x-sales.saleslayouts>

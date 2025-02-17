@@ -5,9 +5,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: #f1f1f1
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         .dashboard {
@@ -67,7 +68,7 @@
         }
 
         th {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             color: white;
             font-weight: bold;
         }
@@ -76,9 +77,13 @@
         }
 
         .total-row {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             font-weight: bold;
             color: white;
+        }
+
+        .total-row:hover {
+            background-color: rgb(44, 54, 77);
         }
 
         .no-results {
@@ -87,6 +92,7 @@
             color: #999;
             display: none; 
         }
+
         @media (max-width: 768px) {
             .filter-box {
                 flex-direction: column;
@@ -103,7 +109,7 @@
             }
 
             table {
-                min-width: 300px; /* Mengurangi lebar minimum untuk layar kecil */
+                min-width: 300px; 
             }
 
             th, td {
@@ -125,7 +131,6 @@
                 padding: 10px;
             }
         }
-
     </style>
 
     <div class="dashboard">
@@ -211,7 +216,6 @@
     </div>
 
     <script>
-        
         $(document).ready(function () {
             function calculateTotals() {
                 let totalPenjualan = 0;
@@ -250,6 +254,41 @@
 
                 calculateTotals();
             });
+
+            $('#filter-transaksi').on('change', function () {
+            const filterValue = $(this).val();
+            const today = new Date();
+            const filterDate = new Date();
+
+            $('#dataTable tbody tr').show(); 
+
+            if (filterValue === "1") { 
+                $('#dataTable tbody tr').filter(function () {
+                    const transactionDate = new Date($(this).find('.tanggal').text());
+                    return transactionDate.toDateString() !== today.toDateString();
+                }).hide();
+            } else if (filterValue === "7") { 
+                filterDate.setDate(today.getDate() - 7);
+                $('#dataTable tbody tr').filter(function () {
+                    const transactionDate = new Date($(this).find('.tanggal').text());
+                    return transactionDate < filterDate;
+                }).hide();
+            } else if (filterValue === "30") { 
+                filterDate.setMonth(today.getMonth() - 1);
+                $('#dataTable tbody tr').filter(function () {
+                    const transactionDate = new Date($(this).find('.tanggal').text());
+                    return transactionDate < filterDate;
+                }).hide();
+            } else if (filterValue === "365") { 
+                filterDate.setFullYear(today.getFullYear() - 1);
+                $('#dataTable tbody tr').filter(function () {
+                    const transactionDate = new Date($(this).find('.tanggal').text());
+                    return transactionDate < filterDate;
+                }).hide();
+            }
+
+            calculateTotals(); 
+        });
 
             calculateTotals(); 
         });

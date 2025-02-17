@@ -2,6 +2,7 @@
     <div class="container mt-5">
         <h2 class="mb-4 text-center"><strong>Daftar Merchandise</strong></h2>
         <a href="{{ route('merch.create') }}" class="btn btn-success mb-3">Tambah Merchandise</a>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @if ($merchandises->whereNull('deleted_at')->isEmpty())
             <div class="alert alert-warning text-center">Belum ada merchandise yang tersedia.</div>
@@ -18,11 +19,36 @@
                                 <div class="d-flex justify-content-between mt-3">
                                     <a href="{{ route('merch.show', $merchandise->id) }}" class="btn btn-info btn-sm">🔍 Detail</a>
                                     <a href="{{ route('merch.edit', $merchandise->id) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
-                                    <form action="{{ route('merch.destroy', $merchandise->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus merchandise ini?');">
+                                    <form action="{{ route('merch.destroy', $merchandise->id) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">🗑️ Hapus</button>
                                     </form>
+
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            document.querySelectorAll('.delete-form').forEach(form => {
+                                                form.addEventListener('submit', function (event) {
+                                                    event.preventDefault(); 
+
+                                                    Swal.fire({
+                                                        title: "Apakah Anda yakin?",
+                                                        text: "Merchandise ini akan dihapus secara permanen!",
+                                                        icon: "warning",
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: "#d33",
+                                                        cancelButtonColor: "#3085d6",
+                                                        confirmButtonText: "Ya, hapus!",
+                                                        cancelButtonText: "Batal"
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            form.submit(); 
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
