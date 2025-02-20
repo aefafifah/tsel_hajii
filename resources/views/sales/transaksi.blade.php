@@ -351,6 +351,25 @@ function OkeForm() {
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
+
+        const form = document.getElementById("form-transaksi");
+        if (form) {
+            form.reset();
+            inputs.forEach(input => {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = false;
+                } else {
+                    input.value = "";
+                }
+                input.style.borderColor = "";
+            });
+        }
+    } else {
+        Swal.fire({
+            title: "Peringatan!",
+            text: "Lengkapi kolom!",
+            icon: "warning"
+        });
     }
 
 }
@@ -370,7 +389,8 @@ function cancelForm() {
             const form = document.getElementById("form-transaksi");
             if (form) {
                 form.reset();
-                document.querySelectorAll("input, select, textarea").forEach(input => {
+                const inputs = form.querySelectorAll("input, select, textarea");
+                inputs.forEach(input => {
                     if (input.type === "checkbox" || input.type === "radio") {
                         input.checked = false;
                     } else {
@@ -379,6 +399,60 @@ function cancelForm() {
                     input.style.borderColor = "";
                 });
             }
+
+            const additionalInputs = document.querySelectorAll("input, select, textarea");
+            additionalInputs.forEach(input => {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = false;
+                } else {
+                    input.value = "";
+                }
+                input.style.borderColor = "";
+            });
+        }
+    });
+}
+
+
+function cancelForm() {
+    Swal.fire({
+        title: "Konfirmasi",
+        text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, batalkan!",
+        cancelButtonText: "Tidak"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Dibatalkan",
+                text: "Form Transaksi telah dibatalkan.",
+                icon: "info"
+            });
+
+            const form = document.getElementById("form-transaksi");
+            if (form) {
+                form.reset();
+                const inputs = form.querySelectorAll("input, select, textarea");
+                inputs.forEach(input => {
+                    if (input.type === "checkbox" || input.type === "radio") {
+                        input.checked = false;
+                    } else {
+                        input.value = "";
+                    }
+                    input.style.borderColor = "";
+                });
+            }
+
+            const additionalInputs = document.querySelectorAll("input, select, textarea");
+            additionalInputs.forEach(input => {
+                if (input.type === "checkbox" || input.type === "radio") {
+                    input.checked = false;
+                } else {
+                    input.value = "";
+                }
+                input.style.borderColor = "";
+            });
         }
     });
 }

@@ -190,8 +190,8 @@
                     cancelButtonText: "Batal"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        removeFormatBeforeSubmit(); // Menghapus format sebelum submit
-                        document.getElementById("produkForm").submit(); // Memastikan form terkirim
+                        removeFormatBeforeSubmit(); 
+                        document.getElementById("produkForm").submit(); 
                     }
                 });
             } else {
