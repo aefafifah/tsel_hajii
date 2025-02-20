@@ -351,7 +351,6 @@ function OkeForm() {
     if (isValid) {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
-<<<<<<< HEAD
 
         const form = document.getElementById("form-transaksi");
         if (form) {
@@ -371,8 +370,6 @@ function OkeForm() {
             text: "Lengkapi kolom!",
             icon: "warning"
         });
-=======
->>>>>>> da90ce02c948a0ff1b00d5d88aff2ee5d7f44d3f
     }
 
 }
