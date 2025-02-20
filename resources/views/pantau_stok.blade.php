@@ -1,4 +1,9 @@
 <x-supvis.supvislayouts>
+    <style>
+        body, html {
+            overflow: hidden;
+        }
+    </style>
     <div class="container">
         <h2 class="text-center mt-5 mb-5"><b>Riwayat Perubahan Stok</b></h2>
 
