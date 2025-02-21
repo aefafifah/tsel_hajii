@@ -6,6 +6,7 @@
 
         @if ($merchandises->whereNull('deleted_at')->isEmpty())
             <div class="alert alert-warning text-center">Belum ada merchandise yang tersedia.</div>
+            <br><br><br>
         @else
             <div class="row">
                 @foreach ($merchandises->whereNull('deleted_at') as $merchandise)
@@ -69,9 +70,9 @@
                             <div class="card-body">
                                 <h5 class="card-title font-weight-bold" style="color: black;">{{ $merch->merch_nama }}
                                 </h5>
-                                <p class="card-text"><strong>Deskripsi:</strong> {{ $merchandise->merch_detail }}</p>
-                                <p class="card-text"><strong>Stok:</strong> {{ $merchandise->merch_stok }}</p>
-                                <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merchandise->merch_terambil }}</span></p>
+                                <p class="card-text"><strong>Deskripsi:</strong> {{ $merch->merch_detail }}</p>
+                                <p class="card-text"><strong>Stok:</strong> {{ $merch->merch_stok }}</p>
+                                <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merch->merch_terambil }}</span></p>
                                 <div class="d-flex justify-content-between mt-3">
                                     
                                     <form action="{{ route('merch.restore', $merch->id) }}" method="POST"
