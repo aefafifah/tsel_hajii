@@ -100,14 +100,6 @@
                     </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="is_active">Status</label>
-                    <select name="is_active" id="is_active" class="form-control">
-                        <option value="1" {{ old('is_active') == 1 ? 'selected' : '' }}>Aktif</option>
-                        <option value="0" {{ old('is_active') == 0 ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
-                </div>
-
                 <div class="text-center d-flex justify-content-center gap-3 mt-3">
                     <button type="submit" class="btn custom-button">Simpan</button>
                     <button type="button" class="btn btn-danger" id="cancelButton">Batal</button>

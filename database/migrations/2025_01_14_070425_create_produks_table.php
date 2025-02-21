@@ -21,7 +21,6 @@ return new class extends Migration
             $table->text('produk_detail');
             $table->integer('produk_stok');
             $table->integer('produk_insentif')->default(0);
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

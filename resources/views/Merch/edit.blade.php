@@ -7,12 +7,12 @@
 
             <div class="mb-3">
                 <label for="merch_nama" class="form-label" style="font-weight: bold;">Nama Merchandise</label>
-                <input type="text" name="merch_nama" id="merch_nama" class="form-control" value="{{ $merchandise->merch_nama }}" placeholder="Masukkan nama merchandise" required>
+                <input type="text" name="merch_nama" id="merch_nama" class="form-control bg-light text-secondary border" value="{{ $merchandise->merch_nama }}" placeholder="Masukkan nama merchandise" readonly>
             </div>
 
             <div class="mb-3">
                 <label for="merch_detail" class="form-label" style="font-weight: bold;">Detail Merchandise</label>
-                <textarea name="merch_detail" id="merch_detail" class="form-control" rows="4" placeholder="Masukkan detail merchandise" required>{{ $merchandise->merch_detail }}</textarea>
+                <textarea name="merch_detail" id="merch_detail" class="form-control bg-light text-secondary border" rows="4" placeholder="Masukkan detail merchandise" readonly>{{ $merchandise->merch_detail }}</textarea>
             </div>
 
             <div class="mb-3">

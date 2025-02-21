@@ -18,7 +18,7 @@
                                 <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merchandise->merch_terambil }}</span></p>
                                 <div class="d-flex justify-content-between mt-3">
                                     <a href="{{ route('merch.show', $merchandise->id) }}" class="btn btn-info btn-sm">🔍 Detail</a>
-                                    <a href="{{ route('merch.edit', $merchandise->id) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+                                    <a href="{{ route('merch.edit', $merchandise->id) }}" class="btn btn-warning btn-sm">✏️ Stok</a>
                                     <form action="{{ route('merch.destroy', $merchandise->id) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')

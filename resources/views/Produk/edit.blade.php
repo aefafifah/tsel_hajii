@@ -17,29 +17,29 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="produk_nama" class="form-label">Nama Produk</label>
-                <input type="text" class="form-control" id="produk_nama" name="produk_nama"
-                    value="{{ old('produk_nama', $produk->produk_nama) }}" required>
+                <input type="text" class="form-control bg-light text-secondary border" id="produk_nama" name="produk_nama"
+                    value="{{ old('produk_nama', $produk->produk_nama) }}" readonly>
             </div>
 
             <div class="mb-3">
                 <label for="produk_harga" class="form-label">Harga Produk</label>
-                <input type="text" class="form-control" id="produk_harga" name="produk_harga" required
+                <input type="text" class="form-control bg-light text-secondary border" id="produk_harga" name="produk_harga" required
                     value="{{ old('produk_harga', number_format($produk->produk_harga, 0, ',', '.')) }}"
-                    onkeyup="formatRupiah(this)">
+                    onkeyup="formatRupiah(this)" readonly>
             </div>
 
             <div class="mb-3">
                 <label for="produk_diskon" class="form-label">Diskon (Rp)</label>
-                <input type="text" class="form-control" id="produk_diskon" name="produk_diskon"
+                <input type="text" class="form-control bg-light text-secondary border" id="produk_diskon" name="produk_diskon"
                     value="{{ old('produk_diskon', number_format($produk->produk_diskon, 0, ',', '.')) }}"
-                    onkeyup="formatRupiah(this)">
+                    onkeyup="formatRupiah(this)" readonly>
             </div>
 
             <div class="mb-3">
                 <label for="produk_insentif" class="form-label">Insentif (Rp)</label>
-                <input type="text" class="form-control" id="produk_insentif" name="produk_insentif"
+                <input type="text" class="form-control bg-light text-secondary border" id="produk_insentif" name="produk_insentif"
                     value="{{ old('produk_insentif', number_format($produk->produk_insentif, 0, ',', '.')) }}"
-                    onkeyup="formatRupiah(this)">
+                    onkeyup="formatRupiah(this)" readonly>
             </div>
 
             <div class="mb-3">
@@ -65,12 +65,13 @@
 
             <div class="mb-3">
                 <label for="produk_detail" class="form-label">Detail Produk</label>
-                <textarea class="form-control" id="produk_detail" name="produk_detail" rows="4" required>{{ old('produk_detail', $produk->produk_detail) }}</textarea>
+                <textarea class="form-control bg-light text-secondary border" id="produk_detail" name="produk_detail" rows="4" readonly>{{ old('produk_detail', $produk->produk_detail) }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label for="merchandises" class="form-label">Merchandise</label>
                 <div>
+                    <fieldset disabled="disabled">
                     @foreach ($merchandises as $merchandise)
                         <div class="form-check">
                             <input type="checkbox" name="merchandises[]" id="merchandise_{{ $merchandise->id }}"
@@ -81,17 +82,8 @@
                             </label>
                         </div>
                     @endforeach
+                    </fieldset>
                 </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="is_active" class="form-label">Status</label>
-                <select class="form-control" id="is_active" name="is_active">
-                    <option value="1" {{ old('is_active', $produk->is_active) == 1 ? 'selected' : '' }}>Aktif
-                    </option>
-                    <option value="0" {{ old('is_active', $produk->is_active) == 0 ? 'selected' : '' }}>Tidak
-                        Aktif</option>
-                </select>
             </div>
 
             <button type="submit" class="btn btn-primary">Simpan</button>

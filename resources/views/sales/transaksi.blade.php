@@ -352,24 +352,27 @@ function OkeForm() {
         alert("Transaksi Sukses!");
         alert("Transaksi telah disimpan");
 
-        const form = document.getElementById("form-transaksi");
-        if (form) {
-            form.reset();
-            inputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-                input.style.borderColor = "";
-            });
-        }
+        // Clear all form inputs
+        const form = document.querySelector("form");
+        form.reset();
+
+        // Clear any custom styling
+        inputs.forEach(input => {
+            input.style.borderColor = "";
+        });
+
+        // Refresh the page after a brief delay
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
+        return true;
     } else {
         Swal.fire({
             title: "Peringatan!",
             text: "Lengkapi kolom!",
             icon: "warning"
         });
+        return false;
     }
 
 }

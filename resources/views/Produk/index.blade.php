@@ -28,7 +28,7 @@
                                     <a href="{{ route('produk.show', $produk->id) }}" class="btn btn-info btn-sm">🔍
                                         Detail</a>
                                     <a href="{{ route('produk.edit', $produk->id) }}" class="btn btn-warning btn-sm">✏️
-                                        Edit</a>
+                                        Stok</a>
                                         <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')

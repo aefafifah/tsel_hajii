@@ -44,7 +44,6 @@ class ProdukController extends Controller
                 'produk_stok' => $validatedData['produk_stok'],
                 'produk_detail' => $validatedData['produk_detail'] ?? '',
                 'produk_insentif' => $validatedData['produk_insentif'] ?? 0,
-                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
