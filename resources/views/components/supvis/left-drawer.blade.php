@@ -1,12 +1,12 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="index.html">
-            <span class="align-middle">Halo,!</span>
+            <span class="align-middle">Halo, {{ Auth::user()->name }}!</span>
         </a>
 
         <ul class="sidebar-nav">
             <li class="sidebar-header">
-                SuperVisor
+                Dashboard
             </li>
 
             <x-nav-link href="{{ route('supvis.home') }}" :active="request()->is('supvis/home') || request()->is('supvis/budget-insentif')">Home</x-nav-link>
