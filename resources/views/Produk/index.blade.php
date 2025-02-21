@@ -5,6 +5,7 @@
 
         @if ($produks->whereNull('deleted_at')->isEmpty())
             <div class="alert alert-warning text-center">Belum ada produk yang tersedia.</div>
+            <br><br><br>
         @else
             <div class="row">
                 @foreach ($produks->whereNull('deleted_at') as $produk)
