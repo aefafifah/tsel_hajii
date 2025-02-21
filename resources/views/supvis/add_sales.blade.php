@@ -128,22 +128,47 @@
         } 
 
 
-        .btn {
-            width: 100%;
-            padding: 12px;
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-save {
+            flex: 1;
             background: linear-gradient(45deg, #43e97b, #2575FC);
-            color: white;
+            padding: 12px;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            box-sizing: border-box;
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
-        .btn:hover {
+        .btn-save:hover {
             background: linear-gradient(45deg, #36c271, #1e66d9);
         }
+
+        .btn-cancel {
+            flex: 1;
+            background: #ff4d4d;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-cancel:hover {
+            background: #d43f3f;
+        }
+
 
         .error {
             color: #ff4d4d;
@@ -212,7 +237,10 @@
                 </select>
                 <div class="error" id="roleError"></div>
             </div>
-            <button type="submit" class="btn" onclick="showAlert(event)">Tambah Sales</button>
+            <div class="btn-container">
+                <button type="submit" class="btn btn-save" onclick="showAlert(event)">Tambah Sales</button>
+                <button type="button" class="btn btn-cancel" onclick="confirmCancel()">Batal</button>
+            </div>
         </form>
     </div>
 
@@ -333,7 +361,6 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Validasi Gagal',
-                    text: 'Mohon periksa kembali form isian Anda',
                 });
                 return;
             }
@@ -359,7 +386,6 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Sukses!',
-                        text: 'Data sales berhasil disimpan!'
                     }).then(() => {
                         window.location.reload();
                     });
@@ -370,10 +396,62 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Terjadi kesalahan. Silakan coba lagi.'
                 });
             });
         }
+
+                    function confirmAdd(event) {
+                event.preventDefault(); 
+
+                let namaSales = document.querySelector('input[name="name"]').value.trim();
+                let email = document.querySelector('input[name="email"]').value.trim();
+                let telepon = document.querySelector('input[name="phone"]').value.trim();
+                let pin = document.querySelector('input[name="pin"]').value.trim();
+                let role = document.querySelector('select[name="role"]').value.trim();
+
+                if (namaSales && email && telepon && pin && role) {
+                    Swal.fire({
+                        title: "Apakah Anda yakin?",
+                        text: "Data akan disimpan!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, Simpan",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById("addSalesForm").submit();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Lengkapi Kolom!",
+                        text: "Harap isi semua kolom sebelum melanjutkan.",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelector(".btn-save").addEventListener("click", confirmAdd);
+            });
+
+            function confirmCancel() {
+                Swal.fire({
+                    title: "Apakah Anda yakin?",
+                    text: "Pengisian akan dibatalkan dan form dikosongkan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, batal!",
+                    cancelButtonText: "Tidak",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("addSalesForm").reset(); 
+                        document.querySelector('.avatar-preview').innerHTML = '<i class="fas fa-user"></i>'; 
+                    }
+                });
+            }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('addSalesForm');
