@@ -150,45 +150,53 @@
     </div>
 
     <script>
-        let pin = "";
-        const correctPin = "123456";
+    let pin = "";
+    const correctPin = "123456";
+    const allowedEmails = ["supervisor@test.com", "sales@test.com", "superuservisor@test.com"];
 
-        function addDigit(digit) {
-            if (pin.length < 6) {
-                pin += digit;
-                updateDisplay();
-            }
-        }
-
-        function clearPin() {
-            pin = "";
+    function addDigit(digit) {
+        if (pin.length < 6) {
+            pin += digit;
             updateDisplay();
         }
+    }
 
-        function updateDisplay() {
-            for (let i = 1; i <= 6; i++) {
-                document.getElementById(`digit${i}`).textContent = i <= pin.length ? "*" : "•";
-            }
-            document.getElementById("hiddenPin").value = pin;
+    function clearPin() {
+        pin = "";
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        for (let i = 1; i <= 6; i++) {
+            document.getElementById(`digit${i}`).textContent = i <= pin.length ? "*" : "•";
+        }
+        document.getElementById("hiddenPin").value = pin;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let emailInput = document.getElementById("email").value;
+
+        if (!allowedEmails.includes(emailInput)) {
+            Swal.fire("Email Salah!", "Gunakan email yang diperbolehkan.", "error");
+            return;
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            if (pin.length !== 4 && pin.length !== 6) {
-                Swal.fire("PIN Tidak Valid!", "PIN harus terdiri dari 4 atau 6 digit!", "warning");
-            } else if (pin !== correctPin) {
-                Swal.fire("PIN Salah!", "Silakan coba lagi.", "error");
-                clearPin();
-            } else {
-                Swal.fire({
-                    title: "Login Berhasil!",
-                    text: "Selamat datang!",
-                    icon: "success"
-                }).then(() => {
-                    this.submit();
-                });
-            }
-        });
-    </script>
+        if (pin.length !== 4 && pin.length !== 6) {
+            Swal.fire("PIN Tidak Valid!", "PIN harus terdiri dari 4 atau 6 digit!", "warning");
+        } else if (pin !== correctPin) {
+            Swal.fire("PIN Salah!", "Silakan coba lagi.", "error");
+            clearPin();
+        } else {
+            Swal.fire({
+                title: "Login Berhasil!",
+                text: "Selamat datang!",
+                icon: "success"
+            }).then(() => {
+                this.submit();
+            });
+        }
+    });
+</script>
 </body>
 </html>
