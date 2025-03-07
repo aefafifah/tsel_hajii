@@ -37,9 +37,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['supervisor'])->group(function () {
     // Dashboard Supervisor
     Route::get('/supvis/home', [HomeController::class, 'index'])->name('supvis.home');
-     // Riwayat Transaksi
-     Route::get('/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
-     ->name('supvis.transactions.index');
+    // Riwayat Transaksi
+    Route::get('/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
+        ->name('supvis.transactions.index');
 
 
     // Rute Insentif
@@ -92,8 +92,8 @@ Route::middleware(['supervisor'])->group(function () {
     })->name('add_supvis');
 
     // Sales Checklist
-    Route::get('/sales-checklist', [SalesController::class, 'showChecklist'])->name('sales.checklist');
-    Route::post('/update-is-setoran/{id}',[SalesController::class,'updateIsSetoran'])-> name ('is_setoran');
+
+
 
     Route::prefix('supvis')->name('supvis.')->group(function () {
         // Budget Insentif
@@ -128,8 +128,17 @@ Route::middleware(['sales'])->group(function () {
     })->name('sales.kwitansi');
 
     Route::get('sales/rekap', [TransaksiController::class, 'dashboard'])->name('sales/rekap');
-    });
+});
 
+// checklist sales
+Route::post('/update-setoran-sales', [SupvisController::class, 'updateSetoranSales'])->name('update.setoran.sales');
+Route::post('/update-setoran-status', [SupvisController::class, 'updateSetoranStatus'])->name('update.setoran.status');
+Route::post('/supvis/update-is-setoran/{id}', [SupvisController::class, 'updateIsSetoran']);
+Route::post('/supvis/setoran', [SupvisController::class, 'setoran']);
+Route::post('/supvis/update-setoran', [SupvisController::class, 'updateSetoran'])->name('supvis.update-setoran');
+Route::get('/history-setoran', [SupvisController::class, 'showHistorySetoran']);
+Route::get('/history-setoran/data', [SupvisController::class, 'getHistorySetoranData'])->name('history.setoran.data');
+Route::post('/update-setoran-status', [SupvisController::class, 'updateSetoranStatus'])->name('update.history.setoran.status');
 
 
 

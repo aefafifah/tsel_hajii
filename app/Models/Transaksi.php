@@ -17,6 +17,7 @@ class Transaksi extends Model
 
     protected $casts = [
         'tanggal_transaksi' => 'datetime',
+        'history_setoran' => 'array',
     ];
     protected $dates = ['tanggal_transaksi'];
 
@@ -30,7 +31,9 @@ class Transaksi extends Model
         'nama_sales',
         'jenis_paket',
         'merchandise',
-        'metode_pembayaran'
+        'metode_pembayaran',
+        'history_setoran',
+        'is_setor',
     ];
     public function produk()
     {
@@ -42,6 +45,9 @@ class Transaksi extends Model
         return $this->belongsToMany(Merchandise::class, 'transaksi_merchandise', 'transaksi_id', 'merchandise_id');
     }
 
-    
+    public function getHistorySetoranAttribute()
+    {
+        return json_decode($this->attributes['history_setoran'], true) ?? [];
+    }
 
 }

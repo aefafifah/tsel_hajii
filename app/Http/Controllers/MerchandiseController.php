@@ -21,9 +21,16 @@ class MerchandiseController extends Controller
 
 
     public function show(Merchandise $merchandise)
-    {
-        return view('merch.show', compact('merchandise'));
-    }
+{
+    return response()->json([
+        'merch_nama' => $merchandise->merch_nama,
+        'merch_detail' => $merchandise->merch_detail,
+        'merch_stok' => $merchandise->merch_stok,
+        'merch_terambil' => $merchandise->merch_terambil,
+        'is_active' => $merchandise->is_active,
+        // Jika Anda memiliki relasi lain yang ingin ditampilkan, tambahkan di sini
+    ]);
+}
 
     public function edit(Merchandise $merchandise)
     {

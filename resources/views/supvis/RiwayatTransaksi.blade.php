@@ -1,9 +1,20 @@
 <x-supvis.supvislayouts>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <title>All Transactions</title>
         <style>
             body {
@@ -80,7 +91,8 @@
                 margin-top: 8px;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 9px;
                 text-align: left;
                 border: 1px solid #ddd;
@@ -93,13 +105,13 @@
             }
 
             .penjualan {
-                background: linear-gradient(135deg, #2575FC, #43e97b);
+                background: #23a0b0;
                 color: white;
                 font-weight: bold;
             }
 
             thead tr {
-                background: linear-gradient(135deg, #2575FC, #43e97b);
+                background: #23a0b0;
                 color: white;
                 font-weight: bold;
             }
@@ -114,7 +126,7 @@
             }
 
             tr:hover {
-                background-color: #ddd;
+                background-color: #1c828f;
             }
 
             @media screen and (max-width: 600px) {
@@ -143,15 +155,15 @@
                 }
 
                 td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                background: linear-gradient(135deg, #2575FC, #43e97b);
-                -webkit-background-clip: text;
-                color: transparent;
-                text-align: left;
-                padding: 5px;
+                    content: attr(data-label);
+                    font-weight: bold;
+                    background: linear-gradient(135deg, #2575FC, #43e97b);
+                    -webkit-background-clip: text;
+                    color: transparent;
+                    text-align: left;
+                    padding: 5px;
                 }
-            
+
                 @media (max-width: 768px) {
                     .search-container {
                         width: 90%;
@@ -159,7 +171,7 @@
                     }
 
                     .filter-box,
-                        .search-box {
+                    .search-box {
                         flex: 1;
                     }
 
@@ -172,7 +184,35 @@
                         font-size: 16px;
                     }
                 }
-            }  
+            }
+
+            .dataTables_wrapper .dataTables_paginate .page-item .page-link {
+                background-color: #23a0b0 !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 5px !important;
+                padding: 5px 10px !important;
+                margin: 2px !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .page-item .page-link:hover {
+                background-color: #1b8190 !important;
+                color: white !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+                background-color: #23a0b0 !important;
+                color: white !important;
+                font-weight: bold !important;
+                box-shadow: none !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link {
+                background-color: #b0b0b0 !important;
+                color: #ffffff !important;
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
         </style>
     </head>
 
@@ -229,37 +269,38 @@
             </div>
         </div>
 
-        <table class="data-table" id="transactionTable">
-            <thead>
-                <tr>
-                    <th>ID Transaksi</th>
-                    <th>Nomor Telepon</th>
-                    <th>Nama Pelanggan</th>
-                    <th>Tanggal Transaksi</th>
-                    <th>Nama Sales</th>
-                    <th>Jenis Paket</th>
-                    <th>Merchandise</th>
-                    <th>Metode Pembayaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($transaksi as $transaction)
+        <div class = "container mt-4">
+            <table class="data-table" id="transactionTable">
+                <thead>
                     <tr>
-                        <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
-                        <td data-label="Nomor Telepon">{{ $transaction->nomor_telepon }}</td>
-                        <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
-                        <td data-label="Tanggal Transaksi">{{ $transaction->aktivasi_tanggal }}</td>
-                        <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
-                        <td data-label="Jenis Paket">
-                            {{ $transaction->produk ? $transaction->produk->produk_nama : 'Produk tidak ditemukan' }}
-                        </td>
-                        <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
-                        <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
+                        <th>ID Transaksi</th>
+                        <th>Nomor Telepon</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Nama Sales</th>
+                        <th>Jenis Paket</th>
+                        <th>Merchandise</th>
+                        <th>Metode Pembayaran</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                    @foreach ($transaksi as $transaction)
+                        <tr>
+                            <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
+                            <td data-label="Nomor Telepon">{{ $transaction->nomor_telepon }}</td>
+                            <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
+                            <td data-label="Tanggal Transaksi">{{ $transaction->aktivasi_tanggal }}</td>
+                            <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
+                            <td data-label="Jenis Paket">
+                                {{ $transaction->produk ? $transaction->produk->produk_nama : 'Produk tidak ditemukan' }}
+                            </td>
+                            <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
+                            <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         <script>
             function searchTable() {
                 const input = document.getElementById('searchInput');
@@ -281,6 +322,30 @@
                     rows[i].style.display = match ? '' : 'none';
                 }
             }
+            $(document).ready(function() {
+                $('#transactionTable').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "order": [
+                        [0, "asc"]
+                    ],
+                    "language": {
+                        "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                        "zeroRecords": "Tidak ada data ditemukan",
+                        "info": "Menampilkan _PAGE_ dari _PAGES_ halaman",
+                        "infoEmpty": "Tidak ada data tersedia",
+                        "infoFiltered": "(disaring dari _MAX_ total data)",
+                        "search": "Cari:",
+                        "paginate": {
+                            "first": "Pertama",
+                            "last": "Terakhir",
+                            "next": "Selanjutnya",
+                            "previous": "Sebelumnya"
+                        }
+                    }
+                });
+            });
         </script>
     </body>
     </html>

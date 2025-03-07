@@ -1,11 +1,12 @@
 <x-sales.saleslayouts>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            background: #f1f1f1
+            background: linear-gradient(135deg, #2575FC, #43e97b);
             margin: 0;
             padding: 0;
         }
@@ -21,7 +22,8 @@
             margin-bottom: 20px;
         }
 
-        .filter-select, .search-input {
+        .filter-select,
+        .search-input {
             padding: 10px;
             font-size: 14px;
             border-radius: 8px;
@@ -60,30 +62,27 @@
             min-width: 600px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
         }
 
         th {
-            background: rgb(44, 54, 77);
+            background: linear-gradient(135deg, #2575FC, #43e97b);
             color: white;
             font-weight: bold;
         }
+
         tr:hover {
             background-color: #f1f1f1;
         }
 
         .total-row {
-            background: rgb(44, 54, 77);
-            border-radius: 15px;
+            background: linear-gradient(135deg, #2575FC, #43e97b);
             font-weight: bold;
             color: white;
-        }
-
-        .total-row:hover {
-            background-color: rgb(44, 54, 77);
         }
 
         .no-results {
@@ -92,13 +91,15 @@
             color: #999;
             display: none;
         }
+
         @media (max-width: 768px) {
             .filter-box {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .filter-select, .search-input {
+            .filter-select,
+            .search-input {
                 width: 100%;
                 margin: 10px 0;
             }
@@ -108,10 +109,12 @@
             }
 
             table {
-                min-width: 300px; 
+                min-width: 300px;
+                /* Mengurangi lebar minimum untuk layar kecil */
             }
 
-            th, td {
+            th,
+            td {
                 padding: 10px;
                 font-size: 12px;
             }
@@ -135,10 +138,9 @@
             text-decoration: line-through;
             color: #999;
         }
-
     </style>
 
-    <div class="dashboard">
+    <div class="container mt-5">
         <div class="filter-box">
             <label for="filter-transaksi">Filter Transaksi: </label>
             <select id="filter-transaksi" class="filter-select">
@@ -153,7 +155,6 @@
                 <i class="fas fa-search"></i>
             </div>
         </div>
-
         <div class="table-container">
             <table id="dataTable">
                 <thead>
@@ -175,25 +176,36 @@
                 <tbody>
                     @if ($groupedTransaksi->isEmpty())
                         <tr>
-                            <td colspan="11">Tidak ada transaksi yang ditemukan.</td>
+                            <td colspan="12">Tidak ada transaksi yang ditemukan.</td>
                         </tr>
                     @else
                         @foreach ($groupedTransaksi as $tanggal => $items)
+                            @php
+                                $firstItem = $items->first(); // Ambil ID transaksi pertama untuk mewakili grup
+                            @endphp
                             <tr>
-                                <th colspan="12">Tanggal: {{ $tanggal }}</th>
+                                <th colspan="12">
+                                    <input type="checkbox" class="setoran-checkbox" data-date="{{ $tanggal }}"
+                                        data-id="{{ $firstItem->id_transaksi }}">
+                                    Tanggal: {{ \Carbon\Carbon::parse($tanggal)->format('d M Y') }}
+                                </th>
                             </tr>
                             @foreach ($items as $item)
-                                <tr class="transaksi-row {{ $item->trashed() ? 'voided' : '' }}" data-id="{{ $item->id_transaksi }}">
+                                <tr class="transaksi-row {{ $item->trashed() ? 'voided' : '' }}"
+                                    data-date="{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('Y-m-d') }}"
+                                    data-id="{{ $item->id_transaksi }}">
                                     <td>
-                                        <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}" {{ $item->trashed() ? 'checked' : '' }}>
+                                        <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}"
+                                            {{ $item->trashed() ? 'checked' : '' }}>
                                     </td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
                                     <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
                                     <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
-                                    <td class="tanggal">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
+                                    <td class="tanggal">
+                                        {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="nama-sales">{{ $item->nama_sales }}</td>
-                                    <td class="jenis-paket">{{ $item->produk->produk_nama }}</td>
-                                    <td class="jenis-paket">{{ $item->nomor_injeksi}}</td>
+                                    <td class="jenis-paket">{{ $item->jenis_paket }}</td>
+                                    <td class="nomor-injeksi">{{ $item->nomor_injeksi }}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
                                     <td class="metode-pembayaran">{{ $item->metode_pembayaran }}</td>
                                     <td class="harga">{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
@@ -211,14 +223,53 @@
                     </tr>
                 </tfoot>
             </table>
-            <div class="no-results">Tidak ada transaksi yang ditemukan.</div>
+        </div>
+        <button id="get-setoran-button" type="submit" class="btn btn-primary mt-3">Ambil Setoran</button>
+
+        <h3 class="mt-3">Transaksi yang Sudah Disetor</h3>
+        <div class="table-container">
+            <table id="setoranTable">
+                <thead>
+                    <tr>
+                        <th>ID Transaksi</th>
+                        <th>Nomor Telepon</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Nama Sales</th>
+                        <th>Jenis Paket</th>
+                        <th>No Injeksi</th>
+                        <th>Merchandise</th>
+                        <th>Metode Pembayaran</th>
+                        <th>Harga</th>
+                        <th>Insentif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($setoranTransaksi as $item)
+                        <tr>
+                            <td>{{ $item->id_transaksi }}</td>
+                            <td>{{ $item->nomor_telepon }}</td>
+                            <td>{{ $item->nama_pelanggan }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
+                            <td>{{ $item->nama_sales }}</td>
+                            <td>{{ $item->jenis_paket }}</td>
+                            <td>{{ $item->nomor_injeksi }}</td>
+                            <td>{{ $item->merchandise }}</td>
+                            <td>{{ $item->metode_pembayaran }}</td>
+                            <td>{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
+                            <td>{{ $item->produk ? $item->produk->produk_insentif : 0 }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".void-checkbox").forEach(function (checkbox) {
-                checkbox.addEventListener("change", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".void-checkbox").forEach(function(checkbox) {
+                checkbox.addEventListener("change", function() {
                     let row = this.closest(".transaksi-row");
                     let transaksiId = this.getAttribute("data-id");
 
@@ -234,7 +285,9 @@
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
                         },
-                        body: JSON.stringify({ is_void: this.checked })
+                        body: JSON.stringify({
+                            is_void: this.checked
+                        })
                     });
                 });
 
@@ -242,83 +295,146 @@
                     checkbox.closest(".transaksi-row").classList.add("voided");
                 }
             });
-        });
 
-        $(document).ready(function () {
+            document.querySelectorAll('.setoran-checkbox').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    Swal.fire({
+                        title: "Pilih Aksi",
+                        text: "Apakah Anda ingin menyetor atau menghapus transaksi ini?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Setor",
+                        cancelButtonText: "Hapus",
+                        reverseButtons: true
+                    }).then((result) => {
+                        const isSetor = result.isConfirmed;
+                        toggleVoidOrSetor(this, isSetor);
+                    });
+                });
+            });
+
+            function toggleVoidOrSetor(checkbox, isSetor) {
+                const date = checkbox.getAttribute('data-date');
+                const transaksiCheckboxes = document.querySelectorAll(
+                    `.transaksi-row[data-date="${date}"] .void-checkbox`
+                );
+
+                transaksiCheckboxes.forEach(cb => {
+                    cb.checked = !isSetor;
+                    cb.dispatchEvent(new Event('change'));
+                    cb.closest('.transaksi-row').classList.toggle('voided', isSetor);
+                });
+
+                fetch('/supvis/setoran', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            date: date,
+                            is_void: !isSetor
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire("Berhasil!", `Transaksi telah ${isSetor ? 'disetorkan' : 'dihapus'}.`,
+                            "success");
+                    })
+                    .catch(error => console.error('Gagal memperbarui transaksi:', error));
+            }
+
             function calculateTotals() {
                 let totalPenjualan = 0;
                 let totalInsentif = 0;
 
-                $('#dataTable tbody tr:visible').each(function () {
-                    const harga = parseFloat($(this).find('.harga').text()) || 0;
-                    const insentif = parseFloat($(this).find('.insentif').text()) || 0;
+                document.querySelectorAll('#dataTable tbody tr:visible').forEach(row => {
+                    const harga = parseFloat(row.querySelector('.harga')?.textContent || 0);
+                    const insentif = parseFloat(row.querySelector('.insentif')?.textContent || 0);
                     totalPenjualan += harga;
                     totalInsentif += insentif;
                 });
 
-                $('#total-penjualan').text(`Rp ${totalPenjualan.toLocaleString('id-ID')}`);
-                $('#total-insentif').text(`Rp ${totalInsentif.toLocaleString('id-ID')}`);
+                document.getElementById('total-penjualan').textContent =
+                    `Rp ${totalPenjualan.toLocaleString('id-ID')}`;
+                document.getElementById('total-insentif').textContent =
+                    `Rp ${totalInsentif.toLocaleString('id-ID')}`;
             }
 
-            $('#search-input').on('keyup', function () {
-                const value = $(this).val().toLowerCase();
+            document.getElementById('search-input').addEventListener('keyup', function() {
+                const value = this.value.toLowerCase();
                 let hasResults = false;
 
-                $('#dataTable tbody tr').filter(function () {
-                    const isVisible = $(this).text().toLowerCase().indexOf(value) > -1;
-                    $(this).toggle(isVisible);
-                    if (isVisible) {
-                        hasResults = true;
-                    }
+                document.querySelectorAll('#dataTable tbody tr').forEach(row => {
+                    const isVisible = row.textContent.toLowerCase().includes(value);
+                    row.style.display = isVisible ? '' : 'none';
+                    if (isVisible) hasResults = true;
                 });
 
-                if (hasResults) {
-                    $('.no-results').hide();
-                    $('#total-row').show();
-                } else {
-                    $('.no-results').show();
-                    $('#total-row').hide();
-                }
+                document.querySelector('.no-results').style.display = hasResults ? 'none' : '';
+                document.getElementById('total-row').style.display = hasResults ? '' : 'none';
 
                 calculateTotals();
             });
 
-            $('#filter-transaksi').on('change', function () {
-            const filterValue = $(this).val();
-            const today = new Date();
-            const filterDate = new Date();
-
-            $('#dataTable tbody tr').show(); 
-
-            if (filterValue === "1") { 
-                $('#dataTable tbody tr').filter(function () {
-                    const transactionDate = new Date($(this).find('.tanggal').text());
-                    return transactionDate.toDateString() !== today.toDateString();
-                }).hide();
-            } else if (filterValue === "7") { 
-                filterDate.setDate(today.getDate() - 7);
-                $('#dataTable tbody tr').filter(function () {
-                    const transactionDate = new Date($(this).find('.tanggal').text());
-                    return transactionDate < filterDate;
-                }).hide();
-            } else if (filterValue === "30") { 
-                filterDate.setMonth(today.getMonth() - 1);
-                $('#dataTable tbody tr').filter(function () {
-                    const transactionDate = new Date($(this).find('.tanggal').text());
-                    return transactionDate < filterDate;
-                }).hide();
-            } else if (filterValue === "365") { 
-                filterDate.setFullYear(today.getFullYear() - 1);
-                $('#dataTable tbody tr').filter(function () {
-                    const transactionDate = new Date($(this).find('.tanggal').text());
-                    return transactionDate < filterDate;
-                }).hide();
-            }
-
-            calculateTotals(); 
-        });
-
             calculateTotals();
+
+            document.getElementById('get-setoran-button').addEventListener('click', function() {
+                const selectedData = Array.from(document.querySelectorAll('.setoran-checkbox:checked'))
+                    .map(checkbox => ({
+                        id: checkbox.getAttribute('data-id'),
+                        date: checkbox.getAttribute('data-date')
+                    }));
+
+                if (selectedData.length === 0) {
+                    alert('Silakan pilih tanggal transaksi yang ingin diambil.');
+                    return;
+                }
+
+                fetch('/supvis/setoran', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            data: selectedData
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            alert('Setoran berhasil diambil.');
+                            console.log('Transaksi:', data.transaksis);
+                            console.log('Total Harga:', data.total_harga);
+                            console.log('Total Insentif:', data.total_insentif);
+                        }
+                    })
+                    .catch(error => console.error('Terjadi kesalahan:', error));
+            });
         });
+
+        function calculateTotals() {
+            let totalPenjualan = 0;
+            let totalInsentif = 0;
+
+            document.querySelectorAll('#dataTable tbody tr:visible').forEach(row => {
+                const hargaText = row.querySelector('.harga')?.textContent.trim() || "0";
+                const insentifText = row.querySelector('.insentif')?.textContent.trim() || "0";
+
+                console.log(`Harga: ${hargaText}, Insentif: ${insentifText}`); // Debugging
+
+                const harga = parseFloat(hargaText.replace(/[^\d.-]/g, '')) || 0;
+                const insentif = parseFloat(insentifText.replace(/[^\d.-]/g, '')) || 0;
+
+                totalPenjualan += harga;
+                totalInsentif += insentif;
+            });
+
+            document.getElementById('total-penjualan').textContent = `Rp ${totalPenjualan.toLocaleString('id-ID')}`;
+            document.getElementById('total-insentif').textContent = `Rp ${totalInsentif.toLocaleString('id-ID')}`;
+        }
     </script>
 </x-sales.saleslayouts>

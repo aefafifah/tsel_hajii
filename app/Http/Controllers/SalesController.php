@@ -20,7 +20,7 @@ class SalesController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'pin' => 'required|digits_between:4,6',
             'role' => 'required|string',
-            'phone'=> 'required|numeric',
+            'phone' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -31,25 +31,25 @@ class SalesController extends Controller
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('sales_photos', 'public');
         }
-        
+
         RoleUsers::create([
             'name' => $request->name,
             'email' => $request->email,
             'photo' => $photoPath,
             'pin' => $request->pin,
             'role' => $request->role,
-            'phone'=> $request->phone,
+            'phone' => $request->phone,
         ]);
         return redirect()->route('add_sales')->with('success', 'Sales berhasil ditambahkan!');
 
     }
 
-    public function showChecklist()
-    {
-        $sales = RoleUsers::where('role', operator: 'sales')->get();
+    // public function showChecklist()
+    // {
+    //     $sales = RoleUsers::where('role', operator: 'sales')->get();
 
-        return view('supvis.sales_allow', compact('sales'));
-    }
+    //     return view('supvis.sales_allow', compact('sales'));
+    // }
     public function updateIsSetoran(Request $request, $id)
     {
         $salesperson = RoleUsers::findOrFail($id);
@@ -82,9 +82,9 @@ class SalesController extends Controller
     public function index(Request $request)
     {
         $transaksi = Transaksi::withTrashed()
-                        ->with('produk')
-                        ->orderBy('tanggal_transaksi', 'desc')
-                        ->get();
+            ->with('produk')
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get();
 
         $groupedTransaksi = $transaksi->groupBy(function ($item) {
             return Carbon::today()->format('Y-m-d');

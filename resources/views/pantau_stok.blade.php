@@ -3,14 +3,50 @@
         body, html {
             overflow: hidden;
         }
+        #stock-table th {
+    background-color: #23a0b0;
+}
+
+        /* Ubah warna tombol pagination */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link {
+    background-color: #23a0b0 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 5px 10px !important;
+    margin: 2px !important;
+}
+
+/* Hover pada tombol pagination */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link:hover {
+    background-color: #1b8190 !important;
+    color: white !important;
+}
+
+/* Warna tombol aktif */
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+    background-color: #23a0b0 !important;
+    color: white !important;
+    font-weight: bold !important;
+    box-shadow: none !important;
+}
+
+/* Warna tombol disabled */
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link {
+    background-color: #b0b0b0 !important;
+    color: #ffffff !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
     </style>
     <div class="container">
         <h2 class="text-center mt-5 mb-5"><b>Riwayat Perubahan Stok</b></h2>
 
         <table id="stock-table" class="table table-bordered">
             <thead>
-                <tr class="text-center">
-                    <th>ID</th>
+                <tr class="text-center" style = "background-color:#23a0b0">
+                    <th style="background-color:#23a0b0">ID</th>
                     <th>Produk/Merchandise</th>
                     <th>Perubahan Stok</th>
                     <th>Stok Sebelum</th>

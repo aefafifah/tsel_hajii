@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <head>
 	<x-head-partial></x-head-partial>
@@ -7,7 +8,7 @@
 
 <body>
 	<div class="wrapper">
-        
+
 		<x-supvis.supvisleftdrawer></x-supvis.supvisleftdrawer>
 
 		<div class="main">

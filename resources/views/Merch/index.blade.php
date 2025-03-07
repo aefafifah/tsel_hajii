@@ -1,7 +1,17 @@
 <x-supvis.supvislayouts>
+    <!-- SweetAlert2 -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
     <div class="container mt-5">
         <h2 class="mb-4 text-center"><strong>Daftar Merchandise</strong></h2>
-        <a href="{{ route('merch.create') }}" class="btn btn-success mb-3">Tambah Merchandise</a>
+        <a href="{{ route('merch.create') }}" class="btn btn-success mb-3" style="background-color: #23a0b0;">Tambah Merchandise</a>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @if ($merchandises->whereNull('deleted_at')->isEmpty())
@@ -18,7 +28,7 @@
                                 <p class="card-text"><strong>Stok:</strong> {{ $merchandise->merch_stok }}</p>
                                 <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merchandise->merch_terambil }}</span></p>
                                 <div class="d-flex justify-content-between mt-3">
-                                    <a href="{{ route('merch.show', $merchandise->id) }}" class="btn btn-info btn-sm">🔍 Detail</a>
+                                    <a href="#" class="btn btn-info btn-sm btn-detail" data-id="{{ $merchandise->id }}">🔍 Detail</a>
                                     <a href="{{ route('merch.edit', $merchandise->id) }}" class="btn btn-warning btn-sm">✏️ Stok</a>
                                     <form action="{{ route('merch.destroy', $merchandise->id) }}" method="POST" class="d-inline delete-form">
                                         @csrf
@@ -30,7 +40,7 @@
                                         document.addEventListener("DOMContentLoaded", function () {
                                             document.querySelectorAll('.delete-form').forEach(form => {
                                                 form.addEventListener('submit', function (event) {
-                                                    event.preventDefault(); 
+                                                    event.preventDefault();
 
                                                     Swal.fire({
                                                         title: "Apakah Anda yakin?",
@@ -43,9 +53,34 @@
                                                         cancelButtonText: "Batal"
                                                     }).then((result) => {
                                                         if (result.isConfirmed) {
-                                                            form.submit(); 
+                                                            form.submit();
                                                         }
                                                     });
+                                                });
+                                            });
+                                        });
+                                        $(document).ready(function() {
+                                            $(document).off('click', '.btn-detail').on('click', '.btn-detail', function() {
+                                                let merchId = $(this).data('id');
+
+                                                $.ajax({
+                                                    url: "/merch/" + merchId,
+                                                    type: "GET",
+                                                    success: function(response) {
+                                                        Swal.fire({
+                                                            title: response.merch_nama,
+                                                            html: `
+                                                        <div style="text-align:left;">
+                                                            <p><strong>Deskripsi:</strong> ${response.merch_detail}</p>
+                                                            <p><strong>Stok:</strong> ${response.merch_stok}</p>
+                                                            <p><strong>Jumlah Terambil:</strong> ${response.merch_terambil}</p>
+                                                        </div>
+                                                    `,
+                                                            icon: 'info',
+                                                            confirmButtonText: 'Tutup',
+                                                            confirmButtonColor: '#23a0b0'
+                                                        });
+                                                    }
                                                 });
                                             });
                                         });
@@ -74,10 +109,10 @@
                                 <p class="card-text"><strong>Stok:</strong> {{ $merch->merch_stok }}</p>
                                 <p class="card-text"><strong>Jumlah Terambil:</strong> <span class="badge bg-primary">{{ $merch->merch_terambil }}</span></p>
                                 <div class="d-flex justify-content-between mt-3">
-                                    
+
                                     <form action="{{ route('merch.restore', $merch->id) }}" method="POST"
                                         class="d-inline">
-                                        
+
                                         @csrf
                                         <button type="submit" class="btn btn-success btn-sm">Restore</button>
 
@@ -90,7 +125,7 @@
             </div>
         @endif
 
-        
+
         <h3 class="mt-5 text-center"><strong>📊 Riwayat Pengambilan Merchandise</strong></h3>
 
         @php

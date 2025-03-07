@@ -164,6 +164,15 @@
                 background-color: #f0f9ff;
                 border: 2px solid #00C853;
             }
+
+        
+        /* ✅ Tampilan HP (<= 600px) */
+@media (max-width: 600px) {
+    .card {
+        max-width: 100%; /* Supaya card pas di layar */
+    }
+}
+
         </style>
     </head>
 
@@ -173,6 +182,7 @@
                 <img src="{{ asset('admin_asset/img/photos/logo_telkomsel.png') }}" alt="Logo Telkomsel"
                     style="height: 40px; width: auto; filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));">
             </div>
+            <div class="card mt-5" style="width: 50rem;">
             <div class="title">TRANSAKSI PEMBAYARAN</div>
             <form action="{{ route('sales/transaksi/submit') }}" method="POST" formtarget="_blank" target="_blank">
                 @csrf
@@ -247,7 +257,7 @@
                     <label>Tanggal Transaksi:</label>
                     <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" readonly required>
-                </div>
+                </div>
                 <div class="form-group">
                     <label>Metode Pembayaran:</label>
                     <div class="checkbox-group">
@@ -273,6 +283,7 @@
                     <button type="button" onclick="cancelForm()">Cancel</button>
                 </div>
             </form>
+        </div>
         </div>
 
         <script>

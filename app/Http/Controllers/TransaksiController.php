@@ -7,10 +7,8 @@ use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-
-
-use Pdf;
 
 class TransaksiController extends Controller
 {
@@ -109,7 +107,13 @@ class TransaksiController extends Controller
     }
     public function index()
     {
-        $transaksi = Transaksi::all();
+        $transaksi = Transaksi::withTrashed()
+            ->with([
+                'produk' => function ($query) {
+                    $query->withTrashed(); // Add this to include trashed products
+                }
+            ])
+            ->get();
 
         $totalPenjualan = 0;
 
@@ -134,7 +138,6 @@ class TransaksiController extends Controller
         $produks = Produk::with('merchandises')->get();
         return view('sales.transaksi', compact('produks'));
     }
-
     public function kwitansi(Request $request, $action = 'stream')
     {
         $formData = $request->session()->get('form_data', []);
@@ -148,56 +151,56 @@ class TransaksiController extends Controller
             ? $pdf->download("{$formData['id_transaksi']}.pdf")
             : $pdf->stream("{$formData['id_transaksi']}.pdf");
     }
-
     public function dashboard(Request $request)
     {
         if ($request->user() && $request->user()->role == 'sales') {
             $nama_sales = $request->user()->name;
+
+            // Ambil transaksi yang BELUM disetor sesuai nama sales yang login
             $transaksi = Transaksi::withTrashed()
-                ->with('produk')
+                ->with([
+                    'produk' => function ($query) {
+                        $query->withTrashed(); // Memastikan produk yang terhapus tetap dimuat
+                    }
+                ])
+                ->where('is_setor', false)
+                ->where('nama_sales', $nama_sales) // Filter langsung dari query
                 ->orderBy('tanggal_transaksi', 'desc')
                 ->get();
-            if (!empty($nama_sales)) {
-                $transaksi = $transaksi->where('nama_sales', $nama_sales);
-            }
-            $transaksi = Transaksi::withTrashed()
-                ->with('produk')
-                ->orderBy('tanggal_transaksi', 'desc')
-                ->get();
-            $totalPenjualan = $transaksi->sum(function ($item) {
-                return $item->produk ? $item->produk->produk_harga_akhir : 0;
-            });
-            $totalInsentif = $transaksi->sum(function ($item) {
-                return $item->produk ? $item->produk->produk_insentif : 0;
-            });
-            $transaksi = Transaksi::withTrashed()
-                ->with('produk')
-                ->orderBy('tanggal_transaksi', 'desc')
-                ->get();
+
+            // Kelompokkan transaksi berdasarkan tanggal transaksi
             $groupedTransaksi = $transaksi->groupBy(function ($item) {
                 return Carbon::parse($item->tanggal_transaksi)->format('Y-m-d');
             });
-            $totalsPerDate = $groupedTransaksi->map(function ($items) {
-                $totalPenjualan = $items->sum(function ($item) {
-                    return $item->produk ? $item->produk->produk_harga_akhir : 0;
-                });
-                $totalInsentif = $items->sum(function ($item) {
-                    return $item->produk ? $item->produk->produk_insentif : 0;
-                });
 
+            // Hitung total penjualan dan insentif per tanggal
+            $totalsPerDate = $groupedTransaksi->map(function ($items) {
                 return [
-                    'totalPenjualan' => $totalPenjualan,
-                    'totalInsentif' => $totalInsentif,
+                    'totalPenjualan' => $items->sum(fn($item) => $item->produk ? $item->produk->produk_harga_akhir : 0),
+                    'totalInsentif' => $items->sum(fn($item) => $item->produk ? $item->produk->produk_insentif : 0),
                 ];
             });
 
+            // Total keseluruhan
             $totalPenjualan = $totalsPerDate->sum('totalPenjualan');
             $totalInsentif = $totalsPerDate->sum('totalInsentif');
 
-            return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+            // Cek apakah semua transaksi dalam satu tanggal adalah voided (terhapus)
+            $allVoided = $groupedTransaksi->map(fn($items) => $items->every->trashed());
+
+            // Ambil transaksi yang sudah disetor untuk nama sales ini
+            $setoranTransaksi = Transaksi::where('is_setor', true)
+                ->where('nama_sales', $nama_sales)
+                ->with('produk')
+                ->orderBy('tanggal_transaksi', 'desc')
+                ->get();
+
+            return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif', 'allVoided', 'setoranTransaksi'));
         }
-        return redirect()->route('login')->withErrors(provider: ['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
+
+        return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
     }
+
 
     public function toggleVoid(Request $request, $id)
     {
@@ -267,4 +270,6 @@ class TransaksiController extends Controller
                 ->with('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
+
+
 }

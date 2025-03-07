@@ -125,7 +125,7 @@
             background-color: #fff;
             outline: none;
             box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
-        } 
+        }
 
 
         .btn-container {
@@ -137,7 +137,7 @@
 
         .btn-save {
             flex: 1;
-            background: linear-gradient(45deg, #43e97b, #2575FC);
+            background: #23a0b0;
             padding: 12px;
             border: none;
             border-radius: 8px;
@@ -149,7 +149,7 @@
         }
 
         .btn-save:hover {
-            background: linear-gradient(45deg, #36c271, #1e66d9);
+            background: #1c828f;
         }
 
         .btn-cancel {
@@ -188,7 +188,7 @@
         }
     </style>
 </head>
-    
+
 <body>
     <div class="container">
         <h2>Tambah Sales</h2>
@@ -248,7 +248,7 @@
         function previewImage(input) {
             const preview = document.querySelector('.avatar-preview');
             const file = input.files[0];
-            
+
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -281,10 +281,10 @@
 
             photo: {
                 validate: (file) => {
-                    if (!file) return null; 
+                    if (!file) return null;
                     const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                    const maxSize = 2048 * 1024; 
-                    
+                    const maxSize = 2048 * 1024;
+
                     if (!validTypes.includes(file.type)) {
                         return 'File harus berformat JPEG, PNG, atau JPG';
                     }
@@ -327,7 +327,7 @@
             const error = ValidationRules[fieldName].validate(value);
             const errorElement = document.getElementById(`${fieldName}Error`);
             const inputElement = document.getElementById(fieldName);
-            
+
             if (error) {
                 errorElement.textContent = error;
                 inputElement.classList.add('invalid');
@@ -341,11 +341,11 @@
 
         function handleSubmit(event) {
             event.preventDefault();
-            
+
             const form = document.getElementById('addSalesForm');
             const formData = new FormData(form);
             let isValid = true;
-            
+
             for (const [fieldName, value] of formData.entries()) {
                 if (fieldName === 'photo') {
                     const file = document.getElementById('photo').files[0];
@@ -356,7 +356,7 @@
                     isValid = false;
                 }
             }
-            
+
             if (!isValid) {
                 Swal.fire({
                     icon: 'error',
@@ -364,7 +364,7 @@
                 });
                 return;
             }
-            
+
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
@@ -391,7 +391,7 @@
                     });
                 }
             })
-            
+
             .catch(error => {
                 Swal.fire({
                     icon: 'error',
@@ -401,7 +401,7 @@
         }
 
                     function confirmAdd(event) {
-                event.preventDefault(); 
+                event.preventDefault();
 
                 let namaSales = document.querySelector('input[name="name"]').value.trim();
                 let email = document.querySelector('input[name="email"]').value.trim();
@@ -446,8 +446,8 @@
                     cancelButtonText: "Tidak",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById("addSalesForm").reset(); 
-                        document.querySelector('.avatar-preview').innerHTML = '<i class="fas fa-user"></i>'; 
+                        document.getElementById("addSalesForm").reset();
+                        document.querySelector('.avatar-preview').innerHTML = '<i class="fas fa-user"></i>';
                     }
                 });
             }
@@ -455,7 +455,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('addSalesForm');
-            
+
             form.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', (e) => {
                     if (e.target.id === 'photo') {
@@ -464,7 +464,7 @@
                         validateField(e.target.id, e.target.value);
                     }
                 });
-                
+
                 input.addEventListener('blur', (e) => {
                     if (e.target.id === 'photo') {
                         validateField('photo', e.target.files[0]);
@@ -473,7 +473,7 @@
                     }
                 });
             });
-            
+
             form.removeEventListener('submit', showAlert);
             form.addEventListener('submit', handleSubmit);
         });

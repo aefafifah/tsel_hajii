@@ -13,7 +13,7 @@
             <x-nav-link href="/produk" :active="request()->is('produk/*', 'produk')">Produk</x-nav-link>
             <x-nav-link href="/merch" :active="request()->is('merch', 'merch/*')">Merch</x-nav-link>
             <x-nav-link href="/tambah-sales" :active="request()->is('tambah-sales')">Add Sales</x-nav-link>
-            <x-nav-link href="/sales-checklist" :active="request()->is('sales-checklist')">Checklist Sales </x-nav-link>
+            <x-nav-link href="/history-setoran" :active="request()->is('history-setoran')">Checklist Sales </x-nav-link>
             <x-nav-link href="/supvis/riwayat-transaksi" :active="request()->is('supvis/riwayat-transaksi')">Riwayat Transaksi</x-nav-link>
             <x-nav-link href="/pantau-stok" :active="request()->is('pantau-stok')">Pantau Stok</x-nav-link>
             <x-nav-link href="/supvis/budget-insentif/pantau" :active="request()->is('supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>

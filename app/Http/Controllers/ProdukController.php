@@ -161,9 +161,18 @@ class ProdukController extends Controller
 
     public function show(Produk $produk)
     {
-        $produk->load('merchandises');
-        return view('produk.show', compact('produk'));
+        return response()->json([
+            'produk_nama' => $produk->produk_nama,
+            'produk_harga' => $produk->produk_harga,
+            'produk_diskon' => $produk->produk_diskon,
+            'produk_stok' => $produk->produk_stok,
+            'is_active' => $produk->is_active,
+            'produk_detail' => $produk->produk_detail,
+            'produk_insentif' => $produk->produk_insentif,
+            'merchandises' => $produk->merchandises->pluck('merch_nama')->toArray(),
+        ]);
     }
+
 
     public function destroy(Produk $produk)
     {
