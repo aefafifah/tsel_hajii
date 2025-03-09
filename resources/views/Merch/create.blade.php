@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    <x-card title="Tambah Merchandise Baru">
+    <x-form-card title="Tambah Merchandise Baru">
         <form id="merchForm" action="{{ route('merch.store') }}" method="POST">
             @csrf
             <x-form-group label="Nama Merchandise" name="merch_nama" type="text" placeholder="Masukkan nama merchandise" required />
@@ -21,11 +21,11 @@
             <x-form-group label="Stok Merchandise" name="merch_stok" type="number" placeholder="Masukkan stok merchandise" required />
             
             <div class="d-flex justify-content-between">
-                <x-button type="button" id="simpanBtn" class="btn btn-primary" style="flex: 1; margin-right: 10px;">Simpan Merch</x-button>
-                <x-button type="button" id="batalBtn" class="btn btn-secondary" style="flex: 1; margin-left: 10px;">Batal</x-button>
+                <x-form-button type="button" id="batalBtn" class="btn btn-secondary" variant="danger">Batal</x-form-button>
+                <x-form-button type="button" id="simpanBtn" class="btn btn-primary">Simpan Merch</x-form-button>
             </div>
         </form>
-    </x-card>
+    </x-form-card>
 
     </div>
     {{-- Script untuk SweetAlert --}}

@@ -1,15 +1,20 @@
 <x-supvis.supvislayouts>
     <div class="container mt-5">
-        <h2 class="text-center mb-4" style="font-family: 'Arial', sans-serif; color: #333;">Edit Merchandise</h2>
+        <h2 class="text-center mb-4">Edit Merchandise</h2>
         <form action="{{ route('merch.update', $merchandise->id) }}" method="POST" class="shadow p-4 rounded" style="background-color: #f8f9fa;">
             @csrf
             @method('PUT')
 
-            <div class="mb-3">
-                <label for="merch_nama" class="form-label" style="font-weight: bold;">Nama Merchandise</label>
-                <input type="text" name="merch_nama" id="merch_nama" class="form-control bg-light text-secondary border" value="{{ $merchandise->merch_nama }}" placeholder="Masukkan nama merchandise" readonly>
-            </div>
-
+            <x-form-group 
+                label="Nama Merchandise" 
+                name="merch_nama" 
+                type="text" 
+                :required="false" 
+                :value="$merchandise->merch_nama"
+                :readonly="true"
+            />
+            
+            {{-- kalo pake components (x-form-group) & (x-form-button) langsung kacaw --}}
             <div class="mb-3">
                 <label for="merch_detail" class="form-label" style="font-weight: bold;">Detail Merchandise</label>
                 <textarea name="merch_detail" id="merch_detail" class="form-control bg-light text-secondary border" rows="4" placeholder="Masukkan detail merchandise" readonly>{{ $merchandise->merch_detail }}</textarea>

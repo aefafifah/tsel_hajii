@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <x-card title="Tambah Produk">
+        <x-form-card title="Tambah Produk">
             <form id="produkForm" action="{{ route('produk.store') }}" method="POST" onsubmit="removeFormatBeforeSubmit()">
                 @csrf
                 <x-form-group 
@@ -68,11 +68,11 @@
                 </div>
 
                 <div class="text-center d-flex justify-content-center gap-3 mt-3">
-                    <x-button type="submit" variant="primary">Simpan</x-button>
-                    <x-button type="button" variant="danger" id="cancelButton">Batal</x-button>
+                    <x-form-button id="simpanBtn" type="button" variant="primary">Simpan</x-button>
+                    <x-form-button type="button" variant="danger" id="batalBtn">Batal</x-button>
                 </div>
             </form>
-        </x-card>
+        </x-form-card>
     </div>
 
     <script>
@@ -118,7 +118,7 @@
         }
        
         document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector("button[type='submit']").addEventListener("click", function (event) {
+            document.getElementById("simpanBtn").addEventListener("click", function () {
                 let namaProduk = document.getElementById("produk_nama").value.trim();
                 let hargaProduk = document.getElementById("produk_harga").value.trim();
                 let stokProduk = document.getElementById("produk_stok").value.trim();
@@ -160,7 +160,7 @@
                 }
             });
 
-            document.getElementById("cancelButton").addEventListener("click", function () {
+            document.getElementById("batalBtn").addEventListener("click", function () {
                 Swal.fire({
                     title: "Batalkan Perubahan?",
                     text: "Perubahan yang belum disimpan akan hilang.",
