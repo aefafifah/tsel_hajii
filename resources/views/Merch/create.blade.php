@@ -1,121 +1,33 @@
 <x-supvis.supvislayouts>
-    <style>
-body {
-    background: linear-gradient(to right, #2575FC, #20BF55);
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-..container {
-    width: 100%;
-    max-width: 100%;
-    height: 90vh;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 0;
-    box-shadow: none;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-h2 {
-    color: #2575FC;
-    font-weight: bold;
-    text-align: center;
-}
-
-label {
-    font-weight: bold;
-    color: #444;
-}
-
-.form-control {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    transition: 0.3s;
-    width: 100%;
-}
-
-.form-control:focus {
-    border-color: #2575FC;
-    box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
-}
-
-.btn-primary {
-    background: linear-gradient(to right, #2575FC, #20BF55);
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.3s;
-    font-weight: bold;
-    width: 100%;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(to right, #20BF55, #2575FC);
-}
-
-.btn-secondary {
-    background: #6c757d;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.3s;
-    font-weight: bold;
-    width: 100%;
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-}
-
-.d-flex {
-    display: flex;
-    gap: 10px;
-}
-
-
-</style>
+    
 <div class="container mt-5">
-        <h2 class="text-center mb-4" style="font-family: 'Arial', sans-serif; color: #333;">Tambah Merchandise Baru</h2>
+    <h2 class="text-center mb-4"><strong>Tambah Merchandise Baru</strong></h2>
+        
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-        {{-- Load SweetAlert2 --}}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <form id="merchForm" action="{{ route('merch.store') }}" method="POST" class="shadow p-4 rounded" style="background-color: #f8f9fa;">
+    <x-card title="Tambah Merchandise Baru">
+        <form id="merchForm" action="{{ route('merch.store') }}" method="POST">
             @csrf
-            <div class="mb-3">
-                <label for="merch_nama" class="form-label" style="font-weight: bold;">Nama Merchandise</label>
-                <input type="text" name="merch_nama" id="merch_nama" class="form-control" placeholder="Masukkan nama merchandise" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="merch_detail" class="form-label" style="font-weight: bold;">Detail Merchandise</label>
-                <textarea name="merch_detail" id="merch_detail" class="form-control" placeholder="Masukkan detail merchandise" rows="4" required></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="merch_stok" class="form-label" style="font-weight: bold;">Stok Merchandise</label>
-                <input type="number" name="merch_stok" id="merch_stok" class="form-control" placeholder="Masukkan stok merchandise" required>
-            </div>
-
+            <x-form-group label="Nama Merchandise" name="merch_nama" type="text" placeholder="Masukkan nama merchandise" required />
+            <x-form-group label="Detail Merchandise" name="merch_detail" type="textarea" placeholder="Masukkan detail merchandise" rows="4" required />
+            <x-form-group label="Stok Merchandise" name="merch_stok" type="number" placeholder="Masukkan stok merchandise" required />
+            
             <div class="d-flex justify-content-between">
-                <button type="button" id="simpanBtn" class="btn btn-primary" style="flex: 1; margin-right: 10px;">Simpan Merch</button>
-                <button type="button" id="batalBtn" class="btn btn-secondary" style="flex: 1; margin-left: 10px;">Batal</button>
+                <x-button type="button" id="simpanBtn" class="btn btn-primary" style="flex: 1; margin-right: 10px;">Simpan Merch</x-button>
+                <x-button type="button" id="batalBtn" class="btn btn-secondary" style="flex: 1; margin-left: 10px;">Batal</x-button>
             </div>
         </form>
-    </div>
+    </x-card>
 
+    </div>
     {{-- Script untuk SweetAlert --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -165,4 +77,6 @@ label {
             });
         });
     </script>
+</div>
+
 </x-supvis.supvislayouts>

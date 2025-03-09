@@ -208,6 +208,7 @@
                         oninput="restrictNameInput(this)" required>
                     <small id="error-message-name" style="color: red; display: none;">Harap masukkan hanya huruf</small>
                 </div>
+
                 <div class="form-group">
                     <label>Nomor Injeksi:</label>
                     <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"

@@ -18,7 +18,7 @@ class ProdukController extends Controller
     public function create()
     {
         $merchandises = Merchandise::all();
-        return view('produk.input', compact('merchandises'));
+        return view('produk.create', compact('merchandises'));
     }
 
 
