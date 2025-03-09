@@ -195,7 +195,7 @@ class TransaksiController extends Controller
                 ->orderBy('tanggal_transaksi', 'desc')
                 ->get();
 
-            return view('rekap_penjualan', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif', 'allVoided', 'setoranTransaksi'));
+            return view('sales/rekap', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif', 'allVoided', 'setoranTransaksi'));
         }
 
         return redirect()->route('login')->withErrors(['role' => 'Anda harus login sebagai sales untuk mengakses halaman ini.']);
