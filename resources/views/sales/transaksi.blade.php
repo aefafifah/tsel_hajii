@@ -1,10 +1,7 @@
 <x-sales.saleslayouts>
 
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Form Transaksi</title>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <style>
             body {
                 background-color: #f4f4f9;
@@ -202,6 +199,8 @@
                     <input type="hidden" name="nomor_telepon" id="nomor_telepon" value="{{ Auth::user()->phone }}">
                 </div>
 
+                {{-- udah dicoba pake component x-form-group tapi tetep tambah error : billy 10/3 --}}
+
                 <div class="form-group">
                     <label>Nama Pelanggan:</label>
                     <input type="text" name="nama_pelanggan" placeholder="Masukkan nama pelanggan"
@@ -284,8 +283,12 @@
                     <button type="button" onclick="cancelForm()">Cancel</button>
                 </div>
             </form>
+            {{--  --}}
+
         </div>
         </div>
+    </body>    
+</x-sales.saleslayouts>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -472,48 +475,4 @@ function cancelForm() {
     });
 }
 
-
-// function cancelForm() {
-//     Swal.fire({
-//         title: "Konfirmasi",
-//         text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonText: "Ya, batalkan!",
-//         cancelButtonText: "Tidak"
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             Swal.fire({
-//                 title: "Dibatalkan",
-//                 text: "Form Transaksi telah dibatalkan.",
-//                 icon: "info"
-//             });
-
-//             const form = document.getElementById("form-transaksi");
-//             if (form) {
-//                 form.reset();
-//                 const inputs = form.querySelectorAll("input, select, textarea");
-//                 inputs.forEach(input => {
-//                     if (input.type === "checkbox" || input.type === "radio") {
-//                         input.checked = false;
-//                     } else {
-//                         input.value = "";
-//                     }
-//                     input.style.borderColor = "";
-//                 });
-//             }
-
-//             const additionalInputs = document.querySelectorAll("input, select, textarea");
-//             additionalInputs.forEach(input => {
-//                 if (input.type === "checkbox" || input.type === "radio") {
-//                     input.checked = false;
-//                 } else {
-//                     input.value = "";
-//                 }
-//                 input.style.borderColor = "";
-//             });
-//         }
-//     });
-// }
         </script>
-</x-sales.saleslayouts>

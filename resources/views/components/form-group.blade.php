@@ -6,7 +6,8 @@
     'rows' => 3, 
     'required' => false, 
     'value' => '', 
-    'readonly' => false
+    'readonly' => false,
+    'oninput' => ''
 ])
 
 @php
@@ -26,6 +27,7 @@
             {{ $required ? 'required' : '' }} 
             {{ $readonly ? 'readonly' : '' }}
             style="{{ $readonly ? 'background-color: #e9ecef; cursor: not-allowed;' : '' }}"
+            {{ $oninput ? 'oninput='.$oninput : '' }}
         >{{ old($name, $value) }}</textarea>
     @else
         <input 
@@ -38,6 +40,7 @@
             {{ $required ? 'required' : '' }} 
             {{ $readonly ? 'readonly' : '' }}
             style="{{ $readonly ? 'background-color: #e9ecef; cursor: not-allowed;' : '' }}"
+            {{ $oninput ? 'oninput='.$oninput : '' }}
         >
     @endif
 </div>

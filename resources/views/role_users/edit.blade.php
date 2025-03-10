@@ -2,42 +2,8 @@
 
 @if (auth()->check() && auth()->user()->hasRole('supervisor'))
     <x-supvis.supvislayouts>
-        @php
-        $hashedPin = Hash::make('234567');
-        echo $hashedPin;
-            @endphp
-        @endphp
 
         <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background: linear-gradient(135deg, #43e97b, #2575FC);
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                color: #fff;
-            }
-
-            .container {
-                width: 100%;
-                max-width: 1090px;
-                background: #ffffff;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-                animation: fadeIn 0.5s ease-in-out;
-                box-sizing: border-box;
-            }
-
-            .container h2 {
-                margin-bottom: 20px;
-                color: #4a4a4a;
-                text-align: center;
-                font-size: 24px;
-                font-weight: bold;
-            }
-
             .profile-section {
                 text-align: center;
                 margin-bottom: 30px;
@@ -101,39 +67,6 @@
                 display: none;
             }
 
-            .form-group {
-                margin-bottom: 20px;
-            }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #666;
-                font-weight: 600;
-            }
-
-            .form-group input, 
-            .form-group select {
-                width: 100%;
-                padding: 12px 15px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                color: #333;
-                background-color: #f9f9f9;
-                transition: all 0.3s ease;
-                box-sizing: border-box;
-            }
-            
-            .form-group input:focus, 
-            .form-group select:focus {
-                border-color: #2575FC;
-                background-color: #fff;
-                outline: none;
-                box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
-            }
-
-
             .btn {
                 width: 100%;
                 padding: 12px;
@@ -170,7 +103,8 @@
         </style>
         <body>
             <div class="container">
-                <h1>Edit Profil Pengguna</h1>
+                <h1 class="text-center mb-5 mt-5"><strong>Edit Profil</strong></h1>
+                <x-form-card>
                 <form action="{{ route('role_users.update', $roleUsers->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -191,43 +125,55 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $roleUsers->name) }}" required>
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Nama" 
+                        name="name" 
+                        placeholder="Masukkan nama" 
+                        value="{{ old('name', $roleUsers->name) }}"
+                        required="true" 
+                    />
+                    @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ old('email', $roleUsers->email) }}" required>
-                        @error('email')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Email" 
+                        name="email" 
+                        type="email"
+                        placeholder="Masukkan email" 
+                        value="{{ old('email', $roleUsers->email) }}"
+                        required="true" 
+                    />
+                    @error('email')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="phone">Telepon</label>
-                        <input type="text" name="phone" class="form-control" value="{{ old('phone', $roleUsers->phone) }}" required>
-                        @error('phone')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Telepon" 
+                        name="phone" 
+                        placeholder="Masukkan nomor telepon" 
+                        value="{{ old('phone', $roleUsers->phone) }}"
+                    />
+                    @error('phone')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="pin">PIN</label>
-                        <input type="password" name="pin" class="form-control" placeholder="Masukkan PIN baru (maksimal 6 digit)" maxlength="6>
-                        <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
-                        @error('pin')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="PIN" 
+                        name="pin" 
+                        type="password"
+                        placeholder="Masukkan PIN baru (maksimal 6 digit)" 
+                    />
+                    <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
+                    @error('pin')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
                     
 
                     <button type="submit" class="btn btn-primary">Perbarui Profil</button>
                 </form>
+            </x-form-card>
             </div>
         </body>
     </x-supvis.supvislayouts>
@@ -235,41 +181,8 @@
 <!-- JIKA USER == SALES -->
 @elseif(auth()->check() && auth()->user()->hasRole('sales'))
     <x-sales.saleslayouts>
-        @php
-        $hashedPin = Hash::make('234567');
-        echo $hashedPin;
-            @endphp
-        @endphp
 
         <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background: linear-gradient(135deg, #43e97b, #2575FC);
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                color: #fff;
-            }
-
-            .container {
-                width: 100%;
-                max-width: 1090px;
-                background: #ffffff;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-                animation: fadeIn 0.5s ease-in-out;
-                box-sizing: border-box;
-            }
-
-            .container h2 {
-                margin-bottom: 20px;
-                color: #4a4a4a;
-                text-align: center;
-                font-size: 24px;
-                font-weight: bold;
-            }
 
             .profile-section {
                 text-align: center;
@@ -404,7 +317,8 @@
 
         <body>
             <div class="container">
-                <h1>Edit Profil Pengguna</h1>
+                <h1 class="text-center mb-5 mt-5"><strong>Edit Profil</strong></h1>
+                <x-form-card>
                 <form action="{{ route('role_users.update', $roleUsers->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -425,41 +339,53 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name', $roleUsers->name) }}" required>
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Nama" 
+                        name="name" 
+                        placeholder="Masukkan nama" 
+                        value="{{ old('name', $roleUsers->name) }}"
+                        required="true" 
+                    />
+                    @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ old('email', $roleUsers->email) }}" required>
-                        @error('email')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Email" 
+                        name="email" 
+                        type="email"
+                        placeholder="Masukkan email" 
+                        value="{{ old('email', $roleUsers->email) }}"
+                        required="true" 
+                    />
+                    @error('email')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="phone">Telepon</label>
-                        <input type="text" name="phone" class="form-control" value="{{ old('phone', $roleUsers->phone) }}" required>
-                        @error('phone')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="Telepon" 
+                        name="phone" 
+                        placeholder="Masukkan nomor telepon" 
+                        value="{{ old('phone', $roleUsers->phone) }}"
+                    />
+                    @error('phone')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
-                    <div class="form-group">
-                        <label for="pin">PIN</label>
-                        <input type="password" name="pin" class="form-control" placeholder="Masukkan PIN baru (maksimal 6 digit)" maxlength="6>
-                        <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
-                        @error('pin')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-form-group 
+                        label="PIN" 
+                        name="pin" 
+                        type="password"
+                        placeholder="Masukkan PIN baru (maksimal 6 digit)" 
+                    />
+                    <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
+                    @error('pin')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
 
                     <button type="submit" class="btn btn-primary">Perbarui Profil</button>
                 </form>
+                </x-form-card>
             </div>
         </body>
         

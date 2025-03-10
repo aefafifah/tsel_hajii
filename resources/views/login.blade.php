@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
@@ -149,10 +148,8 @@
         </div>
     </div>
 
-    <script>
+<script>
     let pin = "";
-    const correctPin = "123456";
-    const allowedEmails = ["supervisor@test.com", "sales@test.com", "superuservisor@test.com"];
 
     function addDigit(digit) {
         if (pin.length < 6) {
@@ -173,30 +170,7 @@
         document.getElementById("hiddenPin").value = pin;
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        let emailInput = document.getElementById("email").value;
+</script>
 
-        if (!allowedEmails.includes(emailInput)) {
-            Swal.fire("Email Salah!", "Gunakan email yang diperbolehkan.", "error");
-            return;
-        }
-
-        if (pin.length !== 4 && pin.length !== 6) {
-            Swal.fire("PIN Tidak Valid!", "PIN harus terdiri dari 4 atau 6 digit!", "warning");
-        } else if (pin !== correctPin) {
-            Swal.fire("PIN Salah!", "Silakan coba lagi.", "error");
-            clearPin();
-        } else {
-            Swal.fire({
-                title: "Login Berhasil!",
-                text: "Selamat datang!",
-                icon: "success"
-            }).then(() => {
-                this.submit();
-            });
-        }
-    });
-    </script>
 </body>
 </html>
