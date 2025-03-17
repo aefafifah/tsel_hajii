@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <style>
         body, html {
             overflow: hidden;
@@ -107,4 +107,4 @@
             });
         });
     </script>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

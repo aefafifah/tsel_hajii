@@ -1,4 +1,4 @@
-<x-sales.saleslayouts>
+<x-Sales.SalesLayouts>
     
     <style>
         body {
@@ -434,5 +434,5 @@
         }
     </script>
 
-</x-sales.saleslayouts>
+</x-Sales.SalesLayouts>
 

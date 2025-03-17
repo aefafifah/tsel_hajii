@@ -1,7 +1,7 @@
 <!-- JIKA USER == SUPERVISOR -->
 
 @if (auth()->check() && auth()->user()->hasRole('supervisor'))
-    <x-supvis.supvislayouts>
+    <x-Supvis.SupvisLayouts>
 
         <style>
             .profile-section {
@@ -156,7 +156,7 @@
             </x-form-card>
             </div>
         </body>
-    </x-supvis.supvislayouts>
+    </x-Supvis.SupvisLayouts>
 
 <!-- JIKA USER == SALES -->
 @elseif(auth()->check() && auth()->user()->hasRole('sales'))

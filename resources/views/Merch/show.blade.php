@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <style>
         .custom-bg {
             background: linear-gradient(135deg, rgb(33, 226, 62), #2575FC);
@@ -65,4 +65,4 @@
             <a href="{{ route('merch.index') }}" class="btn custom-button">Kembali</a>
         </div>
     </div>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

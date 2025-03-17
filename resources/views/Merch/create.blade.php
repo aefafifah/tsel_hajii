@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     
 <div class="container mt-5">
     <h2 class="text-center mb-4"><strong>Tambah Merchandise Baru</strong></h2>
@@ -79,4 +79,4 @@
     </script>
 </div>
 
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>
