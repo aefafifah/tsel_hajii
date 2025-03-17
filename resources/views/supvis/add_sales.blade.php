@@ -1,37 +1,7 @@
 <x-supvis.supvislayouts>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #43e97b, #2575FC);
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #fff;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1090px;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 0.5s ease-in-out;
-            box-sizing: border-box;
-        }
-
-        .container h2 {
-            margin-bottom: 20px;
-            color: #4a4a4a;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
         .profile-section {
             text-align: center;
             margin-bottom: 30px;
@@ -94,39 +64,6 @@
         #photo {
             display: none;
         }
-
-         .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            color: #333;
-            background-color: #f9f9f9;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #2575FC;
-            background-color: #fff;
-            outline: none;
-            box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
-        }
-
 
         .btn-container {
             display: flex;
@@ -191,7 +128,8 @@
 
 <body>
     <div class="container">
-        <h2>Tambah Sales</h2>
+        <h1 class="text-center mb-5 mt-5"><strong>Tambah Sales</strong></h1>
+        <x-form-card>
         <form id="addSalesForm" action="{{ route('sales.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="profile-section">
@@ -205,29 +143,48 @@
                     <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="name">Nama Sales:</label>
-                <input required type="text" id="name" name="name" oninput="validateName(this)"
-                    placeholder="Masukkan nama sales">
-                <div class="error" id="nameError"></div>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input required type="email" id="email" name="email" placeholder="Masukkan email">
-                <div class="error" id="emailError"></div>
-            </div>
-            <div class="form-group">
-                <label for="phone">Telepon:</label>
-                <input type="tel" id="phone" name="phone" oninput="validatePhone(this)"
-                    placeholder="Masukkan nomor telepon" pattern="[0-9]*" maxlength="15">
-                <div class="error" id="phoneError"></div>
-            </div>
+            <x-form-group 
+                label="Nama Sales" 
+                name="name" 
+                placeholder="Masukkan nama sales" 
+                required="true"
+                oninput="validateName(this)"
+            />
+            <div class="error" id="nameError"></div>
 
-            <div class="form-group">
-                <label for="pin">PIN:</label>
-                <input type="text" id="pin" name="pin" oninput="validatePin(this)" value=123456 maxlength="6" minlength="4">
-                <div class="error" id="pinError"></div>
-            </div>
+            <x-form-group 
+                label="Email" 
+                name="email" 
+                type="email" 
+                placeholder="Masukkan email" 
+                required="true"
+            />
+            <div class="error" id="emailError"></div>
+
+            <x-form-group 
+                label="Telepon" 
+                name="phone" 
+                type="tel" 
+                placeholder="Masukkan nomor telepon" 
+                pattern="[0-9]*" 
+                maxlength="15" 
+                oninput="validatePhone(this)"
+                required="true"
+            />
+            <div class="error" id="phoneError"></div>
+
+            <x-form-group 
+                label="PIN" 
+                name="pin" 
+                type="text" 
+                placeholder="Masukkan PIN (4-6 digit)" 
+                maxlength="6" 
+                minlength="4" 
+                oninput="validatePin(this)"
+                required="true"
+            />
+            <div class="error" id="pinError"></div>
+            
             <div class="form-group">
                 <label for="role">Role:</label>
                 <select id="role" name="role">
@@ -242,6 +199,7 @@
                 <button type="button" class="btn btn-cancel" onclick="confirmCancel()">Batal</button>
             </div>
         </form>
+        </x-form-card>
     </div>
 
     <script>

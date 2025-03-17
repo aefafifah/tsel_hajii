@@ -67,23 +67,6 @@
                 display: none;
             }
 
-            .btn {
-                width: 100%;
-                padding: 12px;
-                background: linear-gradient(135deg, #43e97b, #2575FC);
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s ease, transform 0.2s ease;
-                box-sizing: border-box;
-            }
-
-            .btn:hover {
-                background: linear-gradient(135deg, #34c571, #1a63c7);
-            }
-
             .error {
                 color: #ff4d4d;
                 font-size: 14px;
@@ -164,14 +147,11 @@
                         type="password"
                         placeholder="Masukkan PIN baru (maksimal 6 digit)" 
                     />
-                    <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
                     @error('pin')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    
-
-                    <button type="submit" class="btn btn-primary">Perbarui Profil</button>
+                    <x-form-button type="submit">Perbarui Profil</x-form-button>
                 </form>
             </x-form-card>
             </div>
@@ -247,56 +227,6 @@
                 display: none;
             }
 
-            .form-group {
-                margin-bottom: 20px;
-            }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                color: #666;
-                font-weight: 600;
-            }
-
-            .form-group input, 
-            .form-group select {
-                width: 100%;
-                padding: 12px 15px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                color: #333;
-                background-color: #f9f9f9;
-                transition: all 0.3s ease;
-                box-sizing: border-box;
-            }
-            
-            .form-group input:focus, 
-            .form-group select:focus {
-                border-color: #2575FC;
-                background-color: #fff;
-                outline: none;
-                box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
-            }
-
-
-            .btn {
-                width: 100%;
-                padding: 12px;
-                background: linear-gradient(135deg, #43e97b, #2575FC);
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s ease, transform 0.2s ease;
-                box-sizing: border-box;
-            }
-
-            .btn:hover {
-                background: linear-gradient(135deg, #34c571, #1a63c7);
-            }
-
             .error {
                 color: #ff4d4d;
                 font-size: 14px;
@@ -378,7 +308,6 @@
                         type="password"
                         placeholder="Masukkan PIN baru (maksimal 6 digit)" 
                     />
-                    <small class="form-text text-muted">Masukkan PIN Anda (maksimal 6 digit).</small>
                     @error('pin')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
