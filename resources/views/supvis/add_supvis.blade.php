@@ -3,34 +3,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #43e97b, #2575FC);
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #fff;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1090px;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 0.5s ease-in-out;
-            box-sizing: border-box;
-        }
-
-        .container h2 {
-            margin-bottom: 20px;
-            color: #4a4a4a;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
 
         .profile-section {
             text-align: center;
@@ -95,54 +67,45 @@
             display: none;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-weight: 600;
-        }
-
-        .form-group input, 
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            color: #333;
-            background-color: #f9f9f9;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-        
-        .form-group input:focus, 
-        .form-group select:focus {
-            border-color: #2575FC;
-            background-color: #fff;
-            outline: none;
-            box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
-        }
-
-
-        .btn {
-            width: 100%;
+        .btn-save {
+            flex: 1;
+            background: #23a0b0;
             padding: 12px;
-            background: linear-gradient(135deg, #43e97b, #2575FC);
-            color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-sizing: border-box;
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
-        .btn:hover {
-            background: linear-gradient(135deg, #34c571, #1a63c7);
+        .btn-save:hover {
+            background: #1c828f;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #ff4d4d;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-cancel:hover {
+            background: #d43f3f;
         }
 
         .error {
@@ -166,7 +129,8 @@
 
 <body>
     <div class="container">
-        <h2>Tambah Supervisor</h2>
+        <h1 class="text-center mb-5 mt-5"><strong>Tambah Supervisor</strong></h1>
+        <x-form-card>
         <form id="addSupvisForm" action="{{ route('supvis.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="profile-section">
@@ -180,27 +144,48 @@
                     <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="name">Nama Supervisor:</label>
-                <input required type="text" id="name" name="name" oninput="validateName(this)" placeholder="Masukkan nama Supervisor">
-                <div class="error" id="nameError"></div>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input required type="email" id="email" name="email" placeholder="Masukkan email">
-                <div class="error" id="emailError"></div>
-            </div>
-            <div class="form-group">
-                <label for="phone">Telepon:</label>
-                <input type="tel" id="phone" name="phone" oninput="validatePhone(this)"
-                    placeholder="Masukkan nomor telepon" pattern="[0-9]*" maxlength="15">
-                <div class="error" id="phoneError"></div>
-            </div>
-            <div class="form-group">
-                <label for="pin">PIN:</label>
-                <input type="text" id="pin" name="pin" oninput="validatePin(this)" placeholder="Masukkan PIN" value=123456 maxlength="6" minlength="4">
-                <div class="error" id="pinError"></div>
-            </div>
+            <x-form-group 
+                label="Nama Supervisor" 
+                name="name" 
+                placeholder="Masukkan nama Supervisor" 
+                required="true"
+                oninput="validateName(this)"
+            />
+            <div class="error" id="nameError"></div>
+
+            <x-form-group 
+                label="Email" 
+                name="email" 
+                type="email" 
+                placeholder="Masukkan email" 
+                required="true"
+            />
+            <div class="error" id="emailError"></div>
+
+            <x-form-group 
+                label="Telepon" 
+                name="phone" 
+                type="tel" 
+                placeholder="Masukkan nomor telepon" 
+                pattern="[0-9]*" 
+                maxlength="15" 
+                oninput="validatePhone(this)"
+                required="true"
+            />
+            <div class="error" id="phoneError"></div>
+
+            <x-form-group 
+                label="PIN" 
+                name="pin" 
+                type="text" 
+                placeholder="Masukkan PIN" 
+                maxlength="6" 
+                minlength="4" 
+                oninput="validatePin(this)"
+                required="true"
+            />
+            <div class="error" id="pinError"></div>
+
             <div class="form-group">
                 <label for="role">Role:</label>
                 <select id="role" name="role">
@@ -210,8 +195,14 @@
                 </select>
                 <div class="error" id="roleError"></div>
             </div>
-            <button type="submit" class="btn" onclick="showAlert(event)">Tambah SuperVisor</button>
+
+            <div class="btn-container">
+                <button type="submit" class="btn btn-save" onclick="showAlert(event)">Tambah SuperVisor</button>
+                <button type="button" class="btn btn-cancel" onclick="confirmCancel()">Batal</button>
+            </div>
+
         </form>
+        </x-form-card>
     </div>
 
     <script>
@@ -399,6 +390,22 @@
             form.removeEventListener('submit', showAlert);
             form.addEventListener('submit', handleSubmit);
         });
+
+        function confirmCancel() {
+            Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Pengisian akan dibatalkan dan form dikosongkan!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, batal!",
+                cancelButtonText: "Tidak",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("addSalesForm").reset();
+                    document.querySelector('.avatar-preview').innerHTML = '<i class="fas fa-user"></i>';
+                }
+            });
+        }
     </script>
 </body>
 </x-supvis.supvislayouts>
