@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Edit Merchandise</h2>
         <form action="{{ route('merch.update', $merchandise->id) }}" method="POST" class="shadow p-4 rounded" style="background-color: #f8f9fa;">
@@ -42,4 +42,4 @@
 
         </form>
     </div>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

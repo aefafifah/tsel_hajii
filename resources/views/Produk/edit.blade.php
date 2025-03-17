@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <div class="container mt-5">
         <h2 class="mb-4">Edit Produk</h2>
 
@@ -119,4 +119,4 @@
             insentifInput.value = insentifValue === '' ? 0 : parseInt(insentifValue);
         }
     </script>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

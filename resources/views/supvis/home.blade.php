@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <main class="content">
         @if (Auth::user()->is_superuser)
             <li class="list-group-item">
@@ -190,4 +190,4 @@
     }
 
     </style>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

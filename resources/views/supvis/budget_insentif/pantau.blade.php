@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <style>
         #budget-table th{
             background-color: #23a0b0;
@@ -131,4 +131,4 @@
             });
         });
     </script>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

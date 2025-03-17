@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <div class="container mt-4">
         <h2 class="text-center mb-4">Budget Insentif</h2>
         @if (session('status'))
@@ -53,4 +53,4 @@
             opacity: 0.9;
         }
     </style>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

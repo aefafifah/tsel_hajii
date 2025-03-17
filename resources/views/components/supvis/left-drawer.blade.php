@@ -9,18 +9,18 @@
                 Dashboard
             </li>
 
-            <x-nav-link href="{{ route('supvis.home') }}" :active="request()->is('supvis/home') || request()->is('supvis/budget-insentif')">Home</x-nav-link>
-            <x-nav-link href="/produk" :active="request()->is('produk/*', 'produk')">Produk</x-nav-link>
-            <x-nav-link href="/merch" :active="request()->is('merch', 'merch/*')">Merch</x-nav-link>
-            <x-nav-link href="/tambah-sales" :active="request()->is('tambah-sales')">Add Sales</x-nav-link>
-            <x-nav-link href="/history-setoran" :active="request()->is('history-setoran')">Checklist Sales </x-nav-link>
-            <x-nav-link href="/supvis/riwayat-transaksi" :active="request()->is('supvis/riwayat-transaksi')">Riwayat Transaksi</x-nav-link>
-            <x-nav-link href="/pantau-stok" :active="request()->is('pantau-stok')">Pantau Stok</x-nav-link>
-            <x-nav-link href="/supvis/budget-insentif/pantau" :active="request()->is('supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>
+            <x-nav-link href="{{ route('supvis.home') }}" :active="request()->is('programhaji/supvis/home') || request()->is('programhaji/supvis/budget-insentif')">Home</x-nav-link>
+            <x-nav-link href="{{ route('produk.index') }}" :active="request()->is('programhaji/produk/*', 'programhaji/produk')">Produk</x-nav-link>
+            <x-nav-link href="{{ route('merch.index') }}" :active="request()->is('programhaji/merch', 'programhaji/merch/*')">Merch</x-nav-link>
+            <x-nav-link href="{{ route('add_sales') }}" :active="request()->is('programhaji/tambah-sales')">Add Sales</x-nav-link>
+            <x-nav-link href="/programhaji/history-setoran" :active="request()->is('programhaji/history-setoran')">Checklist Sales</x-nav-link>
+            <x-nav-link href="{{ route('supvis.transactions.index') }}" :active="request()->is('programhaji/supvis/riwayat-transaksi')">Riwayat Transaksi</x-nav-link>
+            <x-nav-link href="{{ route('pantau.stok') }}" :active="request()->is('programhaji/pantau-stok')">Pantau Stok</x-nav-link>
+            <x-nav-link href="{{ route('supvis.supvis.budget_insentif.pantau') }}" :active="request()->is('programhaji/supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>
             @if(Auth::user() && Auth::user()->is_superuser)
-                <x-nav-link href="/tambah-supvis" :active="request()->is('tambah-supvis')">Add Supervisor</x-nav-link>
+                <x-nav-link href="{{ route('add_supvis') }}" :active="request()->is('programhaji/tambah-supvis')">Add Supervisor</x-nav-link>
             @endif
-            <x-nav-link href="/supvis/void" :active="request()->is('supvis/void')">Void Transaksi</x-nav-link>
+            <x-nav-link href="{{ route('supvis.void') }}" :active="request()->is('programhaji/supvis/void')">Void Transaksi</x-nav-link>
 
 
     </div>
