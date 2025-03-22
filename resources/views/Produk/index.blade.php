@@ -282,7 +282,7 @@
                 let produkId = $(this).data('id');
 
                 $.ajax({
-                    url: "/produk/" + produkId,
+                    url: "/programhaji/produk/" + produkId,
                     type: "GET",
                     success: function(response) {
                         Swal.fire({

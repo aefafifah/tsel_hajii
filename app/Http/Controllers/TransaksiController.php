@@ -66,7 +66,7 @@ class TransaksiController extends Controller
             $selectedMerchandise->increment('merch_terambil', 1);
             $history = json_decode($selectedProduk->produk_terjual_history ?? '[]', true);
             $history[] = [
-                'tanggal' => now()->toDateTimeString(),
+                'tanggal' => Carbon::parse($request->tanggal_transaksi)->toDateTimeString(),
                 'jumlah' => 1,
                 'produk_nama' => $selectedProduk->produk_nama
             ];
@@ -76,7 +76,7 @@ class TransaksiController extends Controller
             $selectedProduk->refresh();
             $merchHistory = json_decode($selectedMerchandise->merch_terambil_history ?? '[]', true);
             $merchHistory[] = [
-                'tanggal' => now()->toDateTimeString(),
+                'tanggal' => Carbon::parse($request->tanggal_transaksi)->toDateTimeString(),
                 'jumlah' => 1,
                 'merch_nama' => $selectedMerchandise->merch_nama
             ];
