@@ -1,39 +1,9 @@
 <x-Supvis.SupvisLayouts>
+<link href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
+
     <style>
-        #budget-table th{
-            background-color: #23a0b0;
-        }
-        /* Ubah warna tombol pagination */
-.dataTables_wrapper .dataTables_paginate .page-item .page-link {
-    background-color: #23a0b0 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 5px !important;
-    padding: 5px 10px !important;
-    margin: 2px !important;
-}
-
-/* Hover pada tombol pagination */
-.dataTables_wrapper .dataTables_paginate .page-item .page-link:hover {
-    background-color: #1b8190 !important;
-    color: white !important;
-}
-
-/* Warna tombol aktif */
-.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
-    background-color: #23a0b0 !important;
-    color: white !important;
-    font-weight: bold !important;
-    box-shadow: none !important;
-}
-
-/* Warna tombol disabled */
-.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link {
-    background-color: #b0b0b0 !important;
-    color: #ffffff !important;
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+        
+       
 
     </style>
     <div class="container">
@@ -42,33 +12,33 @@
         <div class="row my-4">
             <div class="col-md-4">
                 <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Total Budget</div>
+                    <div class="card-header" style="color: black;">Total Budget</div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ number_format($totalBudget, 2) }}</h5>
+                        <h5 style="color: black;" class="card-title">{{ number_format($totalBudget, 2) }}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card text-white bg-secondary mb-3">
-                    <div class="card-header">Total Insentif Digunakan</div>
+                    <div class="card-header" style="color: black;">Total Insentif Digunakan</div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ number_format($totalInsentif, 2) }}</h5>
+                        <h5 style="color: black;" class="card-title">{{ number_format($totalInsentif, 2) }}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card text-white bg-success mb-3">
-                    <div class="card-header">Sisa Budget</div>
+                    <div class="card-header" style="color: black;">Sisa Budget</div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ number_format($sisaBudget, 2) }}</h5>
+                        <h5 style="color: black;" class="card-title">{{ number_format($sisaBudget, 2) }}</h5>
                     </div>
                 </div>
             </div>
         </div>
         <table id="budget-table" class="table table-bordered">
-            <thead>
+            <thead style="background-color: #23a0b0;" >
                 <tr class="text-center">
-                    <th>ID</th>
+                    <th >ID</th>
                     <th>Perubahan Budget</th>
                     <th>Budget Sebelum</th>
                     <th>Budget Sesudah</th>
@@ -104,12 +74,7 @@
     </div>
 
     {{-- Script DataTables --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#budget-table').DataTable({
