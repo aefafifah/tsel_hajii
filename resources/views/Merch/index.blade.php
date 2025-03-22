@@ -64,7 +64,7 @@
                                                 let merchId = $(this).data('id');
 
                                                 $.ajax({
-                                                    url: "/merch/" + merchId,
+                                                    url: "/programhaji/merch/" + merchId,
                                                     type: "GET",
                                                     success: function(response) {
                                                         Swal.fire({

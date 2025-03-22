@@ -49,6 +49,7 @@ class RoleUsersSeeder extends Seeder
                 'role' => 'supervisor',
                 'is_superuser' => false,
                 'is_setoran' => false,
+                'phone' => "081231780991",
 
             ],
             [
@@ -58,6 +59,7 @@ class RoleUsersSeeder extends Seeder
                 'role' => 'supervisor',
                 'is_superuser' => true,
                 'is_setoran' => false,
+                'phone' => "081231780991",
 
             ],
             [
@@ -67,6 +69,7 @@ class RoleUsersSeeder extends Seeder
                 'role' => 'sales',
                 'is_superuser' => false,
                 'is_setoran' => true,
+                'phone' => "081231780991",
             ],
         ]);
     }
