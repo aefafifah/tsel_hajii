@@ -12,7 +12,12 @@
         <div class="row my-4">
             <div class="col-md-4">
                 <div class="card text-white bg-primary mb-3">
-                    <div class="card-header" style="color: black;">Total Budget</div>
+                    <div class="card-header" style="color: black;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Total Budget</span>
+                            <a href="{{ route('supvis.budget_insentif.index') }}" class="btn btn-sm btn-light">Edit</a>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <h5 style="color: black;" class="card-title">{{ number_format($totalBudget, 2) }}</h5>
                     </div>

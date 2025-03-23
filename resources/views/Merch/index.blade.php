@@ -177,8 +177,8 @@
             </table>
         </div>
 
-        <!-- Tabel Detail Riwayat Pengambilan -->
-        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat Pengambilan</strong></h4>
+        <!-- Tabel Detail Riwayat -->
+        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat </strong></h4>
         <div class="table-responsive">
             <table id="detilHistoryTable" class="table table-bordered table-striped mt-3">
                 <thead class="table-dark">
