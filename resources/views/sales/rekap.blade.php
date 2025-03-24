@@ -214,8 +214,8 @@
                 <tfoot>
                     <tr class="total-row" id="total-row">
                         <td colspan="10">Total Keseluruhan:</td>
-                        <td id="total-penjualan">Rp 0</td>
-                        <td id="total-insentif">Rp 0</td>
+                        <td id="total-penjualan">{{ $totalPenjualan }}</td>
+                        <td id="total-insentif">{{ $totalInsentif }}</td>
                     </tr>
                 </tfoot>
             </table>
