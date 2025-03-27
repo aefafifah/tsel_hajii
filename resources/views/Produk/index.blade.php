@@ -211,7 +211,7 @@
             <select id="filterTanggal" class="form-select">
                 <option value="all">Semua Tanggal</option>
                 @foreach ($uniqueDates as $date)
-                    <option value="{{ $date }}">{{ \Carbon\Carbon::parse($date)->format('d M Y') }}</option>
+                    <option value="{{ $date }}">{{ $date }}</option>
                 @endforeach
             </select>
         </div>
@@ -220,7 +220,7 @@
     <div class="container mt-4">
         <!-- Tabel Total Penjualan Per Tanggal -->
         <div class="table-responsive">
-            <table id="totalPenjualanTable" class="table table-striped table-hover">
+            <table class="table table-striped table-hover">
                 <thead style="background-color: #23a0b0; color: white;">
                     <tr class="text-center">
                         <th style="width: 50%;">📅 Tanggal</th>
@@ -238,10 +238,10 @@
             </table>
         </div>
 
-        <!-- Tabel Detail Riwayat Penjualan -->
-        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat Penjualan</strong></h4>
+        <!-- Tabel Detail Riwayat  -->
+        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat </strong></h4>
         <div class="table-responsive">
-            <table id="detailPenjualanTable" class="table table-striped table-hover">
+            <table id="detilHistoryTable" class="table table-striped table-hover">
                 <thead style="background-color: #23a0b0; color: white;">
                     <tr class="text-center">
                         <th>📅 Tanggal & Waktu</th>
@@ -252,7 +252,7 @@
                 <tbody>
                     @foreach ($allHistory as $entry)
                         <tr class="text-center">
-                            <td>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y H:i:s') }}</td>
+                            <td>{{ $entry['tanggal'] }}</td>
                             <td><span class="badge bg-primary">{{ $entry['jumlah'] ?? '-' }}</span></td>
                             <td>{{ $entry['produk_nama'] ?? '-' }}</td>
                         </tr>
@@ -267,15 +267,19 @@
     <script>
         document.getElementById('filterTanggal').addEventListener('change', function() {
             let selectedDate = this.value;
-            let rows = document.querySelectorAll('#totalPenjualanBody tr');
-            rows.forEach(row => {
+            let totalRows = document.querySelectorAll('#totalPenjualanBody tr');
+            totalRows.forEach(row => {
                 let rowDate = row.getAttribute('data-tanggal');
-                if (selectedDate === "all" || rowDate === selectedDate) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (selectedDate === "all" || rowDate.startsWith(selectedDate)) ? "" : "none";
             });
+
+            // Filter "Detail Riwayat Pengambilan" table
+            let detailRows = document.querySelectorAll('#detilHistoryTable tbody tr');
+            detailRows.forEach(row => {
+                let rowDate = row.cells[0].textContent.trim();
+                row.style.display = (selectedDate === "all" || rowDate.startsWith(selectedDate)) ? "" : "none";
+            });
+
         });
         $(document).ready(function() {
             $(document).off('click', '.btn-detail').on('click', '.btn-detail', function() {
