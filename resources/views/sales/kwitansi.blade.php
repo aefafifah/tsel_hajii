@@ -137,12 +137,9 @@ body {
                 </tr>
                 <tr>
                     <td class="label">No. Tlp Pelanggan</td>
-                    <td>{{ $formData['nomor_injeksi'] }}</td>
+                    <td>{{ $formData['telepon_pelanggan'] }}</td>
                 </tr>
-                <tr>
-                    <td class="label">Aktivasi Tanggal</td>
-                    <td>{{ $formData['aktivasi_tanggal'] }}</td>
-                </tr>
+
             </table>
             <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Paket Internet Haji</h3>
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
