@@ -14,20 +14,6 @@ class TransaksiController extends Controller
 {
     public function submit(Request $request)
     {
-        // Validate the form data
-        $validated = $request->validate([
-            'id_transaksi' => 'required',
-            'nomor_telepon' => 'nullable|numeric',
-            'nama_pelanggan' => 'nullable|string',
-            'aktivasi_tanggal' => 'nullable|date',
-            'tanggal_transaksi' => 'nullable|date',
-            'produk' => 'required|exists:produks,id',
-            'merchandise' => 'required|exists:merchandises,id',
-            'nama_sales' => 'required|string',
-            'nomor_injeksi' => 'required|string|max:12',
-            'telepon_pelanggan' => 'required|string|max:12',
-        ]);
-
         $selectedProdukId = $request->input('produk');
         $selectedMerchandiseId = $request->input('merchandise');
 
@@ -96,7 +82,6 @@ class TransaksiController extends Controller
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'nomor_injeksi' => $request->nomor_injeksi,
-                
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');

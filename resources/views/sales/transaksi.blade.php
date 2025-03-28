@@ -217,17 +217,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Nomor Injeksi:</label>
-                    <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
-                        oninput="validateInjectionNumber(this)" required>
-                    <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
-                        maksimal 12 digit</small>
-                </div>
-                <div class="form-group">
-                    <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
-                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
-                </div>
-                <div class="form-group">
                     <label>Pilih Paket Internet:</label>
                     <div class="checkbox-group">
                         @foreach ($produks as $produk)
@@ -266,28 +255,9 @@
                     <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" readonly required>
                 </div>
-                <div class="form-group">
-                    <label>Metode Pembayaran:</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-box">
-                            <input type="radio" id="metode1" name="metode_pembayaran" value="Tunai" required>
-                            <label for="metode1">
-                                <span class="checkbox-icon"></span>
-                                Tunai
-                            </label>
-                        </div>
-                        <div class="checkbox-box">
-                            <input type="radio" id="metode2" name="metode_pembayaran" value="Non Tunai" required>
-                            <label for="metode2">
-                                <span class="checkbox-icon"></span>
-                                Non Tunai
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="form-group" style="text-align: center; margin-top: 20px;">
-                    <button type="submit">Oke</button>
+                    <button type="submit" onclick="return OkeForm()">Oke</button>
                     <button type="button" onclick="cancelForm()">Cancel</button>
                 </div>
             </form>
