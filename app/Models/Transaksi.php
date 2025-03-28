@@ -34,6 +34,8 @@ class Transaksi extends Model
         'metode_pembayaran',
         'history_setoran',
         'is_setor',
+        'is_paid',
+        'telepon_pelanggan',
     ];
     public function produk()
     {

@@ -209,6 +209,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Telepon Pelanggan:</label>
+                    <input type="number" name="telepon_pelanggan" placeholder="Masukkan telepon pelanggan" maxlength="12"
+                        oninput="validateInjectionNumber(this)" required>
+                    <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
+                        maksimal 12 digit</small>
+                </div>
+
+                <div class="form-group">
                     <label>Nomor Injeksi:</label>
                     <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
                         oninput="validateInjectionNumber(this)" required>
@@ -279,7 +287,7 @@
                 </div>
 
                 <div class="form-group" style="text-align: center; margin-top: 20px;">
-                    <button type="submit" onclick="return OkeForm()">Oke</button>
+                    <button type="submit">Oke</button>
                     <button type="button" onclick="cancelForm()">Cancel</button>
                 </div>
             </form>

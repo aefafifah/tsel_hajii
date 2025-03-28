@@ -24,7 +24,8 @@ class TransaksiController extends Controller
             'produk' => 'required|exists:produks,id',
             'merchandise' => 'required|exists:merchandises,id',
             'nama_sales' => 'required|string',
-            'nomor_injeksi' => 'required|string|max:12'
+            'nomor_injeksi' => 'required|string|max:12',
+            'telepon_pelanggan' => 'required|string|max:12',
         ]);
 
         $selectedProdukId = $request->input('produk');
@@ -49,7 +50,8 @@ class TransaksiController extends Controller
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
             'nama_sales' => $request->nama_sales,
-            'nomor_injeksi' => $request->nomor_injeksi
+            'nomor_injeksi' => $request->nomor_injeksi,
+            'telepon_pelanggan' => $request->telepon_pelanggan,
         ]);
 
         try {
@@ -83,18 +85,18 @@ class TransaksiController extends Controller
             $selectedMerchandise->update([
                 'merch_terambil_history' => json_encode($merchHistory)
             ]);
-
             Transaksi::create([
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'telepon_pelanggan' => $request->telepon_pelanggan,
                 'nama_sales' => $request->nama_sales,
-                'aktivasi_tanggal' => $request->aktivasi_tanggal,
                 'tanggal_transaksi' => $request->tanggal_transaksi,
                 'jenis_paket' => $selectedProduk->id,
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'nomor_injeksi' => $request->nomor_injeksi,
+                
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');
