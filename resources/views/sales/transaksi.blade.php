@@ -209,7 +209,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Telepon Pelanggan:</label>
+                    <label>Telepon yg bisa dihubungi:</label>
                     <input type="number" name="telepon_pelanggan" placeholder="Masukkan telepon pelanggan" maxlength="12"
                         oninput="validateInjectionNumber(this)" required>
                     <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
@@ -233,6 +233,26 @@
                         @endforeach
                     </div>
                 </div>
+
+                <label>Add on:</label>
+                    <div>
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1">
+                        <label> Nomor Perdana Baru </label>
+                        <br><br>
+                    </div>
+
+                <div class="form-group">
+                    <label>Nomor Injeksi: (opsional) (bisa diisi sales, ketika cust beli paket doang, nomor dah dapet gratis) (bisa diisi kasir, ketika cust beli dengan Addon nomor perdana baru)</label>
+                    <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
+                        oninput="validateInjectionNumber(this)">
+                    <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
+                        maksimal 12 digit</small>
+                </div>
+
+                <div class="form-group">
+                     <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
+                     <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
+                 </div>
 
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>

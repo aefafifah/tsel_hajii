@@ -38,6 +38,7 @@ class TransaksiController extends Controller
             'nama_sales' => $request->nama_sales,
             'nomor_injeksi' => $request->nomor_injeksi,
             'telepon_pelanggan' => $request->telepon_pelanggan,
+            'addon_perdana' => $request->has('addon_perdana') ? 1 : 0,
         ]);
 
         try {
@@ -75,6 +76,7 @@ class TransaksiController extends Controller
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'aktivasi_tanggal' => $request->aktivasi_tanggal,
                 'telepon_pelanggan' => $request->telepon_pelanggan,
                 'nama_sales' => $request->nama_sales,
                 'tanggal_transaksi' => $request->tanggal_transaksi,
@@ -82,6 +84,7 @@ class TransaksiController extends Controller
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'nomor_injeksi' => $request->nomor_injeksi,
+                'addon_perdana' => $request->has('addon_perdana') ? 1 : 0,
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');

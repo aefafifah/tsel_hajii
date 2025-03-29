@@ -36,6 +36,7 @@ class Transaksi extends Model
         'is_setor',
         'is_paid',
         'telepon_pelanggan',
+        'addon_perdana',
     ];
     public function produk()
     {
