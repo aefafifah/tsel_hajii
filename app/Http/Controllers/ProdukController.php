@@ -12,13 +12,13 @@ class ProdukController extends Controller
     public function index()
     {
         $produks = Produk::with('merchandises')->withTrashed()->get();
-        return view('produk.index', compact('produks'));
+        return view('Produk.index', compact('produks'));
     }
 
     public function create()
     {
         $merchandises = Merchandise::all();
-        return view('produk.create', compact('merchandises'));
+        return view('Produk.create', compact('merchandises'));
     }
 
 
@@ -82,7 +82,7 @@ class ProdukController extends Controller
     public function edit(Produk $produk)
     {
         $merchandises = Merchandise::all();
-        return view('produk.edit', compact('produk', 'merchandises'));
+        return view('Produk.edit', compact('produk', 'merchandises'));
     }
 
     public function update(Request $request, $id)

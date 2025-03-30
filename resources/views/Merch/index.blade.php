@@ -4,8 +4,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
@@ -64,7 +62,7 @@
                                                 let merchId = $(this).data('id');
 
                                                 $.ajax({
-                                                    url: "/merch/" + merchId,
+                                                    url: "/programhaji/merch/" + merchId,
                                                     type: "GET",
                                                     success: function(response) {
                                                         Swal.fire({
@@ -154,7 +152,7 @@
             <select id="filterTanggal" class="form-select">
                 <option value="all">Semua Tanggal</option>
                 @foreach ($uniqueDates as $date)
-                    <option value="{{ $date }}">{{ \Carbon\Carbon::parse($date)->format('d M Y') }}</option>
+                    <option value="{{ $date }}">{{ $date }}</option>
                 @endforeach
             </select>
         </div>
@@ -171,7 +169,7 @@
                 <tbody id="totalPengambilanBody">
                     @foreach ($groupedHistory as $entry)
                         <tr class="text-center" data-tanggal="{{ $entry['tanggal'] }}">
-                            <td><strong>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y') }}</strong></td>
+                            <td><strong>{{ Carbon\Carbon::parse($entry['tanggal'])->format('Y-m-d') }}</strong></td>
                             <td><span class="badge bg-success fs-6">{{ $entry['total_jumlah'] }}</span></td>
                         </tr>
                     @endforeach
@@ -179,10 +177,10 @@
             </table>
         </div>
 
-        <!-- Tabel Detail Riwayat Pengambilan -->
-        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat Pengambilan</strong></h4>
+        <!-- Tabel Detail Riwayat -->
+        <h4 class="mt-5 text-center"><strong>📋 Detail Riwayat </strong></h4>
         <div class="table-responsive">
-            <table class="table table-bordered table-striped mt-3">
+            <table id="detilHistoryTable" class="table table-bordered table-striped mt-3">
                 <thead class="table-dark">
                     <tr class="text-center">
                         <th>📅 Tanggal & Waktu</th>
@@ -193,7 +191,7 @@
                 <tbody>
                     @foreach ($allHistory as $entry)
                         <tr class="text-center">
-                            <td>{{ \Carbon\Carbon::parse($entry['tanggal'])->format('d M Y H:i:s') }}</td>
+                            <td>{{ $entry['tanggal'] }}</td>
                             <td><span class="badge bg-primary">{{ $entry['jumlah'] ?? '-' }}</span></td>
                             <td>{{ $entry['merch_nama'] ?? '-' }}</td>
                         </tr>
@@ -206,16 +204,21 @@
     <script>
         document.getElementById('filterTanggal').addEventListener('change', function () {
             let selectedDate = this.value;
-            let rows = document.querySelectorAll('#totalPengambilanBody tr');
-
-            rows.forEach(row => {
+            
+            // Filter "Total Merchandise Terambil" table
+            let totalRows = document.querySelectorAll('#totalPengambilanBody tr');
+            totalRows.forEach(row => {
                 let rowDate = row.getAttribute('data-tanggal');
-                if (selectedDate === "all" || rowDate === selectedDate) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (selectedDate === "all" || rowDate.startsWith(selectedDate)) ? "" : "none";
+            });
+
+            // Filter "Detail Riwayat Pengambilan" table
+            let detailRows = document.querySelectorAll('#detilHistoryTable tbody tr');
+            detailRows.forEach(row => {
+                let rowDate = row.cells[0].textContent.trim();
+                row.style.display = (selectedDate === "all" || rowDate.startsWith(selectedDate)) ? "" : "none";
             });
         });
+
     </script>
 </x-Supvis.SupvisLayouts>

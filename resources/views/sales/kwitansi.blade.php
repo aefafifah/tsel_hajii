@@ -91,6 +91,22 @@ body {
 .footer p {
     margin: 2px 0;
 }
+
+.price-container {
+    position: relative;
+    display: inline-block;
+}
+.lunas-img {
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    width: 100px;
+    height: auto;
+    z-index: 2;
+    opacity: 0.9;
+}
+
     </style>
 </head>
 
@@ -121,23 +137,23 @@ body {
                 </tr>
                 <tr>
                     <td class="label">No. Tlp Pelanggan</td>
-                    <td>{{ $formData['nomor_injeksi'] }}</td>
+                    <td>{{ $formData['telepon_pelanggan'] }}</td>
                 </tr>
-                <tr>
-                    <td class="label">Aktivasi Tanggal</td>
-                    <td>{{ $formData['aktivasi_tanggal'] }}</td>
-                </tr>
+
             </table>
             <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Paket Internet Haji</h3>
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
-                    <td>
-                        {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s> <br> 
-                        <span
-                            style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
-                            Rp {{ number_format($formData['produk_harga_akhir'], 0, ',', '.') }},-
-                        </span>
-                    </td>
+                        <td>
+                            {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s> 
+                            
+                            <br> 
+                            <span
+                                style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
+                                Rp {{ number_format($formData['produk_harga_akhir'], 0, ',', '.') }},-
+                                <img src="{{ public_path('admin_asset/img/photos/lunas.png') }}" alt="LUNAS" class="lunas-img">
+                            </span>
+                        </td>
                 </tr>
             </table>
 

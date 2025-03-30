@@ -156,14 +156,14 @@
                 <thead>
                     <tr>
                         <th>Void</th>
-                        <th>ID Transaksi</th>
-                        <th>Nomor Telepon</th>
-                        <th>Nama Pelanggan</th>
                         <th>Tanggal Transaksi</th>
-                        <th>Nama Sales</th>
-                        <th>Jenis Paket</th>
+                        <th>ID Transaksi</th>
+                        <th>Nama Pelanggan</th>
                         <th>No Injeksi</th>
+                        <th>Jenis Paket</th>
                         <th>Merchandise</th>
+                        <th>Nama Sales</th>
+                        <th>Nomor Sales</th>
                         <th>Metode Pembayaran</th>
                         <th>Harga</th>
                         <th>Insentif</th>
@@ -194,15 +194,15 @@
                                         <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}"
                                             {{ $item->trashed() ? 'checked' : '' }}>
                                     </td>
-                                    <td class="id-transaksi">{{ $item->id_transaksi }}</td>
-                                    <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
-                                    <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
                                     <td class="tanggal">
                                         {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
-                                    <td class="nama-sales">{{ $item->nama_sales }}</td>
-                                    <td class="jenis-paket">{{ $item->jenis_paket }}</td>
+                                    <td class="id-transaksi">{{ $item->id_transaksi }}</td>
+                                    <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
                                     <td class="nomor-injeksi">{{ $item->nomor_injeksi }}</td>
+                                    <td class="jenis-paket">{{ $item->jenis_paket }}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
+                                    <td class="nama-sales">{{ $item->nama_sales }}</td>
+                                    <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
                                     <td class="metode-pembayaran">{{ $item->metode_pembayaran }}</td>
                                     <td class="harga">{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
                                     <td class="insentif">{{ $item->produk ? $item->produk->produk_insentif : 0 }}</td>
@@ -214,8 +214,8 @@
                 <tfoot>
                     <tr class="total-row" id="total-row">
                         <td colspan="10">Total Keseluruhan:</td>
-                        <td id="total-penjualan">Rp 0</td>
-                        <td id="total-insentif">Rp 0</td>
+                        <td id="total-penjualan">{{ $totalPenjualan }}</td>
+                        <td id="total-insentif">{{ $totalInsentif }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -227,14 +227,14 @@
             <table id="setoranTable">
                 <thead>
                     <tr>
-                        <th>ID Transaksi</th>
-                        <th>Nomor Telepon</th>
-                        <th>Nama Pelanggan</th>
                         <th>Tanggal Transaksi</th>
-                        <th>Nama Sales</th>
-                        <th>Jenis Paket</th>
+                        <th>ID Transaksi</th>
+                        <th>Nama Pelanggan</th>
                         <th>No Injeksi</th>
+                        <th>Jenis Paket</th>
                         <th>Merchandise</th>
+                        <th>Nama Sales</th>
+                        <th>Nomor Sales</th>
                         <th>Metode Pembayaran</th>
                         <th>Harga</th>
                         <th>Insentif</th>
@@ -243,14 +243,14 @@
                 <tbody>
                     @foreach ($setoranTransaksi as $item)
                         <tr>
-                            <td>{{ $item->id_transaksi }}</td>
-                            <td>{{ $item->nomor_telepon }}</td>
-                            <td>{{ $item->nama_pelanggan }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
-                            <td>{{ $item->nama_sales }}</td>
-                            <td>{{ $item->jenis_paket }}</td>
+                            <td>{{ $item->id_transaksi }}</td>
+                            <td>{{ $item->nama_pelanggan }}</td>
                             <td>{{ $item->nomor_injeksi }}</td>
+                            <td>{{ $item->jenis_paket }}</td>
                             <td>{{ $item->merchandise }}</td>
+                            <td>{{ $item->nama_sales }}</td>
+                            <td>{{ $item->nomor_telepon }}</td>
                             <td>{{ $item->metode_pembayaran }}</td>
                             <td>{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
                             <td>{{ $item->produk ? $item->produk->produk_insentif : 0 }}</td>
@@ -435,4 +435,3 @@
     </script>
 
 </x-Sales.SalesLayouts>
-

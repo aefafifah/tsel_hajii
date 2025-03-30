@@ -14,19 +14,6 @@ class TransaksiController extends Controller
 {
     public function submit(Request $request)
     {
-        // Validate the form data
-        $validated = $request->validate([
-            'id_transaksi' => 'required',
-            'nomor_telepon' => 'nullable|numeric',
-            'nama_pelanggan' => 'nullable|string',
-            'aktivasi_tanggal' => 'nullable|date',
-            'tanggal_transaksi' => 'nullable|date',
-            'produk' => 'required|exists:produks,id',
-            'merchandise' => 'required|exists:merchandises,id',
-            'nama_sales' => 'required|string',
-            'nomor_injeksi' => 'required|string|max:12'
-        ]);
-
         $selectedProdukId = $request->input('produk');
         $selectedMerchandiseId = $request->input('merchandise');
 
@@ -49,7 +36,9 @@ class TransaksiController extends Controller
             'merch_nama' => $selectedMerchandise->merch_nama,
             'metode_pembayaran' => $request->metode_pembayaran,
             'nama_sales' => $request->nama_sales,
-            'nomor_injeksi' => $request->nomor_injeksi
+            'nomor_injeksi' => $request->nomor_injeksi,
+            'telepon_pelanggan' => $request->telepon_pelanggan,
+            'addon_perdana' => $request->has('addon_perdana') ? 1 : 0,
         ]);
 
         try {
@@ -66,7 +55,7 @@ class TransaksiController extends Controller
             $selectedMerchandise->increment('merch_terambil', 1);
             $history = json_decode($selectedProduk->produk_terjual_history ?? '[]', true);
             $history[] = [
-                'tanggal' => now()->toDateTimeString(),
+                'tanggal' => Carbon::parse($request->tanggal_transaksi)->toDateTimeString(),
                 'jumlah' => 1,
                 'produk_nama' => $selectedProduk->produk_nama
             ];
@@ -76,25 +65,26 @@ class TransaksiController extends Controller
             $selectedProduk->refresh();
             $merchHistory = json_decode($selectedMerchandise->merch_terambil_history ?? '[]', true);
             $merchHistory[] = [
-                'tanggal' => now()->toDateTimeString(),
+                'tanggal' => Carbon::parse($request->tanggal_transaksi)->toDateTimeString(),
                 'jumlah' => 1,
                 'merch_nama' => $selectedMerchandise->merch_nama
             ];
             $selectedMerchandise->update([
                 'merch_terambil_history' => json_encode($merchHistory)
             ]);
-
             Transaksi::create([
                 'id_transaksi' => $request->id_transaksi,
                 'nomor_telepon' => $request->nomor_telepon,
                 'nama_pelanggan' => $request->nama_pelanggan,
-                'nama_sales' => $request->nama_sales,
                 'aktivasi_tanggal' => $request->aktivasi_tanggal,
+                'telepon_pelanggan' => $request->telepon_pelanggan,
+                'nama_sales' => $request->nama_sales,
                 'tanggal_transaksi' => $request->tanggal_transaksi,
                 'jenis_paket' => $selectedProduk->id,
                 'merchandise' => $selectedMerchandise->merch_nama,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'nomor_injeksi' => $request->nomor_injeksi,
+                'addon_perdana' => $request->has('addon_perdana') ? 1 : 0,
             ]);
             \DB::commit();
             return redirect()->route('sales.transaksi.kwitansi')->with('success', 'Transaksi berhasil disimpan!');

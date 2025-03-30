@@ -11,12 +11,12 @@ class MerchandiseController extends Controller
     public function index()
     {
         $merchandises = Merchandise::withTrashed()->get();;
-        return view('merch.index', compact('merchandises'));
+        return view('Merch.index', compact('merchandises'));
     }
 
     public function create()
     {
-        return view('merch.create');
+        return view('Merch.create');
     }
 
 
@@ -34,7 +34,7 @@ class MerchandiseController extends Controller
 
     public function edit(Merchandise $merchandise)
     {
-        return view('merch.edit', compact('merchandise'));
+        return view('Merch.edit', compact('merchandise'));
     }
 
     public function store(Request $request)

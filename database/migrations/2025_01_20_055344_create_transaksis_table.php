@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('merchandise')->nullable();
             $table->string('metode_pembayaran')->nullable();
             $table->string('nomor_injeksi')->nullable();
-            
+            $table->boolean('is_paid')->default(false);
+            $table->string('telepon_pelanggan')->nullable();
+            $table->boolean('addon_perdana')->default(false);
         });
     }
 

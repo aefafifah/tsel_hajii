@@ -27,8 +27,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            max-height: 100%;
-            overflow-y: auto;
+            max-height: 90%;
+            overflow-y: fixed;
         }
         .card {
             border-radius: 16px;

@@ -195,7 +195,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Nomor Telepon: {{ Auth::user()->phone }}</label>
+                    <label>Nomor Sales: {{ Auth::user()->phone }}</label>
                     <input type="hidden" name="nomor_telepon" id="nomor_telepon" value="{{ Auth::user()->phone }}">
                 </div>
 
@@ -209,16 +209,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Nomor Injeksi:</label>
-                    <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
+                    <label>Telepon yg bisa dihubungi:</label>
+                    <input type="number" name="telepon_pelanggan" placeholder="Masukkan telepon pelanggan" maxlength="12"
                         oninput="validateInjectionNumber(this)" required>
                     <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
                         maksimal 12 digit</small>
                 </div>
-                <div class="form-group">
-                    <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
-                    <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
-                </div>
+
                 <div class="form-group">
                     <label>Pilih Paket Internet:</label>
                     <div class="checkbox-group">
@@ -236,6 +233,26 @@
                         @endforeach
                     </div>
                 </div>
+
+                <label>Add on:</label>
+                    <div>
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1">
+                        <label> Nomor Perdana Baru </label>
+                        <br><br>
+                    </div>
+
+                <div class="form-group">
+                    <label>Nomor Injeksi: (opsional) (bisa diisi sales, ketika cust beli paket doang, nomor dah dapet gratis) (bisa diisi kasir, ketika cust beli dengan Addon nomor perdana baru)</label>
+                    <input type="number" name="nomor_injeksi" placeholder="Masukkan nomor injeksi" maxlength="12"
+                        oninput="validateInjectionNumber(this)">
+                    <small id="error-message-injeksi" style="color: red; display: none;">Harap masukkan hanya angka dan
+                        maksimal 12 digit</small>
+                </div>
+
+                <div class="form-group">
+                     <label for="aktivasi-tanggal">Aktivasi Tanggal:</label>
+                     <input type="date" id="aktivasi-tanggal" name="aktivasi_tanggal" class="form-control" required>
+                 </div>
 
                 <div class="form-group">
                     <label>Pilih Merchandise:</label>
@@ -258,26 +275,7 @@
                     <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" readonly required>
                 </div>
-                <div class="form-group">
-                    <label>Metode Pembayaran:</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-box">
-                            <input type="radio" id="metode1" name="metode_pembayaran" value="Tunai" required>
-                            <label for="metode1">
-                                <span class="checkbox-icon"></span>
-                                Tunai
-                            </label>
-                        </div>
-                        <div class="checkbox-box">
-                            <input type="radio" id="metode2" name="metode_pembayaran" value="Non Tunai" required>
-                            <label for="metode2">
-                                <span class="checkbox-icon"></span>
-                                Non Tunai
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="form-group" style="text-align: center; margin-top: 20px;">
                     <button type="submit" onclick="return OkeForm()">Oke</button>
                     <button type="button" onclick="cancelForm()">Cancel</button>
@@ -290,189 +288,123 @@
     </body>    
 </x-Sales.SalesLayouts>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
-                const dateInput = document.getElementById("aktivasi-tanggal");
-                dateInput.setAttribute("min", today); // Set batas minimal tanggal ke hari ini
-            });
-
-            function restrictNameInput(input) {
-                const errorMessage = document.getElementById('error-message-name');
-                const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, '');
-                input.value = onlyLetters;
-                errorMessage.style.display = input.value === onlyLetters ? 'none' : 'block';
-            }
-
-            function restrictPhoneInput(input) {
-                const errorMessage = document.getElementById('error-message-phone');
-                const onlyNumbers = input.value.replace(/\D/g, '');
-                input.value = onlyNumbers;
-                errorMessage.style.display = input.value === onlyNumbers ? 'none' : 'block';
-            }
-
-            function validateInjectionNumber(input) {
-                const errorMessage = document.getElementById('error-message-injeksi');
-                let value = input.value.replace(/\D/g, '');
-                if (value.length > 12) {
-                    value = value.slice(0, 12);
-                }
-                input.value = value;
-                errorMessage.style.display = value.length === 0 ? 'none' : 'block';
-            }
-
-            function filterMerchandises(selectedProdukId) {
-                const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
-                merchandises.forEach(merchandise => {
-                    const produkIds = JSON.parse(merchandise.getAttribute('data-produk-ids'));
-                    const checkbox = merchandise.querySelector('input');
-                    if (produkIds.includes(selectedProdukId)) {
-                        checkbox.disabled = false;
-                        merchandise.classList.add('highlight');
-                    } else {
-                        checkbox.disabled = true;
-                        checkbox.checked = false;
-                        merchandise.classList.remove('highlight');
-                    }
-                });
-            }
-
-function OkeForm() {
-    const inputs = document.querySelectorAll("input[required]");
-    let isValid = true;
-
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            isValid = false;
-            input.style.borderColor = "red";
-        } else {
-            input.style.borderColor = "";
-        }
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
+        const dateInput = document.getElementById("aktivasi-tanggal");
+        dateInput.setAttribute("min", today); // Set batas minimal tanggal ke hari ini
     });
 
-    const selectedProduk = document.querySelector("input[name='produk']:checked");
-    const selectedMerchandise = document.querySelector("input[name='merchandise']:checked");
-    const errorMessage = "Harap lengkapi semua kolom!";
-
-    if (!selectedProduk) {
-        Swal.fire({ title: "Peringatan!", text: errorMessage, icon: "warning" });
-        return false;
+    function restrictNameInput(input) {
+        const errorMessage = document.getElementById('error-message-name');
+        const onlyLetters = input.value.replace(/[^a-zA-Z\s]/g, '');
+        input.value = onlyLetters;
+        errorMessage.style.display = input.value === onlyLetters ? 'none' : 'block';
     }
 
-    if (!selectedMerchandise) {
-        Swal.fire({ title: "Peringatan!", text: "Harap pilih merchandise yang tersedia!", icon: "warning" });
-        return false;
+    function restrictPhoneInput(input) {
+        const errorMessage = document.getElementById('error-message-phone');
+        const onlyNumbers = input.value.replace(/\D/g, '');
+        input.value = onlyNumbers;
+        errorMessage.style.display = input.value === onlyNumbers ? 'none' : 'block';
     }
-    if (isValid) {
-        alert("Transaksi Sukses!");
-        alert("Transaksi telah disimpan");
 
-        // Clear all form inputs
-        const form = document.querySelector("form");
-        form.reset();
+    function validateInjectionNumber(input) {
+        const errorMessage = document.getElementById('error-message-injeksi');
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
+        input.value = value;
+        errorMessage.style.display = value.length === 0 ? 'none' : 'block';
+    }
 
-        // Clear any custom styling
+    function filterMerchandises(selectedProdukId) {
+        const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
+        merchandises.forEach(merchandise => {
+            const produkIds = JSON.parse(merchandise.getAttribute('data-produk-ids'));
+            const checkbox = merchandise.querySelector('input');
+            if (produkIds.includes(selectedProdukId)) {
+                checkbox.disabled = false;
+                merchandise.classList.add('highlight');
+            } else {
+                checkbox.disabled = true;
+                checkbox.checked = false;
+                merchandise.classList.remove('highlight');
+            }
+        });
+    }
+
+    function OkeForm() {
+        const inputs = document.querySelectorAll("input[required]");
+        let isValid = true;
+
         inputs.forEach(input => {
-            input.style.borderColor = "";
+            if (!input.value.trim()) {
+                isValid = false;
+                input.style.borderColor = "red";
+            } else {
+                input.style.borderColor = "";
+            }
         });
 
-        // Refresh the page after a brief delay
-        setTimeout(() => {
-            window.location.reload();
-        }, 500);
-        return true;
-    } else {
-        Swal.fire({
-            title: "Peringatan!",
-            text: "Lengkapi kolom!",
-            icon: "warning"
-        });
-        return false;
+        const selectedProduk = document.querySelector("input[name='produk']:checked");
+        const selectedMerchandise = document.querySelector("input[name='merchandise']:checked");
+        const errorMessage = "Harap lengkapi semua kolom!";
+
+        if (!selectedProduk) {
+            Swal.fire({ title: "Peringatan!", text: errorMessage, icon: "warning" });
+            return false;
+        }
+
+        if (!selectedMerchandise) {
+            Swal.fire({ title: "Peringatan!", text: "Harap pilih merchandise yang tersedia!", icon: "warning" });
+            return false;
+        }
+        if (isValid) {
+            alert("Transaksi Sukses!");
+            alert("Transaksi telah disimpan");
+
+            // Clear all form inputs
+            const form = document.querySelector("form");
+            form.reset();
+
+            // Clear any custom styling
+            inputs.forEach(input => {
+                input.style.borderColor = "";
+            });
+
+            // Refresh the page after a brief delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+            return true;
+        } else {
+            Swal.fire({
+                title: "Peringatan!",
+                text: "Lengkapi kolom!",
+                icon: "warning"
+            });
+            return false;
+        }
+
     }
 
-}
-
-function cancelForm() {
-    Swal.fire({
-        title: "Konfirmasi",
-        text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Ya, batalkan!",
-        cancelButtonText: "Tidak"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({ title: "Dibatalkan", text: "Form Transaksi telah dibatalkan.", icon: "info" });
-
-            const form = document.getElementById("form-transaksi");
-            if (form) {
-                form.reset();
-                const inputs = form.querySelectorAll("input, select, textarea");
-                inputs.forEach(input => {
-                    if (input.type === "checkbox" || input.type === "radio") {
-                        input.checked = false;
-                    } else {
-                        input.value = "";
-                    }
-                    input.style.borderColor = "";
-                });
+    function cancelForm() {
+        Swal.fire({
+            title: "Konfirmasi",
+            text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, batalkan!",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Refresh the page
+                window.location.reload();
+                
             }
+        });
+    }
 
-            const additionalInputs = document.querySelectorAll("input, select, textarea");
-            additionalInputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-                input.style.borderColor = "";
-            });
-        }
-    });
-}
-
-
-function cancelForm() {
-    Swal.fire({
-        title: "Konfirmasi",
-        text: "Apakah Anda yakin ingin membatalkan pengisian formulir Transaksi?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Ya, batalkan!",
-        cancelButtonText: "Tidak"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "Dibatalkan",
-                text: "Form Transaksi telah dibatalkan.",
-                icon: "info"
-            });
-
-            const form = document.getElementById("form-transaksi");
-            if (form) {
-                form.reset();
-                const inputs = form.querySelectorAll("input, select, textarea");
-                inputs.forEach(input => {
-                    if (input.type === "checkbox" || input.type === "radio") {
-                        input.checked = false;
-                    } else {
-                        input.value = "";
-                    }
-                    input.style.borderColor = "";
-                });
-            }
-
-            const additionalInputs = document.querySelectorAll("input, select, textarea");
-            additionalInputs.forEach(input => {
-                if (input.type === "checkbox" || input.type === "radio") {
-                    input.checked = false;
-                } else {
-                    input.value = "";
-                }
-                input.style.borderColor = "";
-            });
-        }
-    });
-}
-
-        </script>
+</script>
