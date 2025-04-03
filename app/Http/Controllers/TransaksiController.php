@@ -131,7 +131,7 @@ class TransaksiController extends Controller
     public function kwitansi(Request $request, $action = 'stream')
     {
         $formData = $request->session()->get('form_data', []);
-        $pdf = Pdf::loadView('sales.kwitansi', ['formData' => $formData]);
+        $pdf = Pdf::loadView('sales.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
 
         // Clear session, supaya ga kecolong
         $request->session()->forget('form_data');

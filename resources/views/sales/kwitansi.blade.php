@@ -98,7 +98,7 @@ body {
 }
 .lunas-img {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 80%;
     transform: translate(-50%, -50%) rotate(-15deg);
     width: 100px;
@@ -141,6 +141,17 @@ body {
                 </tr>
 
             </table>
+
+            <h3 style="font-size: 12px; text-align: left;">Nomor Injeksi</h3>
+            <table style="width: 100%; border: 1px solid #ccc; padding: 0px;">
+                <tr>
+                    <td>
+                        {{ $formData['nomor_injeksi'] }}   
+                    </td>
+                </tr>
+            </table>
+
+
             <h3 style="font-size: 12px; margin: 5px 0; text-align: left;">Paket Internet Haji</h3>
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
