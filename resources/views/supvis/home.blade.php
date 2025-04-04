@@ -9,8 +9,8 @@
         <div class="container" style="text-align: center; padding: 18px; font-family: 'Poppins', sans-serif;">
             <div class="welcome-card">
                 <div class="welcome-text">
-                    <h1>Selamat, {{ Auth::user()->name }}! 🎉</h1>
-                    <p>Anda telah mencapai peningkatan penjualan sebesar 72% hari ini.</p>
+                    <h1>Hai, {{ Auth::user()->name }}! 👋</h1>
+                    <p>Selamat datang dan beraktivitas kembali!</p>
                 </div>
                 <div>
                     <img src="{{ asset('admin_asset/img/photos/icon_spv.png') }}" alt="Illustration" class="welcome-image">
@@ -18,18 +18,6 @@
             </div>
 
             <div class="dashboard-container">
-                <div class="info-box">
-                    <h3>Pembayaran</h3>
-                    <p class="amount">{{ 'Rp ' . number_format($nominalTransaksi, 0, ',', '.') }}</p>
-                    <p class="percentage">14.82% lebih rendah dari minggu lalu</p>
-                </div>
-
-                <div class="info-box">
-                    <h3>Transaksi</h3>
-                     <p class="amount">{{ $kaliTransaksi }}</p>
-                    <p class="percentage">28.14% lebih tinggi dari minggu lalu</p>
-                </div>
-            </div>
 
             <a href="{{ route('supvis.budget_insentif.index') }}" style="text-decoration: none;">
                 <div class="info-box budget-box">

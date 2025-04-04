@@ -66,17 +66,17 @@
         }
 
         th {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             color: white;
             font-weight: bold;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: rgb(44, 54, 77);
         }
 
         .total-row {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             font-weight: bold;
             color: white;
         }
@@ -106,7 +106,6 @@
 
             table {
                 min-width: 300px;
-                /* Mengurangi lebar minimum untuk layar kecil */
             }
 
             th,

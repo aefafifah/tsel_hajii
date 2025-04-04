@@ -185,21 +185,12 @@
 
     <div class="search-container">
         <div class="filter-box">
-            <select id="filter-transaksi">
-                <option value="all">Riwayat</option>
-                <option value="1">ID Transaksi</option>
-                <option value="7">Nomor telepon</option>
-                <option value="7">Nama Pelanggan</option>
-                <option value="30">Nama Transaksi</option>
-                <option value="365-sales">Nama Sales</option>
-                <option value="365-package">Jenis Paket</option>
-                <option value="365-merchandise">Merchandise</option>
-                <option value="365-payment">Metode Pembayaran</option>
+            <select id="filter-transaksi" onchange="filterByDateRange(this.value)">
+                <option value="all">Semua Transaksi</option>
+                <option value="7">7 Hari Terakhir</option>
+                <option value="30">1 Bulan Terakhir</option>
+                <option value="365">1 Tahun Terakhir</option>
             </select>
-        </div>
-        <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Cari...">
-            <i class="fa fa-search"></i>
         </div>
     </div>
 
@@ -260,7 +251,11 @@
             </tbody>
         </table>
     </div>
-    
+
+    <div class="container text-center mt-3">
+        <a href="{{ route('export.excel') }}" class="btn btn-success">Export ke Excel</a>
+    </div>
+
     <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script>
         function searchTable() {
@@ -283,6 +278,27 @@
                 rows[i].style.display = match ? '' : 'none';
             }
         }
+
+        function filterByDateRange(days) {
+            const table = document.getElementById('transactionTable');
+            const rows = table.getElementsByTagName('tr');
+            const now = new Date();
+
+            for (let i = 1; i < rows.length; i++) {
+                const cell = rows[i].getElementsByTagName('td')[3];
+                if (!cell) continue;
+
+                const rowDate = new Date(cell.textContent);
+                const timeDiff = Math.floor((now - rowDate) / (1000 * 60 * 60 * 24)); 
+
+                if (days === 'all' || timeDiff <= days) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+
         $(document).ready(function() {
             $('#transactionTable').DataTable({
                 "paging": true,
