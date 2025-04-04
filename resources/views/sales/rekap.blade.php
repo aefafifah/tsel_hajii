@@ -71,10 +71,6 @@
             font-weight: bold;
         }
 
-        tr:hover {
-            background-color: rgb(44, 54, 77);
-        }
-
         .total-row {
             background: rgb(44, 54, 77);
             font-weight: bold;
@@ -219,9 +215,8 @@
                 </tfoot>
             </table>
         </div>
-        <button id="get-setoran-button" type="submit" class="btn btn-primary mt-3">Ambil Setoran</button>
 
-        <h3 class="mt-3">Transaksi yang Sudah Disetor</h3>
+        <h3 class="mt-4">Transaksi yang Sudah Disetor</h3>
         <div class="table-container">
             <table id="setoranTable">
                 <thead>
