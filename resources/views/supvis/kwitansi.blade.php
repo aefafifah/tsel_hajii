@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwitansi Pembayaran</title>
     <style>
-        
+
 @page {
     size: 80mm 150mm;
     margin: 0;
@@ -125,7 +125,7 @@ body {
                 </tr>
                 <tr>
                     <td class="label">Tanggal Pembelian</td>
-                    <td>{{ $formData['tanggal_transaksi'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($formData['tanggal_transaksi'])->format('d-m-Y') }}</td>
                 </tr>
                 <tr>
                     <td class="label">Nama Sales</td>
@@ -146,7 +146,7 @@ body {
             <table style="width: 100%; border: 1px solid #ccc; padding: 0px;">
                 <tr>
                     <td>
-                        {{ $formData['nomor_injeksi'] }}   
+                        {{ $formData['nomor_injeksi'] }}
                     </td>
                 </tr>
             </table>
@@ -156,9 +156,9 @@ body {
             <table style="width: 100%; border: 1px solid #ccc; text-align: center; padding: 10px;">
                 <tr>
                         <td>
-                            {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s> 
-                            
-                            <br> 
+                            {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s>
+
+                            <br>
                             <span
                                 style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold; color:rgba(0, 0, 0, 0.99);">
                                 Rp {{ number_format($formData['produk_harga_akhir'], 0, ',', '.') }},-

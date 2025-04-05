@@ -114,7 +114,7 @@ Route::middleware(['supervisor'])->group(function () {
     Route::delete('/programhaji/supvis/void/{id}', [TransaksiController::class, 'supvisdestroy'])->name('supvis.void.supvisdestroy');
 
 
-});
+
 // ALL IN
 Route::middleware(['auth'])->group(function () {
     Route::get('/programhaji/role_users/{roleUsers}/edit', [RoleUsersController::class, 'edit'])->name('role_users.edit');
@@ -153,5 +153,22 @@ Route::post('/programhaji/update-setoran-status', [SupvisController::class, 'upd
 
 // under this untuk mainan
 
+Route::get('/cek-imagick', function () {
+    if (extension_loaded('imagick')) {
+        return 'Imagick aktif!';
+    } else {
+        return 'Imagick TIDAK aktif!';
+    }
+});
+// Approve superuser
+Route::get('programhaji/supvis/approvetransaksi', [TransaksiController::class, 'approveTransaksi'])->name('transaksi.approve');
+    Route::get('programhaji/supvis/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+    Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
+});
+// bayar
+Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('transaksi.edit.bayar');
+Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
+// kwitansi
+Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('supvis.transaksi.kwitansi');
 
 

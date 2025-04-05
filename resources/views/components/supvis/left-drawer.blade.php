@@ -14,6 +14,7 @@
             <x-nav-link href="{{ route('merch.index') }}" :active="request()->is('programhaji/merch', 'programhaji/merch/*')">Merch</x-nav-link>
             <x-nav-link href="{{ route('add_sales') }}" :active="request()->is('programhaji/tambah-sales')">Add Sales</x-nav-link>
             <x-nav-link href="/programhaji/history-setoran" :active="request()->is('programhaji/history-setoran')">Checklist Sales</x-nav-link>
+            <x-nav-link href="{{ route('transaksi.approve') }}" :active="request()->is('programhaji/supvis/approvetransaksi')">Approve Transaksi</x-nav-link>
             <x-nav-link href="{{ route('supvis.transactions.index') }}" :active="request()->is('programhaji/supvis/riwayat-transaksi')">Riwayat Transaksi</x-nav-link>
             <x-nav-link href="{{ route('pantau.stok') }}" :active="request()->is('programhaji/pantau-stok')">Pantau Stok</x-nav-link>
             <x-nav-link href="{{ route('supvis.supvis.budget_insentif.pantau') }}" :active="request()->is('programhaji/supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>
@@ -21,6 +22,7 @@
                 <x-nav-link href="{{ route('add_supvis') }}" :active="request()->is('programhaji/tambah-supvis')">Add Supervisor</x-nav-link>
             @endif
             <x-nav-link href="{{ route('supvis.void') }}" :active="request()->is('programhaji/supvis/void')">Void Transaksi</x-nav-link>
+
 
 
     </div>

@@ -145,7 +145,7 @@
                         checkbox.prop('checked', false); // reset checkbox
 
                         if (result.isConfirmed) {
-                            window.location.href = `/transaksi/${id}/bayar`;
+                            window.location.href = `/programhaji/supvis/transaksi/${id}/bayar`;
                         }
                     });
                 });
