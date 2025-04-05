@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand">
-            <span class="align-middle">Halo, {{ Auth::user()->name }}!</span>
+            <span class="align-middle">{{ Auth::user()->name }}</span>
         </a>
 
         <ul class="sidebar-nav">

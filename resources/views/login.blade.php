@@ -13,15 +13,18 @@
             padding: 0;
             overflow: hidden;
         }
+
         body {
             background-color: #f9f9f9;
         }
+
         .main-container {
             height: 100vh;
             display: flex;
             flex-direction: column;
             padding: 0.5rem;
         }
+
         .content-wrapper {
             flex: 1;
             display: flex;
@@ -30,6 +33,7 @@
             max-height: 90%;
             overflow-y: fixed;
         }
+
         .card {
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -37,29 +41,35 @@
             width: 100%;
             max-width: 400px;
         }
+
         .logo-container {
             text-align: center;
             margin-bottom: 0.5rem;
         }
+
         .logo-container img {
             max-width: 150px;
             height: auto;
             margin: 0 auto;
         }
+
         .title-section {
             text-align: center;
             margin-bottom: 0.5rem;
         }
+
         .title-section h1 {
             font-size: calc(1.2rem + 0.6vw);
             margin-bottom: 0.25rem;
         }
+
         .pin-display {
             display: flex;
             justify-content: center;
             gap: min(1.5vw, 8px);
             margin: 0.5rem 0;
         }
+
         .pin-display div {
             width: min(40px, 10vw);
             height: min(40px, 10vw);
@@ -69,13 +79,17 @@
             border-radius: 50%;
             color: #333;
         }
+
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: min(2vw, 10px);
             max-width: min(280px, 90vw);
-            margin: 0.5rem auto;
+            margin: 0.8rem auto;
+            justify-content: center;
+            margin-right: 29px;
         }
+
         .keypad button {
             width: min(60px, 20vw);
             height: min(60px, 20vw);
@@ -88,9 +102,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 0;
         }
+
         .card-body {
             padding: min(1rem, 3vw);
         }
+
         .btn-clear {
             background: linear-gradient(135deg, #ff4b4b, #ff0000) !important;
         }

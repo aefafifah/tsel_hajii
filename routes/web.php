@@ -13,6 +13,7 @@ use App\Http\Controllers\BudgetInsentifController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleUsersController;
 use App\Http\Controllers\StockHistoryController;
+use App\Http\Controllers\ExportRiwayatTransaksiController;
 
 
 
@@ -45,7 +46,9 @@ Route::middleware(['supervisor'])->group(function () {
     // Riwayat Transaksi
     Route::get('/programhaji/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
         ->name('supvis.transactions.index');
-
+    // Export Excel Riwayat Transaksi
+    Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])
+        ->name('export.excel');
 
     // Rute Insentif
     Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {

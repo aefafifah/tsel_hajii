@@ -66,17 +66,13 @@
         }
 
         th {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             color: white;
             font-weight: bold;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
         .total-row {
-            background: linear-gradient(135deg, #2575FC, #43e97b);
+            background: rgb(44, 54, 77);
             font-weight: bold;
             color: white;
         }
@@ -106,7 +102,6 @@
 
             table {
                 min-width: 300px;
-                /* Mengurangi lebar minimum untuk layar kecil */
             }
 
             th,
@@ -220,9 +215,8 @@
                 </tfoot>
             </table>
         </div>
-        <button id="get-setoran-button" type="submit" class="btn btn-primary mt-3">Ambil Setoran</button>
 
-        <h3 class="mt-3">Transaksi yang Sudah Disetor</h3>
+        <h3 class="mt-4">Transaksi yang Sudah Disetor</h3>
         <div class="table-container">
             <table id="setoranTable">
                 <thead>
