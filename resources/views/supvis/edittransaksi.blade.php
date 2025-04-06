@@ -198,7 +198,7 @@
                 <div class="form-group">
                     <label>Tanggal Transaksi</label>
                     <input type="date" name="tanggal_transaksi" class="form-control"
-                        value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi) }}" required>
+                        value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
 
                 <div class="form-group">

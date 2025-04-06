@@ -59,7 +59,7 @@
                                 {{-- <a href="{{ route('transaksi.edit.bayar', $item->id_transaksi) }}" class="btn btn-primary btn-sm">Bayar</a> --}}
                             @endif
                             @php
-                                $no_hp = preg_replace('/[^0-9]/', '', $item->nomor_telepon);
+                                $no_hp = preg_replace('/[^0-9]/', '', $item->telepon_pelanggan);
                                 if (substr($no_hp, 0, 1) === '0') {
                                     $no_hp = '62' . substr($no_hp, 1);
                                 }

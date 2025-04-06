@@ -184,8 +184,8 @@ body {
             </table>
         </div>
         <div class="footer">
-            <p>Contact Person : {{ Auth::user()->name }}</p>
-            <p>No Tlp : {{ Auth::user()->phone }}</p>
+            <p>Contact Person :  {{ $formData['nama_sales'] }}</p>
+            <p>No Tlp :  {{ $formData['nomor_telepon'] }}</p>
         </div>
     </div>
     </body>

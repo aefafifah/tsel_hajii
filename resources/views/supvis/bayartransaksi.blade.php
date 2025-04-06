@@ -218,7 +218,7 @@
                 <div class="form-group">
                     <label>Nomor Injeksi</label>
                     <input type="text" name="nomor_injeksi" class="form-control"
-                        value="{{ old('nomor_injeksi', $transaksi->nomor_injeksi ?? '') }}" disabled>
+                        value="{{ old('nomor_injeksi', $transaksi->nomor_injeksi ?? '') }}" >
                 </div>
 
                 <div class="form-group">
@@ -266,7 +266,7 @@
                 <div class="form-group">
                     <label>Addon Perdana</label>
                     <input type="checkbox" name="addon_perdana" value="1"
-                        {{ $transaksi->addon_perdana ? 'checked' : '' }} disabled>
+                        {{ $transaksi->addon_perdana ? 'checked' : '' }} >
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
