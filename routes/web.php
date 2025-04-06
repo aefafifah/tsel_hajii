@@ -112,7 +112,7 @@ Route::middleware(['supervisor'])->group(function () {
 
     Route::get('/programhaji/supvis/void', [TransaksiController::class, 'supvisvoid'])->name('supvis.void');
     Route::delete('/programhaji/supvis/void/{id}', [TransaksiController::class, 'supvisdestroy'])->name('supvis.void.supvisdestroy');
-
+});
 
 
 // ALL IN
@@ -164,7 +164,7 @@ Route::get('/cek-imagick', function () {
 Route::get('programhaji/supvis/approvetransaksi', [TransaksiController::class, 'approveTransaksi'])->name('transaksi.approve');
     Route::get('programhaji/supvis/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
     Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
-});
+
 // bayar
 Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('transaksi.edit.bayar');
 Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
