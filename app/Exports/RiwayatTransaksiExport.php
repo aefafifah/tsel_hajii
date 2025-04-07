@@ -11,16 +11,16 @@ class RiwayatTransaksiExport implements FromCollection, WithHeadings
     public function collection()
     {
         return RiwayatTransaksi::select(
-            'id_transaksi', 'nomor_telepon', 'nama_pelanggan', 'aktivasi_tanggal', 
-            'nama_sales', 'jenis_paket', 'merchandise', 'metode_pembayaran'
+            'id_transaksi','tanggal_transaksi', 'nama_sales', 'nomor_telepon', 'nama_pelanggan', 'telepon_pelanggan',
+            'nomor_injeksi', 'aktivasi_tanggal', 'jenis_paket', 'merchandise', 'metode_pembayaran'
         )->get();
     }
 
     public function headings(): array
     {
         return [
-            'ID Transaksi', 'Nomor Telepon', 'Nama Pelanggan', 'Tanggal Transaksi', 
-            'Nama Sales', 'Jenis Paket', 'Merchandise', 'Metode Pembayaran'
+            'ID Transaksi', 'Tanggal Transaksi', 'Nama Sales', 'Nomor Telepon', 'Nama Pelanggan', 'Nomor Pelanggan',
+            'Nomor Injeksi', 'Aktivasi Tanggal', 'Jenis Paket', 'Merchandise', 'Metode Pembayaran'
         ];
     }
 }
