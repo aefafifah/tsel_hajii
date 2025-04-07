@@ -154,7 +154,9 @@
                         <th>Tanggal Transaksi</th>
                         <th>ID Transaksi</th>
                         <th>Nama Pelanggan</th>
-                        <th>No Injeksi</th>
+                        <th>No. Tlp Pelanggan</th>
+                        <th>No. Injeksi</th>
+                        <th>Aktivasi Tanggal</th>
                         <th>Jenis Paket</th>
                         <th>Merchandise</th>
                         <th>Nama Sales</th>
@@ -193,7 +195,9 @@
                                         {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
                                     <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
+                                    <td class="nomor-pelanggan">{{ $item->nomor_pelanggan }}</td>
                                     <td class="nomor-injeksi">{{ $item->nomor_injeksi }}</td>
+                                    <td class="aktivasi-tanggal">{{ $item->aktivasi_tanggal }}</td>
                                     <td class="jenis-paket">{{ $item->jenis_paket }}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
                                     <td class="nama-sales">{{ $item->nama_sales }}</td>
@@ -208,7 +212,7 @@
                 </tbody>
                 <tfoot>
                     <tr class="total-row" id="total-row">
-                        <td colspan="10">Total Keseluruhan:</td>
+                        <td colspan="12">Total Keseluruhan:</td>
                         <td id="total-penjualan">{{ $totalPenjualan }}</td>
                         <td id="total-insentif">{{ $totalInsentif }}</td>
                     </tr>
@@ -224,7 +228,9 @@
                         <th>Tanggal Transaksi</th>
                         <th>ID Transaksi</th>
                         <th>Nama Pelanggan</th>
-                        <th>No Injeksi</th>
+                        <th>No. Tlp Pelanggan</th>
+                        <th>No. Injeksi</th>
+                        <th>Aktivasi Tanggal</th>
                         <th>Jenis Paket</th>
                         <th>Merchandise</th>
                         <th>Nama Sales</th>
@@ -240,7 +246,9 @@
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                             <td>{{ $item->id_transaksi }}</td>
                             <td>{{ $item->nama_pelanggan }}</td>
+                            <td>{{ $item->nomor_pelanggan }}</td>
                             <td>{{ $item->nomor_injeksi }}</td>
+                            <td>{{ $item->aktivasi_tanggal }}</td>
                             <td>{{ $item->jenis_paket }}</td>
                             <td>{{ $item->merchandise }}</td>
                             <td>{{ $item->nama_sales }}</td>

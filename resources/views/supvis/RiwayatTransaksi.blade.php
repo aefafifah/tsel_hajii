@@ -222,10 +222,13 @@
             <thead>
                 <tr>
                     <th>ID Transaksi</th>
-                    <th>Nomor Telepon</th>
-                    <th>Nama Pelanggan</th>
                     <th>Tanggal Transaksi</th>
                     <th>Nama Sales</th>
+                    <th>No. Tlp Sales</th>
+                    <th>Nama Pelanggan</th>
+                    <th>No. Tlp Pelanggan</th>
+                    <th>Nomor Injeksi</th>
+                    <th>Aktivasi Tanggal</th>
                     <th>Jenis Paket</th>
                     <th>Merchandise</th>
                     <th>Metode Pembayaran</th>
@@ -236,16 +239,19 @@
                 @foreach ($transaksi as $transaction)
                     <tr>
                         <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
-                        <td data-label="Nomor Telepon">{{ $transaction->nomor_telepon }}</td>
-                        <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
-                        <td data-label="Tanggal Transaksi">{{ $transaction->aktivasi_tanggal }}</td>
+                        <td data-label="Tanggal Transaksi">{{ $transaction->tanggal_transaksi }}</td>
                         <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
+                        <td data-label="No. Tlp Sales">{{ $transaction->nomor_telepon }}</td>
+                        <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
+                        <td data-label="No. Tlp Pelanggan">{{ $transaction->telepon_pelanggan }}</td>
+                        <td data-label="Nomor Injeksi">{{ $transaction->nomor_injeksi }}</td>
+                        <td data-label="Aktivasi Tanggal">{{ $transaction->aktivasi_tanggal }}</td>
                         <td data-label="Jenis Paket">
                             {{ $transaction->produk ? $transaction->produk->produk_nama : 'Produk tidak ditemukan' }}
                         </td>
                         <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
                         <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
-                        <td data-label="Metode Pembayaran">{{ $transaction->produk->produk_harga }}</td>
+                        <td data-label="Harga">{{ $transaction->produk->produk_harga }}</td>
                     </tr>
                 @endforeach
             </tbody>
