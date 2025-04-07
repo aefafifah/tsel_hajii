@@ -14,11 +14,14 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
+                    <th>Tanggal</th>
                     <th>Nama</th>
                     <th>Telepon</th>
-                    <th>Tanggal</th>
+                    <th>No. Injeksi</th>
+                    <th>Aktivasi Tanggal</th>
                     <th>Jenis Paket</th>
                     <th>Merchandise</th>
+                    <th>Harga</th>
                     <th>Pembayaran</th>
                     <th>Setor</th>
                     <th>Status</th>
@@ -30,11 +33,14 @@
                 @foreach ($transaksi as $item)
                     <tr>
                         <td>{{ $item->id_transaksi }}</td>
-                        <td>{{ $item->nama_pelanggan }}</td>
-                        <td>{{ $item->nomor_telepon }}</td>
                         <td>{{ $item->tanggal_transaksi }}</td>
+                        <td>{{ $item->nama_pelanggan }}</td>
+                        <td>{{ $item->telepon_pelanggan }}</td>
+                        <td>{{ $item->nomor_injeksi }}</td>
+                        <td>{{ $item->aktivasi_tanggal }}</td>
                         <td>{{ $item->produk ? $item->produk->produk_nama : 'Tidak ditemukan' }}</td>
                         <td>{{ $item->merchandise }}</td>
+                        <td>{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
                         <td>{{ $item->metode_pembayaran }}</td>
                         <td>{{ $item->is_setor ? 'Sudah' : 'Belum' }}</td>
                         <td>
