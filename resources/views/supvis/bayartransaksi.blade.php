@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
 
     <head>
         <style>
@@ -217,7 +217,7 @@
 
                 <div class="form-group">
                     <label>Nomor Injeksi</label>
-                    <input type="text" name="nomor_injeksi" class="form-control"
+                    <input oninput="validateInjectionNumber(this)" type="text" name="nomor_injeksi" class="form-control"
                         value="{{ old('nomor_injeksi', $transaksi->nomor_injeksi ?? '') }}" >
                 </div>
 
@@ -272,4 +272,16 @@
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
             </form>
         </div>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>
+
+<script>
+    function validateInjectionNumber(input) {
+        const errorMessage = document.getElementById('error-message-injeksi');
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
+        input.value = value;
+        errorMessage.style.display = value.length === 0 ? 'none' : 'block';
+    }
+</script>

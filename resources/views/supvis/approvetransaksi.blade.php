@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
 
     <div class="container mt-4">
         <h2 class="mb-4">Daftar Transaksi</h2>
@@ -82,6 +82,9 @@
                                 @csrf @method('DELETE')
                                 <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus transaksi ini?')">Hapus</button>
                             </form> --}}
+                            
+                            <a href="{{ route('supvis.transaksi.kwitansi.print', $item->id_transaksi) }}"
+                                class="btn btn-success btn-sm">Print</a>
                         </td>
                     </tr>
                 @endforeach
@@ -158,5 +161,5 @@
             });
         </script>
     @endpush
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>
 @stack('scripts')

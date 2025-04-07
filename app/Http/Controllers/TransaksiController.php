@@ -179,6 +179,49 @@ class TransaksiController extends Controller
             ])->header('Refresh', "0;url=$waLink");
         }
     }
+    
+    public function print($id, $action = 'stream')
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Ambil produk & merchandise dari data transaksi lama
+        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
+
+        // Simpan ke session form_data
+        $formData = [
+            'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
+            'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
+            'id_transaksi' => $transaksi->id_transaksi,
+            'produk_nama' => $selectedProduk->produk_nama,
+            'produk_harga' => $selectedProduk->produk_harga,
+            'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
+            'merch_nama' => $selectedMerchandise->merch_nama,
+            'nama_pelanggan' => $transaksi->nama_pelanggan,
+            'nama_sales' => $transaksi->nama_sales,
+            'tanggal_transaksi' => $transaksi->tanggal_transaksi,
+            'telepon_pelanggan' => $transaksi->telepon_pelanggan,
+            'nomor_telepon' => $transaksi->nomor_telepon,
+            'metode_pembayaran' => $transaksi->metode_pembayaran,
+            'nomor_injeksi' => $transaksi->nomor_injeksi,
+            'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
+        ];
+        $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
+        // Simpan output PDF (ke memory)
+        $pdfContent = $pdf->output();
+        
+        // Stream or download PDF without saving
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => $action === 'download'
+                ? "attachment; filename=\"{$formData['id_transaksi']}.pdf\""
+                : "inline; filename=\"{$formData['id_transaksi']}.pdf\""
+        ];
+    
+        return response($pdfContent, 200, $headers);
+    }
+
+    
 
     public function dashboard(Request $request)
     {
@@ -454,7 +497,7 @@ class TransaksiController extends Controller
                 'telepon_pelanggan' => $transaksi->telepon_pelanggan,
                 'nomor_telepon' => $transaksi->nomor_telepon,
                 'metode_pembayaran' => $transaksi->metode_pembayaran,
-                'nomor_injeksi' => $transaksi->nomor_injeksi,
+                'nomor_injeksi' => $request->nomor_injeksi,
             ];
 
             $request->session()->put('form_data', $formData);
@@ -463,6 +506,7 @@ class TransaksiController extends Controller
             $transaksi->update([
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'is_paid' => 1,
+                'nomor_injeksi' => $request->nomor_injeksi,
 
             ]);
 

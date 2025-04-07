@@ -129,7 +129,7 @@ body {
                 </tr>
                 <tr>
                     <td class="label">Nama Sales</td>
-                    <td>{{ Auth::user()->name }}</td>
+                    <td>{{ $formData['nama_sales'] }}</td>
                 </tr>
                 <tr>
                     <td class="label">Nama Pelanggan</td>
@@ -145,9 +145,12 @@ body {
             <h3 style="font-size: 12px; text-align: left;">Nomor Injeksi</h3>
             <table style="width: 100%; border: 1px solid #ccc; padding: 0px;">
                 <tr>
-                    <td>
-                        {{ $formData['nomor_injeksi'] }}
-                    </td>
+                    <td class="label">Nomor Injeksi</td>
+                    <td>{{ $formData['nomor_injeksi'] }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Aktivasi Tanggal</td>
+                    <td>{{ $formData['aktivasi_tanggal'] }}</td>
                 </tr>
             </table>
 

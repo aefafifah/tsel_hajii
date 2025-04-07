@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
 
     <head>
         <style>
@@ -348,4 +348,4 @@
             });
         </script>
     </body>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>
