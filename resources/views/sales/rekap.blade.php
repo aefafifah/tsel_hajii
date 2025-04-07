@@ -169,7 +169,7 @@
                 <tbody>
                     @if ($groupedTransaksi->isEmpty())
                         <tr>
-                            <td colspan="12">Tidak ada transaksi yang ditemukan.</td>
+                            <td colspan="14">Tidak ada transaksi yang ditemukan.</td>
                         </tr>
                     @else
                         @foreach ($groupedTransaksi as $tanggal => $items)
@@ -177,7 +177,7 @@
                                 $firstItem = $items->first(); // Ambil ID transaksi pertama untuk mewakili grup
                             @endphp
                             <tr>
-                                <th colspan="12">
+                                <th colspan="14">
                                     <input type="checkbox" class="setoran-checkbox" data-date="{{ $tanggal }}"
                                         data-id="{{ $firstItem->id_transaksi }}">
                                     Tanggal: {{ \Carbon\Carbon::parse($tanggal)->format('d M Y') }}
@@ -195,7 +195,7 @@
                                         {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
                                     <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
-                                    <td class="nomor-pelanggan">{{ $item->nomor_pelanggan }}</td>
+                                    <td class="nomor-pelanggan">{{ $item->telepon_pelanggan }}</td>
                                     <td class="nomor-injeksi">{{ $item->nomor_injeksi }}</td>
                                     <td class="aktivasi-tanggal">{{ $item->aktivasi_tanggal }}</td>
                                     <td class="jenis-paket">{{ $item->jenis_paket }}</td>
