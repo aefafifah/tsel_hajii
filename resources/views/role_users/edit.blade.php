@@ -114,6 +114,7 @@
                         placeholder="Masukkan nama" 
                         value="{{ old('name', $roleUsers->name) }}"
                         required="true" 
+                        oninput="validateName(this)"
                     />
                     @error('name')
                         <div class="text-danger">{{ $message }}</div>
@@ -160,7 +161,7 @@
 
 <!-- JIKA USER == SALES -->
 @elseif(auth()->check() && auth()->user()->hasRole('sales'))
-    <x-sales.saleslayouts>
+    <x-Sales.SalesLayouts>
 
         <style>
 
@@ -274,7 +275,8 @@
                         name="name" 
                         placeholder="Masukkan nama" 
                         value="{{ old('name', $roleUsers->name) }}"
-                        required="true" 
+                        required="true"
+                        oninput="validateName(this)"
                     />
                     @error('name')
                         <div class="text-danger">{{ $message }}</div>
@@ -318,7 +320,7 @@
             </div>
         </body>
         
-    </x-sales.saleslayouts>
+    </x-Sales.SalesLayouts>
 @endif
 
 <script>
@@ -334,5 +336,18 @@
         if (file) {
             reader.readAsDataURL(file);
         }
+    }
+    
+    function validateName(input) {
+      // Limit input to 20 characters
+      if (input.value.length > 20) {
+        input.value = input.value.substring(0, 20);
+        
+        // Optional: Show validation message
+        input.setCustomValidity("Nama tidak boleh lebih dari 20 karakter");
+      } else {
+        // Clear any previous validation message
+        input.setCustomValidity("");
+      }
     }
     </script>

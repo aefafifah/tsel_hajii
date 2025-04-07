@@ -196,8 +196,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tanggal Transaksi</label>
-                    <input type="date" name="tanggal_transaksi" class="form-control"
+                    <input type="hidden" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
 
@@ -286,17 +285,35 @@
                         value="{{ old('nama_sales', $transaksi->nama_sales) }}" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Addon Perdana</label>
+                <div class="form-group" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <label>Addon Perdana</label><br>
                     <input type="checkbox" name="addon_perdana" value="1"
                         {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                    
+                    <div style="font-size: 2rem; font-weight: bold; text-align: center; margin-top: 10px;">
+                        PERDANA BARU
+                    </div>
                 </div>
+                
 
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-primary" onclick="submitToUpdate()">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-success" onclick="submitToBayar(event)">Bayar</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
 
         <script>
+            function submitToUpdate() {
+                const form = document.getElementById('editTransaksiForm');
+                form.action = "{{ route('transaksi.update', $transaksi->id_transaksi) }}";
+            }
+
+            function submitToBayar(e) {
+                e.preventDefault(); // prevent immediate form submission
+                const form = document.getElementById('editTransaksiForm');
+                form.action = "{{ route('transaksi.bayar', $transaksi->id_transaksi) }}";
+                form.submit(); // now submit
+            }
             function filterMerchandises(selectedProdukId) {
                 const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
                 merchandises.forEach(merchandise => {

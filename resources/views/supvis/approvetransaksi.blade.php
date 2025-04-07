@@ -75,16 +75,19 @@
                                     '%0A%0ATerima kasih telah menggunakan layanan kami 🙏😊';
                             @endphp
 
-                            <a href="https://wa.me/{{ $no_hp }}?text={{ $pesan }}"
-                                class="btn btn-success btn-sm" target="_blank">WA</a>
+                            @if ($item->is_paid)
+                                <a href="{{ route('supvis.transaksi.kwitansi.whatsapp',$item->id_transaksi) }}"
+                                    class="btn btn-success btn-sm" target="_blank">WA</a>
 
-                            {{-- <form action="" method="POST" class="d-inline">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus transaksi ini?')">Hapus</button>
-                            </form> --}}
-                            
-                            <a href="{{ route('supvis.transaksi.kwitansi.print', $item->id_transaksi) }}"
-                                class="btn btn-success btn-sm">Print</a>
+                                {{-- <form action="" method="POST" class="d-inline">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus transaksi ini?')">Hapus</button>
+                                </form> --}}
+                                
+                                <a href="{{ route('supvis.transaksi.kwitansi.print', $item->id_transaksi) }}"
+                                    class="btn btn-success btn-sm" target="_blank">Print</a>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach

@@ -198,8 +198,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tanggal Transaksi</label>
-                    <input type="date" name="tanggal_transaksi" class="form-control"
+                    <input type="hidden" name="tanggal_transaksi" class="form-control"
                         value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi) }}" disabled>
                 </div>
 
@@ -270,6 +269,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
 </x-Supvis.SupvisLayouts>
