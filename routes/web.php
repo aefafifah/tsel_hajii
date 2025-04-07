@@ -170,5 +170,6 @@ Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::clas
 Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
 // kwitansi
 Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('supvis.transaksi.kwitansi');
-
+// pdf print by billy
+Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiController::class, 'print'])->name('supvis.transaksi.kwitansi.print');
 
