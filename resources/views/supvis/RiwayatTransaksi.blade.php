@@ -77,6 +77,11 @@
         margin-top: 8px;
     }
 
+    .table-responsive-scroll {
+        overflow-x: auto;
+        width: 100%;
+    }
+
     th,
     td {
         padding: 9px;
@@ -150,6 +155,8 @@
             padding: 5px;
         }
 
+    }
+
     @media (max-width: 768px) {
         .search-container {
             width: 90%;
@@ -170,8 +177,6 @@
             font-size: 16px;
         }
     }
-    }
-
 </style>
 
 <body>
@@ -218,44 +223,46 @@
     </div>
 
     <div class = "container mt-4">
-        <table class="data-table" id="transactionTable">
-            <thead>
-                <tr>
-                    <th>ID Transaksi</th>
-                    <th>Tanggal Transaksi</th>
-                    <th>Nama Sales</th>
-                    <th>No. Tlp Sales</th>
-                    <th>Nama Pelanggan</th>
-                    <th>No. Tlp Pelanggan</th>
-                    <th>Nomor Injeksi</th>
-                    <th>Aktivasi Tanggal</th>
-                    <th>Jenis Paket</th>
-                    <th>Merchandise</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Harga</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($transaksi as $transaction)
+        <div class="table-responsive-scroll">
+            <table class="data-table" id="transactionTable">
+                <thead>
                     <tr>
-                        <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
-                        <td data-label="Tanggal Transaksi">{{ $transaction->tanggal_transaksi }}</td>
-                        <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
-                        <td data-label="No. Tlp Sales">{{ $transaction->nomor_telepon }}</td>
-                        <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
-                        <td data-label="No. Tlp Pelanggan">{{ $transaction->telepon_pelanggan }}</td>
-                        <td data-label="Nomor Injeksi">{{ $transaction->nomor_injeksi }}</td>
-                        <td data-label="Aktivasi Tanggal">{{ $transaction->aktivasi_tanggal }}</td>
-                        <td data-label="Jenis Paket">
-                            {{ $transaction->produk ? $transaction->produk->produk_nama : 'Produk tidak ditemukan' }}
-                        </td>
-                        <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
-                        <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
-                        <td data-label="Harga">{{ $transaction->produk->produk_harga }}</td>
+                        <th>ID Transaksi</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Nama Sales</th>
+                        <th>No. Tlp Sales</th>
+                        <th>Nama Pelanggan</th>
+                        <th>No. Tlp Pelanggan</th>
+                        <th>Nomor Injeksi</th>
+                        <th>Aktivasi Tanggal</th>
+                        <th>Jenis Paket</th>
+                        <th>Merchandise</th>
+                        <th>Metode Pembayaran</th>
+                        <th>Harga</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($transaksi as $transaction)
+                        <tr>
+                            <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
+                            <td data-label="Tanggal Transaksi">{{ $transaction->tanggal_transaksi }}</td>
+                            <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
+                            <td data-label="No. Tlp Sales">{{ $transaction->nomor_telepon }}</td>
+                            <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
+                            <td data-label="No. Tlp Pelanggan">{{ $transaction->telepon_pelanggan }}</td>
+                            <td data-label="Nomor Injeksi">{{ $transaction->nomor_injeksi }}</td>
+                            <td data-label="Aktivasi Tanggal">{{ $transaction->aktivasi_tanggal }}</td>
+                            <td data-label="Jenis Paket">
+                                {{ $transaction->produk ? $transaction->produk->produk_nama : 'Produk tidak ditemukan' }}
+                            </td>
+                            <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
+                            <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
+                            <td data-label="Harga">{{ $transaction->produk->produk_harga }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="container text-center mt-3">
