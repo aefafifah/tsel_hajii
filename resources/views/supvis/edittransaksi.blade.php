@@ -117,6 +117,54 @@
                 font-size: 10px;
                 font-weight: bold;
             }
+            
+            .custom-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        
+            .custom-checkbox input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #007bff;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                transition: all 0.2s;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked {
+                background-color: #007bff;
+            }
+        
+            .custom-checkbox input[type="checkbox"]::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                opacity: 0;
+                transform: rotate(45deg);
+                transition: opacity 0.2s ease-in-out;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked::after {
+                opacity: 1;
+            }
+        
+            .custom-checkbox label {
+                margin: 0;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
 
             button[type="submit"],
             button[type="button"] {
@@ -195,7 +243,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                 <div class="form-group">
                     <input type="hidden" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
@@ -285,35 +333,23 @@
                         value="{{ old('nama_sales', $transaksi->nama_sales) }}" required>
                 </div>
 
-                <div class="form-group" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <label>Addon Perdana</label><br>
-                    <input type="checkbox" name="addon_perdana" value="1"
-                        {{ $transaksi->addon_perdana ? 'checked' : '' }}>
-                    
-                    <div style="font-size: 2rem; font-weight: bold; text-align: center; margin-top: 10px;">
-                        PERDANA BARU
+                <div class="form-group">
+                    <label>Addon Perdana</label>
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1"
+                            {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                        <label for="addon_perdana">PERDANA BARU</label>
                     </div>
                 </div>
-                
 
-                <button type="submit" class="btn btn-primary" onclick="submitToUpdate()">Simpan Perubahan</button>
-                <button type="submit" class="btn btn-success" onclick="submitToBayar(event)">Bayar</button>
+
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
 
         <script>
-            function submitToUpdate() {
-                const form = document.getElementById('editTransaksiForm');
-                form.action = "{{ route('transaksi.update', $transaksi->id_transaksi) }}";
-            }
-
-            function submitToBayar(e) {
-                e.preventDefault(); // prevent immediate form submission
-                const form = document.getElementById('editTransaksiForm');
-                form.action = "{{ route('transaksi.bayar', $transaksi->id_transaksi) }}";
-                form.submit(); // now submit
-            }
+            
             function filterMerchandises(selectedProdukId) {
                 const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
                 merchandises.forEach(merchandise => {

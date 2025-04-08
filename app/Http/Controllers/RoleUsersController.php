@@ -93,7 +93,7 @@ class RoleUsersController extends Controller
         $dataToUpdate['photo'] = $request->file('photo')->store('profile_photos', 'public');
     }
 
-    if ($request->has('pin')) {
+    if ($request->filled('pin')) {
         $dataToUpdate['pin'] = $request->pin;
     }
 

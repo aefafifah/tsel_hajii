@@ -9,7 +9,8 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-
+        
+        <div class="table-responsive">
         <table id="transactionTable" class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
@@ -62,6 +63,7 @@
                             @if (Auth::user() && Auth::user()->is_superuser)
                                 <a href="{{ route('transaksi.edit', $item->id_transaksi) }}"
                                     class="btn btn-warning btn-sm">Edit</a>
+                                
                                 {{-- <a href="{{ route('transaksi.edit.bayar', $item->id_transaksi) }}" class="btn btn-primary btn-sm">Bayar</a> --}}
                             @endif
                             @php
@@ -86,13 +88,23 @@
                                 
                                 <a href="{{ route('supvis.transaksi.kwitansi.print', $item->id_transaksi) }}"
                                     class="btn btn-success btn-sm" target="_blank">Print</a>
+                                
+                                @if (Auth::user() && Auth::user()->is_superuser)
+                                <a href="#"
+                                    class="btn btn-warning btn-sm btn-unlunas"  data-id="{{ $item->id_transaksi }}">Un-Lunas</a>
+                                @endif
                             @endif
-
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        </div>
+        
+        <form id="unlunasForm" method="POST" style="display: none;">
+            @csrf
+            @method('PUT') {{-- Or DELETE / POST depending on your route --}}
+        </form>
 
         <!-- Modal Bayar -->
         <div class="modal fade" id="modalBayar" tabindex="-1" aria-labelledby="modalBayarLabel" aria-hidden="true">
@@ -116,8 +128,8 @@
     </div>
 
     @push('styles')
-        {{-- <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
         <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+            
     @endpush
 
     @push('scripts')
@@ -126,6 +138,31 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
+             $(document).ready(function () {
+                $('.btn-unlunas').on('click', function (e) {
+                    e.preventDefault();
+                    const transaksiId = $(this).data('id');
+                    const actionUrl = "{{ route('supvis.transaksi.kwitansi.unlunas', $item->id_transaksi) }}"; // Adjust if needed
+        
+                    Swal.fire({
+                        title: 'Yakin ubah status menjadi belum lunas?',
+                        text: "Transaksi ini akan dianggap belum dibayar.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, ubah!',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const form = $('#unlunasForm');
+                            form.attr('action', actionUrl);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+            
             $(document).ready(function() {
                 $('#transactionTable').DataTable({
                     language: {

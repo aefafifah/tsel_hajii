@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+
 
 use Imagick;
 
@@ -146,7 +148,7 @@ class TransaksiController extends Controller
         $imagick->setResolution(300, 300);
         $imagick->readImageBlob($pdfContent);
         $imagick->setImageFormat('png');
-
+    
         // Simpan gambar ke storage publik
         $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
         Storage::disk('public')->put($imagePath, $imagick);
@@ -206,7 +208,9 @@ class TransaksiController extends Controller
             'nomor_injeksi' => $transaksi->nomor_injeksi,
             'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
         ];
+
         $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
+
         // Simpan output PDF (ke memory)
         $pdfContent = $pdf->output();
         
@@ -220,8 +224,6 @@ class TransaksiController extends Controller
     
         return response($pdfContent, 200, $headers);
     }
-
-    
 
     public function dashboard(Request $request)
     {
@@ -508,9 +510,10 @@ class TransaksiController extends Controller
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'is_paid' => 1,
                 'nomor_injeksi' => $request->nomor_injeksi,
+                'id_supervisor' => Auth::user()->id,
 
             ]);
-
+            
             return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
@@ -525,7 +528,7 @@ class TransaksiController extends Controller
 
         return view('supvis.bayartransaksi', compact('transaksi', 'produks', 'merchandises'));
     }
-
+    
     public function whatsapp($id)
     {
         $transaksi = Transaksi::findOrFail($id);
@@ -578,13 +581,23 @@ class TransaksiController extends Controller
         $pesan = urlencode("Berikut kwitansi Anda:\n$imageUrl");
         $waLink = "https://wa.me/{$noWa}?text={$pesan}";
 
-        // Hapus session agar aman
-        $request->session()->forget('form_data');
-
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => "inline; filename=\"{$formData['id_transaksi']}.pdf\""
         ])->header('Refresh', "0;url=$waLink");
+    }
+    
+    public function unlunas($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $transaksi->update([
+            'is_paid' => 0,
+            'id_supervisor' => null,
+        ]);
+
+        return redirect()->route('transaksi.approve');
+        
     }
 
 }

@@ -158,6 +158,53 @@
                     max-width: 100%;
                 }
             }
+
+            .custom-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        
+            .custom-checkbox input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #007bff;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                transition: all 0.2s;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked {
+                background-color: #007bff;
+            }
+        
+            .custom-checkbox input[type="checkbox"]::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                opacity: 0;
+                transform: rotate(45deg);
+                transition: opacity 0.2s ease-in-out;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked::after {
+                opacity: 1;
+            }
+        
+            .custom-checkbox label {
+                margin: 0;
+                font-weight: 500;
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -264,8 +311,11 @@
 
                 <div class="form-group">
                     <label>Addon Perdana</label>
-                    <input type="checkbox" name="addon_perdana" value="1"
-                        {{ $transaksi->addon_perdana ? 'checked' : '' }} >
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1"
+                            {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                        <label for="addon_perdana">PERDANA BARU</label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
