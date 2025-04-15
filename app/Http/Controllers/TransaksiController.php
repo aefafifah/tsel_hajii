@@ -460,9 +460,27 @@ class TransaksiController extends Controller
 
     public function approveTransaksi()
     {
-        $transaksi = Transaksi::all();
-        return view('supvis.approvetransaksi', compact('transaksi'));
+        $userId = auth()->user()->id;
+    
+        $transaksi = Transaksi::withTrashed()
+            ->with([
+                'produk' => function ($query) {
+                    $query->withTrashed(); // Include trashed products
+                }
+            ])
+            ->get();
+    
+        $totalPenjualan = 0;
+        // ini ambil based on id if ($item->id_supervisor == $userId && $item->produk)
+        foreach ($transaksi as $item) {
+            if ($item->id_supervisor == $userId && $item->produk) {
+                $totalPenjualan += $item->produk->produk_harga_akhir;
+            }
+        }
+    
+        return view('supvis.approvetransaksi', compact('transaksi', 'totalPenjualan'));
     }
+
 
     public function bayar(Request $request, $id)
     {

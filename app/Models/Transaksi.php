@@ -53,9 +53,9 @@ class Transaksi extends Model
     {
         return json_decode($this->attributes['history_setoran'], true) ?? [];
     }
-    public function role_users()
+    public function supervisor()
     {
-        return $this->belongsTo(RoleUsers::class);
+        return $this->belongsTo(RoleUsers::class, 'id_supervisor');
     }
 
 }
