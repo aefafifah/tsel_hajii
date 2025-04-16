@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
+use App\Models\RoleUsers;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -107,26 +108,25 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::withTrashed()
             ->with([
                 'produk' => function ($query) {
-                    $query->withTrashed(); // Add this to include trashed products
+                    $query->withTrashed(); // Include trashed products
                 }
             ])
             ->get();
 
         $totalPenjualan = 0;
-
-        foreach ($transaksi as $item) {
-            if ($item->produk) {
-                $totalPenjualan += $item->produk->produk_harga_akhir;
-            }
-        }
-
         $totalInsentif = 0;
 
         foreach ($transaksi as $item) {
+            $sales = \App\Models\RoleUsers::where('name', $item->nama_sales)->first();
+            $item->sales_bertugas = $sales?->bertugas;
+            $item->sales_tempat = $sales?->tempat_tugas;
+
             if ($item->produk) {
+                $totalPenjualan += $item->produk->produk_harga_akhir;
                 $totalInsentif += $item->produk->produk_insentif;
             }
         }
+
 
         return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif'));
     }
@@ -148,7 +148,7 @@ class TransaksiController extends Controller
         $imagick->setResolution(300, 300);
         $imagick->readImageBlob($pdfContent);
         $imagick->setImageFormat('png');
-    
+
         // Simpan gambar ke storage publik
         $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
         Storage::disk('public')->put($imagePath, $imagick);
@@ -181,7 +181,7 @@ class TransaksiController extends Controller
             ])->header('Refresh', "0;url=$waLink");
         }
     }
-    
+
     public function print($id, $action = 'stream')
     {
         $transaksi = Transaksi::findOrFail($id);
@@ -213,7 +213,7 @@ class TransaksiController extends Controller
 
         // Simpan output PDF (ke memory)
         $pdfContent = $pdf->output();
-        
+
         // Stream or download PDF without saving
         $headers = [
             'Content-Type' => 'application/pdf',
@@ -221,7 +221,7 @@ class TransaksiController extends Controller
                 ? "attachment; filename=\"{$formData['id_transaksi']}.pdf\""
                 : "inline; filename=\"{$formData['id_transaksi']}.pdf\""
         ];
-    
+
         return response($pdfContent, 200, $headers);
     }
 
@@ -449,6 +449,10 @@ class TransaksiController extends Controller
                 'telepon_pelanggan' => $request->telepon_pelanggan,
                 'addon_perdana' => $request->has('addon_perdana') ? 1 : 0,
             ]);
+            $supervisor = RoleUsers::findOrFail($transaksi->id_supervisor);
+            $transaksi->bertugas = $supervisor->bertugas;
+            $transaksi->tempat_tugas = $supervisor->tempat_tugas;
+            $transaksi->save();
 
             DB::commit();
             return redirect()->route('supvis.home')->with('success', 'Transaksi berhasil diperbarui!');
@@ -461,7 +465,7 @@ class TransaksiController extends Controller
     public function approveTransaksi()
     {
         $userId = auth()->user()->id;
-    
+
         $transaksi = Transaksi::withTrashed()
             ->with([
                 'produk' => function ($query) {
@@ -469,15 +473,18 @@ class TransaksiController extends Controller
                 }
             ])
             ->get();
-    
+
         $totalPenjualan = 0;
         // ini ambil based on id if ($item->id_supervisor == $userId && $item->produk)
         foreach ($transaksi as $item) {
             if ($item->id_supervisor == $userId && $item->produk) {
                 $totalPenjualan += $item->produk->produk_harga_akhir;
             }
+            $sales = \App\Models\RoleUsers::where('name', $item->nama_sales)->first();
+            $item->sales_bertugas = $sales?->bertugas;
+            $item->sales_tempat = $sales?->tempat_tugas;
         }
-    
+
         return view('supvis.approvetransaksi', compact('transaksi', 'totalPenjualan'));
     }
 
@@ -531,7 +538,7 @@ class TransaksiController extends Controller
                 'id_supervisor' => Auth::user()->id,
 
             ]);
-            
+
             return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
@@ -546,7 +553,7 @@ class TransaksiController extends Controller
 
         return view('supvis.bayartransaksi', compact('transaksi', 'produks', 'merchandises'));
     }
-    
+
     public function whatsapp($id)
     {
         $transaksi = Transaksi::findOrFail($id);
@@ -576,7 +583,7 @@ class TransaksiController extends Controller
         $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
         // Simpan output PDF (ke memory)
         $pdfContent = $pdf->output();
-        
+
         // Convert PDF ke gambar pakai Imagick (halaman pertama)
         $imagick = new Imagick();
         $imagick->setResolution(300, 300);
@@ -604,7 +611,7 @@ class TransaksiController extends Controller
             'Content-Disposition' => "inline; filename=\"{$formData['id_transaksi']}.pdf\""
         ])->header('Refresh', "0;url=$waLink");
     }
-    
+
     public function unlunas($id)
     {
         $transaksi = Transaksi::findOrFail($id);
@@ -615,7 +622,7 @@ class TransaksiController extends Controller
         ]);
 
         return redirect()->route('transaksi.approve');
-        
+
     }
 
 }

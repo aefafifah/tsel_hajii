@@ -38,6 +38,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Kasir</th>
+                        <th>Tempat Bertugas</th>
                         <th>Tanggal</th>
                         <th>Nama</th>
                         <th>Telepon</th>
@@ -58,6 +59,7 @@
                         <tr>
                             <td>{{ $item->id_transaksi }}</td>
                             <td>{{ $item->supervisor?->name }}</td>
+                            <td>{{ optional($item->sales)->tempat_tugas ?? '-' }}
                             <td>{{ $item->tanggal_transaksi }}</td>
                             <td>{{ $item->nama_pelanggan }}</td>
                             <td>{{ $item->telepon_pelanggan }}</td>

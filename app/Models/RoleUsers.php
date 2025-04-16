@@ -23,6 +23,8 @@ class RoleUsers extends Authenticatable
         'phone',
         'is_superuser',
         'is_setoran',
+        'bertugas',
+        'tempat_tugas',
     ];
 
     /**
@@ -45,13 +47,13 @@ class RoleUsers extends Authenticatable
     // }
 
     // In your RoleUsers model or User model
-public function hasRole($role)
-{
-    return $this->role === $role;
-}
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 
-public function transaksi()
-{
-    return $this->hasMany(Transaksi::class);
-}
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
 }
