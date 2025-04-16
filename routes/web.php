@@ -176,16 +176,13 @@ Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiContro
 Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
 // un-lunas transaksi by billy
 Route::put('/programhaji/supvis/transaksi/kwitansi/unlunas/{id}', [TransaksiController::class, 'unlunas'])->name('supvis.transaksi.kwitansi.unlunas');
-<<<<<<< HEAD
 // daftar sales by aef
 Route::get('programhaji/supvis/role-users/sales', [SalesController::class, 'tampilsales'])->name('role-users.sales');
 Route::get('/role-users/{id}/edit', [SalesController::class, 'edit'])->name('role-users.edit');
 Route::put('/role-users/{id}', [SalesController::class, 'update'])->name('role-users.update');
 Route::post('/role-users/mass-update', [SalesController::class, 'massUpdate'])->name('role-users.mass-update');
-=======
 // refresh by billy
 Route::get('/programhaji/supvis/approvetransaksi/refresh',[TransaksiController::class, 'refresh'])->name('transaksi.approve.refresh');
 
 
->>>>>>> d6a7039fdc962a8c9fdf847045fabe0d3cc0db89
 
