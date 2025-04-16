@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
 
     <head>
         <style>
@@ -117,6 +117,54 @@
                 font-size: 10px;
                 font-weight: bold;
             }
+            
+            .custom-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        
+            .custom-checkbox input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #007bff;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                transition: all 0.2s;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked {
+                background-color: #007bff;
+            }
+        
+            .custom-checkbox input[type="checkbox"]::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                opacity: 0;
+                transform: rotate(45deg);
+                transition: opacity 0.2s ease-in-out;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked::after {
+                opacity: 1;
+            }
+        
+            .custom-checkbox label {
+                margin: 0;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
 
             button[type="submit"],
             button[type="button"] {
@@ -195,9 +243,8 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>Tanggal Transaksi</label>
-                    <input type="date" name="tanggal_transaksi" class="form-control"
+                 <div class="form-group">
+                    <input type="hidden" name="tanggal_transaksi" class="form-control"
                         value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
 
@@ -288,15 +335,21 @@
 
                 <div class="form-group">
                     <label>Addon Perdana</label>
-                    <input type="checkbox" name="addon_perdana" value="1"
-                        {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1"
+                            {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                        <label for="addon_perdana">PERDANA BARU</label>
+                    </div>
                 </div>
 
+
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
 
         <script>
+            
             function filterMerchandises(selectedProdukId) {
                 const merchandises = document.querySelectorAll('#merchandise-container .checkbox-box');
                 merchandises.forEach(merchandise => {
@@ -348,4 +401,4 @@
             });
         </script>
     </body>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

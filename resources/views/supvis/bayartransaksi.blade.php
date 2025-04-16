@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
 
     <head>
         <style>
@@ -158,6 +158,53 @@
                     max-width: 100%;
                 }
             }
+
+            .custom-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        
+            .custom-checkbox input[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #007bff;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                transition: all 0.2s;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked {
+                background-color: #007bff;
+            }
+        
+            .custom-checkbox input[type="checkbox"]::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 2px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                opacity: 0;
+                transform: rotate(45deg);
+                transition: opacity 0.2s ease-in-out;
+            }
+        
+            .custom-checkbox input[type="checkbox"]:checked::after {
+                opacity: 1;
+            }
+        
+            .custom-checkbox label {
+                margin: 0;
+                font-weight: 500;
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -198,8 +245,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tanggal Transaksi</label>
-                    <input type="date" name="tanggal_transaksi" class="form-control"
+                    <input type="hidden" name="tanggal_transaksi" class="form-control"
                         value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi) }}" disabled>
                 </div>
 
@@ -217,7 +263,7 @@
 
                 <div class="form-group">
                     <label>Nomor Injeksi</label>
-                    <input type="text" name="nomor_injeksi" class="form-control"
+                    <input oninput="validateInjectionNumber(this)" type="text" name="nomor_injeksi" class="form-control"
                         value="{{ old('nomor_injeksi', $transaksi->nomor_injeksi ?? '') }}" >
                 </div>
 
@@ -265,11 +311,27 @@
 
                 <div class="form-group">
                     <label>Addon Perdana</label>
-                    <input type="checkbox" name="addon_perdana" value="1"
-                        {{ $transaksi->addon_perdana ? 'checked' : '' }} >
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="addon_perdana" name="addon_perdana" value="1"
+                            {{ $transaksi->addon_perdana ? 'checked' : '' }}>
+                        <label for="addon_perdana">PERDANA BARU</label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>
+
+<script>
+    function validateInjectionNumber(input) {
+        const errorMessage = document.getElementById('error-message-injeksi');
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
+        input.value = value;
+        errorMessage.style.display = value.length === 0 ? 'none' : 'block';
+    }
+</script>

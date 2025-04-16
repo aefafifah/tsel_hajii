@@ -223,7 +223,7 @@
             name: {
                 validate: (value) => {
                     if (!value) return 'Nama sales wajib diisi';
-                    if (value.length > 255) return 'Nama tidak boleh lebih dari 255 karakter';
+                    if (value.length > 20) return 'Nama tidak boleh lebih dari 20 karakter';
                     if (!/^[a-zA-Z\s]*$/.test(value)) return 'Nama hanya boleh mengandung huruf dan spasi';
                     return null;
                 }

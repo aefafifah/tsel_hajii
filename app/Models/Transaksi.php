@@ -37,6 +37,7 @@ class Transaksi extends Model
         'is_paid',
         'telepon_pelanggan',
         'addon_perdana',
+        'id_supervisor'
     ];
     public function produk()
     {
@@ -51,6 +52,10 @@ class Transaksi extends Model
     public function getHistorySetoranAttribute()
     {
         return json_decode($this->attributes['history_setoran'], true) ?? [];
+    }
+    public function supervisor()
+    {
+        return $this->belongsTo(RoleUsers::class, 'id_supervisor');
     }
 
 }

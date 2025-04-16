@@ -49,4 +49,9 @@ public function hasRole($role)
 {
     return $this->role === $role;
 }
+
+public function transaksi()
+{
+    return $this->hasMany(Transaksi::class);
+}
 }

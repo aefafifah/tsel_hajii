@@ -155,10 +155,12 @@
                     <tr>
                         <th>Action</th>
                         <th>ID Transaksi</th>
-                        <th>Nomor Telepon</th>
-                        <th>Nama Pelanggan</th>
                         <th>Tanggal Transaksi</th>
                         <th>Nama Sales</th>
+                        <th>No. Tlp Sales</th>
+                        <th>Nama Pelanggan</th>
+                        <th>No. Tlp Pelanggan</th>
+                        <th>Aktivasi tanggal</th>
                         <th>Jenis Paket</th>
                         <th>Merchandise</th>
                         <th>Metode Pembayaran</th>
@@ -189,10 +191,12 @@
                                         </form>
                                     </td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
-                                    <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
-                                    <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
                                     <td class="tanggal">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
                                     <td class="nama-sales">{{ $item->nama_sales }}</td>
+                                    <td class="nomor-telepon">{{ $item->nomor_telepon }}</td>
+                                    <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
+                                    <td class="nomor-pelanggan">{{ $item->telepon_pelanggan }}</td>
+                                    <td class="aktivasi-tanggal">{{ $item->aktivasi_tanggal }}</td>
                                     <td class="jenis-paket">{{ $item->jenis_paket }}</td>
                                     <td class="merchandise">{{ $item->merchandise }}</td>
                                     <td class="metode-pembayaran">{{ $item->metode_pembayaran }}</td>
@@ -205,7 +209,7 @@
                 </tbody>
                 <tfoot>
                     <tr class="total-row" id="total-row">
-                        <td colspan="9">Total Keseluruhan:</td>
+                        <td colspan="11">Total Keseluruhan:</td>
                         <td id="total-penjualan">Rp 0</td>
                         <td id="total-insentif">Rp 0</td>
                     </tr>

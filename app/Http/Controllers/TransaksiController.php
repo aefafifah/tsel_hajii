@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+
 
 use Imagick;
 
@@ -146,7 +148,7 @@ class TransaksiController extends Controller
         $imagick->setResolution(300, 300);
         $imagick->readImageBlob($pdfContent);
         $imagick->setImageFormat('png');
-
+    
         // Simpan gambar ke storage publik
         $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
         Storage::disk('public')->put($imagePath, $imagick);
@@ -178,6 +180,49 @@ class TransaksiController extends Controller
                 'Content-Disposition' => "inline; filename=\"{$formData['id_transaksi']}.pdf\""
             ])->header('Refresh', "0;url=$waLink");
         }
+    }
+    
+    public function print($id, $action = 'stream')
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Ambil produk & merchandise dari data transaksi lama
+        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
+
+        // Simpan ke session form_data
+        $formData = [
+            'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
+            'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
+            'id_transaksi' => $transaksi->id_transaksi,
+            'produk_nama' => $selectedProduk->produk_nama,
+            'produk_harga' => $selectedProduk->produk_harga,
+            'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
+            'merch_nama' => $selectedMerchandise->merch_nama,
+            'nama_pelanggan' => $transaksi->nama_pelanggan,
+            'nama_sales' => $transaksi->nama_sales,
+            'tanggal_transaksi' => $transaksi->tanggal_transaksi,
+            'telepon_pelanggan' => $transaksi->telepon_pelanggan,
+            'nomor_telepon' => $transaksi->nomor_telepon,
+            'metode_pembayaran' => $transaksi->metode_pembayaran,
+            'nomor_injeksi' => $transaksi->nomor_injeksi,
+            'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
+        ];
+
+        $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
+
+        // Simpan output PDF (ke memory)
+        $pdfContent = $pdf->output();
+        
+        // Stream or download PDF without saving
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => $action === 'download'
+                ? "attachment; filename=\"{$formData['id_transaksi']}.pdf\""
+                : "inline; filename=\"{$formData['id_transaksi']}.pdf\""
+        ];
+    
+        return response($pdfContent, 200, $headers);
     }
 
     public function dashboard(Request $request)
@@ -415,9 +460,27 @@ class TransaksiController extends Controller
 
     public function approveTransaksi()
     {
-        $transaksi = Transaksi::all();
-        return view('supvis.approvetransaksi', compact('transaksi'));
+        $userId = auth()->user()->id;
+    
+        $transaksi = Transaksi::withTrashed()
+            ->with([
+                'produk' => function ($query) {
+                    $query->withTrashed(); // Include trashed products
+                }
+            ])
+            ->get();
+    
+        $totalPenjualan = 0;
+        // ini ambil based on id if ($item->id_supervisor == $userId && $item->produk)
+        foreach ($transaksi as $item) {
+            if ($item->id_supervisor == $userId && $item->produk) {
+                $totalPenjualan += $item->produk->produk_harga_akhir;
+            }
+        }
+    
+        return view('supvis.approvetransaksi', compact('transaksi', 'totalPenjualan'));
     }
+
 
     public function bayar(Request $request, $id)
     {
@@ -454,7 +517,8 @@ class TransaksiController extends Controller
                 'telepon_pelanggan' => $transaksi->telepon_pelanggan,
                 'nomor_telepon' => $transaksi->nomor_telepon,
                 'metode_pembayaran' => $transaksi->metode_pembayaran,
-                'nomor_injeksi' => $transaksi->nomor_injeksi,
+                'nomor_injeksi' => $request->nomor_injeksi,
+                'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
             ];
 
             $request->session()->put('form_data', $formData);
@@ -463,10 +527,12 @@ class TransaksiController extends Controller
             $transaksi->update([
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'is_paid' => 1,
+                'nomor_injeksi' => $request->nomor_injeksi,
+                'id_supervisor' => Auth::user()->id,
 
             ]);
-
-            return redirect()->route('supvis.transaksi.kwitansi')->with('success', 'Metode pembayaran berhasil disimpan!');
+            
+            return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
@@ -479,6 +545,77 @@ class TransaksiController extends Controller
         $merchandises = Merchandise::all();
 
         return view('supvis.bayartransaksi', compact('transaksi', 'produks', 'merchandises'));
+    }
+    
+    public function whatsapp($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Ambil produk & merchandise dari data transaksi lama
+        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
+
+        // Simpan ke session form_data
+        $formData = [
+            'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
+            'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
+            'id_transaksi' => $transaksi->id_transaksi,
+            'produk_nama' => $selectedProduk->produk_nama,
+            'produk_harga' => $selectedProduk->produk_harga,
+            'produk_harga_akhir' => $selectedProduk->produk_harga_akhir,
+            'merch_nama' => $selectedMerchandise->merch_nama,
+            'nama_pelanggan' => $transaksi->nama_pelanggan,
+            'nama_sales' => $transaksi->nama_sales,
+            'tanggal_transaksi' => $transaksi->tanggal_transaksi,
+            'telepon_pelanggan' => $transaksi->telepon_pelanggan,
+            'nomor_telepon' => $transaksi->nomor_telepon,
+            'metode_pembayaran' => $transaksi->metode_pembayaran,
+            'nomor_injeksi' => $transaksi->nomor_injeksi,
+            'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
+        ];
+        $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
+        // Simpan output PDF (ke memory)
+        $pdfContent = $pdf->output();
+        
+        // Convert PDF ke gambar pakai Imagick (halaman pertama)
+        $imagick = new Imagick();
+        $imagick->setResolution(300, 300);
+        $imagick->readImageBlob($pdfContent);
+        $imagick->setImageFormat('png');
+
+        // Simpan gambar ke storage publik
+        $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
+        Storage::disk('public')->put($imagePath, $imagick);
+
+        // Buat link publik ke gambar
+        $imageUrl = asset("storage/$imagePath");
+
+        // Kirim ke WhatsApp via redirect link
+        $telepon = preg_replace('/[^0-9]/', '', $formData['telepon_pelanggan'] ?? '081234567890');
+        if (substr($telepon, 0, 1) === '0') {
+            $telepon = '62' . substr($telepon, 1);
+        }
+        $noWa = $telepon;
+        $pesan = urlencode("Berikut kwitansi Anda:\n$imageUrl");
+        $waLink = "https://wa.me/{$noWa}?text={$pesan}";
+
+        return response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => "inline; filename=\"{$formData['id_transaksi']}.pdf\""
+        ])->header('Refresh', "0;url=$waLink");
+    }
+    
+    public function unlunas($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $transaksi->update([
+            'is_paid' => 0,
+            'id_supervisor' => null,
+        ]);
+
+        return redirect()->route('transaksi.approve');
+        
     }
 
 }

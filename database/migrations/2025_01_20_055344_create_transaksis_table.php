@@ -26,6 +26,9 @@ return new class extends Migration
             $table->boolean('is_paid')->default(false);
             $table->string('telepon_pelanggan')->nullable();
             $table->boolean('addon_perdana')->default(false);
+            // Add the foreign key constraint
+            $table->unsignedBigInteger('id_supervisor')->nullable();
+            $table->foreign('id_supervisor')->references('id')->on('role_users')->onDelete('set null');
         });
     }
 
