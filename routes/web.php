@@ -176,5 +176,8 @@ Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiContro
 Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
 // un-lunas transaksi by billy
 Route::put('/programhaji/supvis/transaksi/kwitansi/unlunas/{id}', [TransaksiController::class, 'unlunas'])->name('supvis.transaksi.kwitansi.unlunas');
+// refresh by billy
+Route::get('/programhaji/supvis/approvetransaksi/refresh',[TransaksiController::class, 'refresh'])->name('transaksi.approve.refresh');
+
 
 

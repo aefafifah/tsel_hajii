@@ -53,7 +53,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="transaksi-body">
                     @foreach ($transaksi as $item)
                         <tr>
                             <td>{{ $item->id_transaksi }}</td>
@@ -155,52 +155,26 @@
         <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     @endpush
 
-    @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            $(document).ready(function() {
-                $('.btn-unlunas').on('click', function(e) {
-                    e.preventDefault();
-                    const transaksiId = $(this).data('id');
-                    const actionUrl =
-                        "{{ route('supvis.transaksi.kwitansi.unlunas', $item->id_transaksi) }}"; // Adjust if needed
-
-                    Swal.fire({
-                        title: 'Yakin ubah status menjadi belum lunas?',
-                        text: "Transaksi ini akan dianggap belum dibayar.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, ubah!',
-                        cancelButtonText: 'Batal',
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#6c757d',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const form = $('#unlunasForm');
-                            form.attr('action', actionUrl);
-                            form.submit();
-                        }
-                    });
-                });
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#transactionTable').DataTable({
+                language: {
+                    search: "Cari:",
+                    zeroRecords: "Tidak ada data ditemukan"
+                },
+                paging: false,
+                info: false,
+                lengthChange: false
             });
 
-            $(document).ready(function() {
-                $('#transactionTable').DataTable({
-                    language: {
-                        search: "Cari:",
-                        zeroRecords: "Tidak ada data ditemukan"
-                    },
-                    paging: false,
-                    info: false,
-                    lengthChange: false
-                });
-            });
-
-
-            $('.checkbox-bayar').on('change', function() {
+            // Delegated: handle checkbox-bayar
+            $(document).on('change', '.checkbox-bayar', function () {
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
                 const checkbox = $(this);
@@ -220,7 +194,115 @@
                     }
                 });
             });
-        </script>
-    @endpush
+
+            // Delegated: handle btn-unlunas
+            $(document).on('click', '.btn-unlunas', function (e) {
+                e.preventDefault();
+                const transaksiId = $(this).data('id');
+                const actionUrl = `/programhaji/supvis/transaksi/kwitansi/unlunas/${transaksiId}`;
+
+                Swal.fire({
+                    title: 'Yakin ubah status menjadi belum lunas?',
+                    text: "Transaksi ini akan dianggap belum dibayar.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, ubah!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = $('#unlunasForm');
+                        form.attr('action', actionUrl);
+                        form.submit();
+                    }
+                });
+            });
+
+            function formatDateTime(dateString) {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                const pad = (n) => n.toString().padStart(2, '0');
+
+                const year = date.getFullYear();
+                const month = pad(date.getMonth() + 1); // getMonth() is zero-based
+                const day = pad(date.getDate());
+                const hours = pad(date.getHours());
+                const minutes = pad(date.getMinutes());
+                const seconds = pad(date.getSeconds());
+
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            }
+
+            const currentUser = {
+                is_superuser: {{ Auth::user()->is_superuser ? 'true' : 'false' }},
+                name: @json(Auth::user()->name)
+            };
+
+            // Periodic AJAX refresh
+            setInterval(function () {
+                $.ajax({
+                    url: '/programhaji/supvis/approvetransaksi/refresh',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.transaksi.length > 0) {
+                            var rows = '';
+                            response.transaksi.forEach(function (item) {
+                                rows += `
+                                    <tr>
+                                        <td>${item.id_transaksi}</td>
+                                        <td>${(item.supervisor?.name ?? '')}</td>
+                                        <td>${formatDateTime(item.tanggal_transaksi ?? '')}</td>
+                                        <td>${(item.nama_pelanggan ?? '')}</td>
+                                        <td>${(item.telepon_pelanggan ?? '')}</td>
+                                        <td>${(item.nomor_injeksi ?? '')}</td>
+                                        <td>${(item.aktivasi_tanggal ?? '')}</td>
+                                        <td>${(item.produk?.produk_nama ?? 'Tidak ditemukan')}</td>
+                                        <td>${(item.merchandise ?? '')}</td>
+                                        <td>${(item.produk?.produk_harga_akhir ?? 0)}</td>
+                                        <td>${(item.metode_pembayaran ?? '')}</td>
+                                        <td>${item.is_setor ? 'Sudah' : 'Belum'}</td>
+                                        <td>
+                                            ${item.is_paid
+                                                ? '<span class="badge bg-success">Lunas</span>'
+                                                : '<span class="badge bg-warning text-dark">Belum</span>'}
+                                        </td>
+                                        <td>
+                                            ${!item.is_paid
+                                                ? `<input type="checkbox" class="checkbox-bayar" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">`
+                                                : '✔'}
+                                        </td>
+                                        <td>
+                                            ${currentUser.is_superuser
+                                                ? `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a>`
+                                                : ''}
+                                            ${item.is_paid
+                                                ? `
+                                                    <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
+                                                    <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                                    ${currentUser.is_superuser
+                                                        ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
+                                                        : ''}`
+                                                : ''}
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+
+                            $('#transaksi-body').html(rows);
+                        } else {
+                            $('#transaksi-body').html('');
+                        }
+                    },
+                    error: function (err) {
+                        console.error('AJAX error:', err);
+                    }
+                });
+            }, 10000); // Refresh every 10 seconds
+        });
+    </script>
+@endpush
+
 </x-Supvis.SupvisLayouts>
 @stack('scripts')
