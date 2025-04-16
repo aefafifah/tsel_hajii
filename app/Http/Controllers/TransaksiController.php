@@ -618,6 +618,23 @@ class TransaksiController extends Controller
         
     }
 
+    public function refresh(Request $request)
+    {
+        $transaksi = Transaksi::withTrashed()
+            ->with([
+                'produk' => function ($query) {
+                    $query->withTrashed(); // Include trashed products
+                }
+            ])
+            ->orderBy('id_transaksi', 'asc')
+            ->get();
+
+        if($request->ajax()){
+            return response()->json(array('transaksi'=>$transaksi));
+            }
+            return route('transaksi.approve', compact('transaksi'));        
+    }
+
 }
 
 

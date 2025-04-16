@@ -31,17 +31,6 @@ body {
     z-index: 1;
 }
 
-.watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.1;
-    z-index: 0;
-    width: 80mm;
-    height: 80mm;
-}
-
 .header {
     text-align: center;
     margin-bottom: 5px;
@@ -73,7 +62,7 @@ body {
 
         .content table td {
             padding: 4px;
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             font-size: 12px;
         }
 
@@ -112,7 +101,6 @@ body {
 
 <body>
     <div class="container">
-        <img src="{{ $formData['icon'] }}" alt="Icon Telkomsel" class="watermark">
         <div class="header">
             <img src="{{ $formData['logo'] }}" alt="Logo">
             <h1>KWITANSI PEMBAYARAN</h1>
@@ -142,7 +130,6 @@ body {
 
             </table>
 
-            <h3 style="font-size: 12px; text-align: left;">Nomor Injeksi</h3>
             <table style="width: 100%; border: 1px solid #ccc; padding: 0px;">
                 <tr>
                     <td class="label">Nomor Injeksi</td>
