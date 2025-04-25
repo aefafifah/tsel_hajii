@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Tahoma;
     width: 65mm;
     margin: 0 auto;
     padding: 1mm;
@@ -74,6 +74,7 @@ body {
     text-align: center;
     font-size: 12px;
     position: relative;
+    padding-top: 20px;
     z-index: 1;
 }
 
@@ -87,13 +88,13 @@ body {
 }
 .lunas-img {
     position: absolute;
-    top: 60%;
+    top: 53%;
     left: 80%;
     transform: translate(-50%, -50%) rotate(-15deg);
     width: 100px;
     height: auto;
     z-index: 2;
-    opacity: 0.9;
+    opacity: 0.6;
 }
 
     </style>
