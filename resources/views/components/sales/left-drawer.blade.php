@@ -6,7 +6,7 @@
 
         <ul class="sidebar-nav">
             <li class="sidebar-header">
-                Halo sales
+                Dashboard
             </li>
 
             <x-nav-link href="{{ route('sales.home') }}" :active="request()->is('programhaji/sales/home')">Home</x-nav-link>
