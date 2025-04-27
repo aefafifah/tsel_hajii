@@ -149,6 +149,7 @@
                 placeholder="Masukkan nama sales" 
                 required="true"
                 oninput="validateName(this)"
+                maxlength="20"
             />
             <div class="error" id="nameError"></div>
 

@@ -41,6 +41,7 @@ class Transaksi extends Model
         'id_supervisor',
         'bertugas', // Menambahkan kolom bertugas
         'tempat_tugas', // Menambahkan kolom tempat_tugas
+        'is_activated',
     ];
 
     // Relasi ke Produk
@@ -82,9 +83,9 @@ class Transaksi extends Model
             $this->save();
         }
     }
+    
     public function sales()
-{
-    return $this->belongsTo(RoleUsers::class, 'nama_sales', 'name');
-}
-
+    {
+        return $this->belongsTo(RoleUsers::class, 'nama_sales', 'name');
+    }
 }

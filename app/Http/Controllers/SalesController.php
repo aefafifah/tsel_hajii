@@ -153,6 +153,17 @@ class SalesController extends Controller
 
         return redirect()->back()->with('success', 'Data bertugas berhasil diperbarui secara massal!');
     }
+    
+        
+    public function toggleActivate(Request $request, $id)
+    {
+        $transaksi = Transaksi::withTrashed()->findOrFail($id);
+
+        $transaksi->is_activated = $request->input('is_activated') ? true : false;
+        $transaksi->save();
+    
+        return response()->json(['success' => true]);
+    }
 
 
 

@@ -130,6 +130,7 @@ Route::middleware(['sales'])->group(function () {
     Route::get('/programhaji/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('/programhaji/sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
     Route::post('/programhaji/transaksi/{id}/toggle-void', [TransaksiController::class, 'toggleVoid']);
+    Route::post('/programhaji/transaksi/{id}/toggle-activate', [SalesController::class, 'toggleActivate']); // toggle activate by billy
     Route::get('/programhaji/sales/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('sales.transaksi.kwitansi');
     Route::get('/programhaji/sales/kwitansi', function () {
         return view('sales.kwitansi');
@@ -152,7 +153,7 @@ Route::post('/programhaji/update-setoran-status', [SupvisController::class, 'upd
 
 
 // under this untuk mainan
-
+// test imagick by aef
 Route::get('/cek-imagick', function () {
     if (extension_loaded('imagick')) {
         return 'Imagick aktif!';
@@ -160,15 +161,18 @@ Route::get('/cek-imagick', function () {
         return 'Imagick TIDAK aktif!';
     }
 });
-// Approve superuser
+// Approve superuser by aef
 Route::get('programhaji/supvis/approvetransaksi', [TransaksiController::class, 'approveTransaksi'])->name('transaksi.approve');
-    Route::get('programhaji/supvis/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
-    Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
+Route::get('programhaji/supvis/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
+// delete approve by billy
+Route::delete('/programhaji/supvis/transaksi/{id}/forcedelete', [TransaksiController::class, 'forcedelete'])->name('transaksi.delete');
 
-// bayar
+
+// bayar by aef
 Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('transaksi.edit.bayar');
 Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
-// kwitansi
+// kwitansi by aef
 Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('supvis.transaksi.kwitansi');
 // pdf print by billy
 Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiController::class, 'print'])->name('supvis.transaksi.kwitansi.print');
@@ -177,9 +181,9 @@ Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiCon
 // un-lunas transaksi by billy
 Route::put('/programhaji/supvis/transaksi/kwitansi/unlunas/{id}', [TransaksiController::class, 'unlunas'])->name('supvis.transaksi.kwitansi.unlunas');
 // daftar sales by aef
-Route::get('programhaji/supvis/role-users/sales', [SalesController::class, 'tampilsales'])->name('role-users.sales');
-Route::get('/role-users/{id}/edit', [SalesController::class, 'edit'])->name('role-users.edit');
-Route::put('/role-users/{id}', [SalesController::class, 'update'])->name('role-users.update');
+Route::get('/programhaji/superuser/roleusers/sales', [SalesController::class, 'tampilsales'])->name('role-users.sales');
+Route::get('/programhaji/superuser/role-users/{id}/edit', [SalesController::class, 'edit'])->name('role-users.edit');
+Route::put('/programhaji/superuser/role-users/{id}', [SalesController::class, 'update'])->name('role-users.update');
 Route::post('/role-users/mass-update', [SalesController::class, 'massUpdate'])->name('role-users.mass-update');
 // refresh by billy
 Route::get('/programhaji/supvis/approvetransaksi/refresh',[TransaksiController::class, 'refresh'])->name('transaksi.approve.refresh');

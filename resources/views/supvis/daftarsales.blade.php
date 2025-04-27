@@ -1,4 +1,4 @@
-<x-supvis.supvislayouts>
+<x-Supvis.SupvisLayouts>
     <div class="container">
         <h2 class="mb-4">Kelola Bertugas - Role Sales</h2>
 
@@ -54,4 +54,4 @@
             checkboxes.forEach(cb => cb.checked = this.checked);
         }
     </script>
-</x-supvis.supvislayouts>
+</x-Supvis.SupvisLayouts>

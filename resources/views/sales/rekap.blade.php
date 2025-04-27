@@ -150,7 +150,7 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th>Void</th>
+                        <th>Aktivasi</th>
                         <th>Tanggal Transaksi</th>
                         <th>ID Transaksi</th>
                         <th>Nama Pelanggan</th>
@@ -188,11 +188,10 @@
                                     data-date="{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('Y-m-d') }}"
                                     data-id="{{ $item->id_transaksi }}">
                                     <td>
-                                        <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}"
-                                            {{ $item->trashed() ? 'checked' : '' }}>
+                                        <input type="checkbox" class="activate-checkbox" data-id="{{ $item->id_transaksi }}" {{ $item->is_activated ? 'checked' : '' }}>
                                     </td>
                                     <td class="tanggal">
-                                        {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y') }}</td>
+                                        {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y H:i') }}</td>
                                     <td class="id-transaksi">{{ $item->id_transaksi }}</td>
                                     <td class="nama-pelanggan">{{ $item->nama_pelanggan }}</td>
                                     <td class="nomor-pelanggan">{{ $item->telepon_pelanggan }}</td>
@@ -266,6 +265,36 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            
+            
+            document.querySelectorAll('.activate-checkbox').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    let transaksiId = this.getAttribute('data-id');
+                    let isActivated = this.checked ? 1 : 0;
+            
+                    fetch(`/programhaji/transaksi/${transaksiId}/toggle-activate`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            is_activated: isActivated
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('Activation status updated.');
+                        } else {
+                            console.error('Failed to update activation.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+            
+            
             document.querySelectorAll(".void-checkbox").forEach(function(checkbox) {
                 checkbox.addEventListener("change", function() {
                     let row = this.closest(".transaksi-row");

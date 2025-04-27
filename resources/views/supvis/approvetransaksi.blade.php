@@ -164,16 +164,6 @@
 
     <script>
         $(document).ready(function () {
-            // Initialize DataTable
-            $('#transactionTable').DataTable({
-                language: {
-                    search: "Cari:",
-                    zeroRecords: "Tidak ada data ditemukan"
-                },
-                paging: false,
-                info: false,
-                lengthChange: false
-            });
 
             // Delegated: handle checkbox-bayar
             $(document).on('change', '.checkbox-bayar', function () {
@@ -220,6 +210,43 @@
                     }
                 });
             });
+            
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+                const id = $(this).data('id');
+                const nama = $(this).data('nama');
+                
+                if (confirm(`Are you sure you want to permanently delete transaction for ${nama}?`)) {
+                    $.ajax({
+                        url: `/programhaji/supvis/transaksi/${id}/forcedelete`,
+                        type: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            alert('Transaction has been permanently deleted');
+                            // Refresh the table immediately instead of waiting for interval
+                            $.ajax({
+                                url: '/programhaji/supvis/approvetransaksi/refresh',
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(response) {
+                                    table.clear();
+                                    response.transaksi.forEach(function(item) {
+                                        // Reuse your existing row creation logic
+                                        // For brevity, I've not repeated it here
+                                    });
+                                    table.draw();
+                                }
+                            });
+                        },
+                        error: function(err) {
+                            console.error('Delete error:', err);
+                            alert('Failed to delete transaction');
+                        }
+                    });
+                }
+            });
 
             function formatDateTime(dateString) {
                 if (!dateString) return '';
@@ -240,6 +267,23 @@
                 is_superuser: {{ Auth::user()->is_superuser ? 'true' : 'false' }},
                 name: @json(Auth::user()->name)
             };
+            
+            let table;
+
+            if (!$.fn.DataTable.isDataTable('#transactionTable')) {
+                table = $('#transactionTable').DataTable({
+                    language: {
+                        search: "Cari:",
+                        zeroRecords: "Tidak ada data ditemukan"
+                    },
+                    paging: false,
+                    info: false,
+                    lengthChange: false
+                });
+            } else {
+                table = $('#transactionTable').DataTable(); // just get the instance
+            }
+
 
             // Periodic AJAX refresh
             setInterval(function () {
@@ -248,60 +292,56 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        if (response.transaksi.length > 0) {
-                            var rows = '';
-                            response.transaksi.forEach(function (item) {
-                                rows += `
-                                    <tr>
-                                        <td>${item.id_transaksi}</td>
-                                        <td>${(item.supervisor?.name ?? '')}</td>
-                                        <td>${formatDateTime(item.tanggal_transaksi ?? '')}</td>
-                                        <td>${(item.nama_pelanggan ?? '')}</td>
-                                        <td>${(item.telepon_pelanggan ?? '')}</td>
-                                        <td>${(item.nomor_injeksi ?? '')}</td>
-                                        <td>${(item.aktivasi_tanggal ?? '')}</td>
-                                        <td>${(item.produk?.produk_nama ?? 'Tidak ditemukan')}</td>
-                                        <td>${(item.merchandise ?? '')}</td>
-                                        <td>${(item.produk?.produk_harga_akhir ?? 0)}</td>
-                                        <td>${(item.metode_pembayaran ?? '')}</td>
-                                        <td>${item.is_setor ? 'Sudah' : 'Belum'}</td>
-                                        <td>
-                                            ${item.is_paid
-                                                ? '<span class="badge bg-success">Lunas</span>'
-                                                : '<span class="badge bg-warning text-dark">Belum</span>'}
-                                        </td>
-                                        <td>
-                                            ${!item.is_paid
-                                                ? `<input type="checkbox" class="checkbox-bayar" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">`
-                                                : '✔'}
-                                        </td>
-                                        <td>
-                                            ${currentUser.is_superuser
-                                                ? `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a>`
-                                                : ''}
-                                            ${item.is_paid
-                                                ? `
-                                                    <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
-                                                    <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
-                                                    ${currentUser.is_superuser
-                                                        ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
-                                                        : ''}`
-                                                : ''}
-                                        </td>
-                                    </tr>
-                                `;
-                            });
+                        table.clear(); // Clears all rows from the table
 
-                            $('#transaksi-body').html(rows);
-                        } else {
-                            $('#transaksi-body').html('');
-                        }
+                        response.transaksi.forEach(function (item) {
+                            table.row.add([
+                                item.id_transaksi,
+                                item.supervisor?.name ?? '',
+                                item.sales?.tempat_tugas ?? '-',
+                                formatDateTime(item.tanggal_transaksi ?? ''),
+                                item.nama_pelanggan ?? '',
+                                item.telepon_pelanggan ?? '',
+                                item.nomor_injeksi ?? '',
+                                item.aktivasi_tanggal ?? '',
+                                item.produk?.produk_nama ?? 'Tidak ditemukan',
+                                item.merchandise ?? '',
+                                item.produk?.produk_harga_akhir ?? 0,
+                                item.metode_pembayaran ?? '',
+                                item.is_setor ? 'Sudah' : 'Belum',
+                                item.is_paid
+                                    ? '<span class="badge bg-success">Lunas</span>'
+                                    : '<span class="badge bg-warning text-dark">Belum</span>',
+                                item.is_paid
+                                    ? '✔'
+                                    : `<input type="checkbox" class="checkbox-bayar" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">`,
+                                (function () {
+                                    let btns = '';
+                                    if (currentUser.is_superuser) {
+                                        btns += `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a> `;
+                                        btns += `<a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">Delete</a> `;
+                                    }
+                                    if (item.is_paid) {
+                                        btns += `
+                                            <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
+                                            <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                            ${currentUser.is_superuser
+                                                ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
+                                                : ''}`;
+                                    }
+                                    return btns;
+                                })()
+                            ]);
+                        });
+
+                        table.draw(); // Redraw the DataTable with new data
+
                     },
                     error: function (err) {
                         console.error('AJAX error:', err);
                     }
                 });
-            }, 10000); // Refresh every 10 seconds
+            }, 3000); 
         });
     </script>
 @endpush
