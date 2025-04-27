@@ -10,9 +10,9 @@
             size: 80mm 150mm;
             margin: 0;
         }
-/*perubahanmonspace*/
+
         body {
-            font-family: monospace;
+            font-family:monospace;
             width: 80mm;
             margin: 0 auto;
             padding: 1mm;
