@@ -184,12 +184,11 @@ class TransaksiController extends Controller
 
     public function print($id, $action = 'stream')
     {
-        $transaksi = Transaksi::withTrashed()->findOrFail($id);
+        $transaksi = Transaksi::findOrFail($id);
 
-        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
-        $selectedMerchandise = Merchandise::withTrashed()
-            ->where('merch_nama', $transaksi->merchandise)
-            ->firstOrFail();
+        // Ambil produk & merchandise dari data transaksi lama
+        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
 
         // Simpan ke session form_data
         $formData = [
@@ -493,24 +492,23 @@ class TransaksiController extends Controller
     public function bayar(Request $request, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
-
-        // Validasi input metode pembayaran
+    
         $validator = Validator::make($request->all(), [
             'metode_pembayaran' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
+    
         try {
             // Ambil produk & merchandise dari data transaksi lama
             $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
             $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
-
-            // Simpan ke session form_data
+    
+            
             $formData = [
                 'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
                 'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
@@ -528,22 +526,28 @@ class TransaksiController extends Controller
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
             ];
-
+    
             $request->session()->put('form_data', $formData);
-
-            // Update metode pembayaran saja
+    
+            // tambahan firoh 
             $transaksi->update([
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'is_paid' => 1,
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'id_supervisor' => Auth::user()->id,
+
             ]);
-            
-            return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
-        } catch (\Exception $e) {
+          // Redirect langsung ke halaman kwitansi 
+            return redirect()->route('supvis.transaksi.kwitansi.print', ['id' => $transaksi->id_transaksi])
+                ->with('success', 'Metode pembayaran berhasil disimpan dan kwitansi siap untuk dicetak!');
+    
+            }
+         
+        catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
+    
 
     public function editBayar($id)
     {
@@ -556,12 +560,11 @@ class TransaksiController extends Controller
 
     public function whatsapp($id)
     {
-        $transaksi = Transaksi::withTrashed()->findOrFail($id);
+        $transaksi = Transaksi::findOrFail($id);
 
-        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
-        $selectedMerchandise = Merchandise::withTrashed()
-            ->where('merch_nama', $transaksi->merchandise)
-            ->firstOrFail();
+        // Ambil produk & merchandise dari data transaksi lama
+        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
 
         // Simpan ke session form_data
         $formData = [
@@ -625,30 +628,6 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.approve');
 
     }
-    
-    public function forcedelete($id){
-        $transaksi = Transaksi::withTrashed()->findOrFail($id);
-        
-        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
-        if ($selectedProduk) {
-            $selectedProduk->increment('produk_stok', 1);
-            $selectedProduk->decrement('produk_terjual', 1);
-        }
-        
-        // kalo di delete, stok masih error
-        $selectedMerchandise = Merchandise::withTrashed()
-            ->where('merch_nama', $transaksi->merchandise)
-            ->firstOrFail();        
-        if ($selectedMerchandise) {
-            $selectedMerchandise->increment('merch_stok', 1);
-            $selectedMerchandise->decrement('merch_terambil', 1);
-        }
-        
-        $transaksi->forceDelete();
-        
-        
-        return response()->json(['success' => true]);
-    }
 
     public function refresh(Request $request)
     {
@@ -656,9 +635,7 @@ class TransaksiController extends Controller
             ->with([
                 'produk' => function ($query) {
                     $query->withTrashed(); // Include trashed products
-                },
-                'supervisor',
-                'sales',
+                }
             ])
             ->orderBy('id_transaksi', 'asc')
             ->get();
