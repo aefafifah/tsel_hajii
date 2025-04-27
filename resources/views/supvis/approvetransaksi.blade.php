@@ -1,18 +1,206 @@
 <x-Supvis.SupvisLayouts>
 
-    <div class="container mt-4">
-        <h2 class="mb-4">Daftar Transaksi</h2>
+    <link href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #43e97b, #2575FC);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            color: rgb(0, 0, 0);
+            font-size: 2.5rem;
+            margin: 40px 0 20px;
+            text-align: center;
+        }
+
+        .dashboard {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 9px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: 9px auto;
+        }
+
+        .filter-box {
+            flex: 1;
+            margin-right: 5px;
+        }
+
+        .filter-box select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 12px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex: 2;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 5px 30px 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 8px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            background-color: #e3f2fd; /* Biru muda pada seluruh tabel */
+        }
+
+        .table-responsive-scroll {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center; /* Teks rata tengah */
+            border: 1px solid #ddd;
+        }
+
+        .insentif th {
+            padding: 9px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .penjualan {
+            background: #23a0b0;
+            color: white;
+            font-weight: bold;
+        }
+
+        thead tr {
+            background-color: #2196F3; /* Biru lebih gelap pada header */
+            color: white;
+            font-weight: bold;
+        }
+
+        th {
+            color: white;
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #bbdefb; /* Biru muda lebih terang pada baris genap */
+        }
+
+        tbody tr:hover {
+            background-color: #90caf9; /* Efek hover dengan warna biru lebih gelap */
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+                width: 100%;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 25px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 12px 15px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                background: linear-gradient(135deg, #2575FC, #43e97b);
+                -webkit-background-clip: text;
+                color: transparent;
+                text-align: left;
+                padding: 5px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                width: 90%;
+                margin: 20px auto;
+            }
+
+            .filter-box,
+            .search-box {
+                flex: 1;
+            }
+
+            .search-box input {
+                font-size: 14px;
+                padding: 5px 20px 5px 8px;
+            }
+
+            .search-box i {
+                font-size: 16px;
+            }
+        }
+    </style>
+    <body>
+        <h1><b>Daftar Transaksi</b></h1>
 
         @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <p style="color: green;">{{ session('success') }}</p>
+        @elseif(session('error'))
+            <p style="color: red;">{{ session('error') }}</p>
         @endif
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+
+        <div class="search-container">
+            <div class="filter-box">
+                <select id="filter-transaksi" onchange="filterByDateRange(this.value)">
+                    <option value="all">Semua Transaksi</option>
+                    <option value="7">7 Hari Terakhir</option>
+                    <option value="30">1 Bulan Terakhir</option>
+                    <option value="365">1 Tahun Terakhir</option>
+                </select>
+            </div>
+        </div>
 
         <div class="container d-flex justify-content-center align-items-center mt-3">
             <div class="row w-100">
-                <div class="col-md-6">
+
+                <div class="col-md-6 mb-3">
                     <div class="card text-center shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title text-success">Kasir</h3>
@@ -31,8 +219,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="table-responsive">
+        <div class="container mt-4">
+            <div class="table-responsive">
             <table id="transactionTable" class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -125,6 +313,14 @@
                     @endforeach
                 </tbody>
             </table>
+
+        </div>
+        <div class="container mt-3">
+            <!-- Tombol Export di atas dekat search -->
+            <div class="d-flex justify-content-between">
+                <!-- Tombol Export ke Excel -->
+                <a href="{{ route('export.pdf') }}" class="btn btn-danger">Export ke PDF</a>
+            </div>
         </div>
 
         <form id="unlunasForm" method="POST" style="display: none;">
@@ -186,6 +382,27 @@
                     }
                 });
             });
+ // Lilin Export PDF button click handler
+ $('#exportPDF').click(function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let table = $('#transactionTable');
+
+            // Add title
+            doc.setFontSize(18);
+            doc.text("Daftar Transaksi", 14, 16);
+
+            // Get the table content and add it to PDF
+            doc.autoTable({
+                html: '#transactionTable',
+                startY: 20, // Start adding the table below the title
+                theme: 'grid', // Optional: Change the table theme
+                margin: { top: 20 },
+            });
+
+            // Save the PDF with a custom name
+            doc.save('Daftar_Transaksi.pdf');
+        });
 
             // Delegated: handle btn-unlunas
             $(document).on('click', '.btn-unlunas', function (e) {
@@ -210,12 +427,12 @@
                     }
                 });
             });
-            
+
             $(document).on('click', '.btn-delete', function(e) {
                 e.preventDefault();
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
-                
+
                 if (confirm(`Are you sure you want to permanently delete transaction for ${nama}?`)) {
                     $.ajax({
                         url: `/programhaji/supvis/transaksi/${id}/forcedelete`,
@@ -267,7 +484,7 @@
                 is_superuser: {{ Auth::user()->is_superuser ? 'true' : 'false' }},
                 name: @json(Auth::user()->name)
             };
-            
+
             let table;
 
             if (!$.fn.DataTable.isDataTable('#transactionTable')) {
@@ -323,7 +540,6 @@
                                     }
                                     if (item.is_paid) {
                                         btns += `
-                                            <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
                                             <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                             ${currentUser.is_superuser
                                                 ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
@@ -341,7 +557,7 @@
                         console.error('AJAX error:', err);
                     }
                 });
-            }, 3000); 
+            }, 3000);
         });
     </script>
 @endpush
