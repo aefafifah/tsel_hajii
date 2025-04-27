@@ -150,7 +150,11 @@
             <table id="dataTable">
                 <thead>
                     <tr>
+<<<<<<< HEAD
                         <th>Aktivasi</th>
+=======
+                        <th>Void</th>
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
                         <th>Tanggal Transaksi</th>
                         <th>ID Transaksi</th>
                         <th>Nama Pelanggan</th>
@@ -188,7 +192,12 @@
                                     data-date="{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('Y-m-d') }}"
                                     data-id="{{ $item->id_transaksi }}">
                                     <td>
+<<<<<<< HEAD
                                         <input type="checkbox" class="activate-checkbox" data-id="{{ $item->id_transaksi }}" {{ $item->is_activated ? 'checked' : '' }}>
+=======
+                                        <input type="checkbox" class="void-checkbox" data-id="{{ $item->id_transaksi }}"
+                                            {{ $item->trashed() ? 'checked' : '' }}>
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
                                     </td>
                                     <td class="tanggal">
                                         {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d M Y H:i') }}</td>
@@ -265,6 +274,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+<<<<<<< HEAD
             
             
             document.querySelectorAll('.activate-checkbox').forEach(function(checkbox) {
@@ -295,6 +305,8 @@
             });
             
             
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
             document.querySelectorAll(".void-checkbox").forEach(function(checkbox) {
                 checkbox.addEventListener("change", function() {
                     let row = this.closest(".transaksi-row");

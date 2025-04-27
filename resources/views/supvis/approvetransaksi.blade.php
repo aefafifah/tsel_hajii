@@ -1,5 +1,6 @@
 <x-Supvis.SupvisLayouts>
 
+<<<<<<< HEAD
     <link href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
 
     <style>
@@ -201,6 +202,21 @@
             <div class="row w-100">
 
                 <div class="col-md-6 mb-3">
+=======
+    <div class="container mt-4">
+        <h2 class="mb-4">Daftar Transaksi</h2>
+
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        <div class="container d-flex justify-content-center align-items-center mt-3">
+            <div class="row w-100">
+                <div class="col-md-6">
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
                     <div class="card text-center shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title text-success">Kasir</h3>
@@ -219,8 +235,13 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="container mt-4">
             <div class="table-responsive">
+=======
+
+        <div class="table-responsive">
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
             <table id="transactionTable" class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -313,6 +334,7 @@
                     @endforeach
                 </tbody>
             </table>
+<<<<<<< HEAD
 
         </div>
         <div class="container mt-3">
@@ -321,6 +343,8 @@
                 <!-- Tombol Export ke Excel -->
                 <a href="{{ route('export.pdf') }}" class="btn btn-danger">Export ke PDF</a>
             </div>
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
         </div>
 
         <form id="unlunasForm" method="POST" style="display: none;">
@@ -382,6 +406,7 @@
                     }
                 });
             });
+<<<<<<< HEAD
  // Lilin Export PDF button click handler
  $('#exportPDF').click(function () {
             const { jsPDF } = window.jspdf;
@@ -403,6 +428,8 @@
             // Save the PDF with a custom name
             doc.save('Daftar_Transaksi.pdf');
         });
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
 
             // Delegated: handle btn-unlunas
             $(document).on('click', '.btn-unlunas', function (e) {
@@ -427,12 +454,20 @@
                     }
                 });
             });
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
             $(document).on('click', '.btn-delete', function(e) {
                 e.preventDefault();
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
                 if (confirm(`Are you sure you want to permanently delete transaction for ${nama}?`)) {
                     $.ajax({
                         url: `/programhaji/supvis/transaksi/${id}/forcedelete`,
@@ -484,7 +519,11 @@
                 is_superuser: {{ Auth::user()->is_superuser ? 'true' : 'false' }},
                 name: @json(Auth::user()->name)
             };
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
             let table;
 
             if (!$.fn.DataTable.isDataTable('#transactionTable')) {
@@ -540,6 +579,10 @@
                                     }
                                     if (item.is_paid) {
                                         btns += `
+<<<<<<< HEAD
+=======
+                                            <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
                                             <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                             ${currentUser.is_superuser
                                                 ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
@@ -557,7 +600,11 @@
                         console.error('AJAX error:', err);
                     }
                 });
+<<<<<<< HEAD
             }, 3000);
+=======
+            }, 3000); 
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
         });
     </script>
 @endpush

@@ -14,7 +14,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleUsersController;
 use App\Http\Controllers\StockHistoryController;
 use App\Http\Controllers\ExportRiwayatTransaksiController;
+<<<<<<< HEAD
 use App\Http\Controllers\ExportApprovedTransaksiController;
+=======
+
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
 
 
 
@@ -49,9 +53,15 @@ Route::middleware(['supervisor'])->group(function () {
     // Export Excel Riwayat Transaksi
     Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])
         ->name('export.excel');
+<<<<<<< HEAD
         Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])->name('export.excel');    Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
         Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
         Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
+=======
+
+    // Rute Insentif
+    Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
         Route::get('/', [InsentifController::class, 'index'])->name('index');
         Route::get('/create', [InsentifController::class, 'create'])->name('create');
         Route::post('/store', [InsentifController::class, 'store'])->name('store');
@@ -130,7 +140,10 @@ Route::middleware(['sales'])->group(function () {
     Route::get('/programhaji/sales/transaksi', [SalesController::class, 'transaksiPage'])->name('sales.transaksi');
     Route::post('/programhaji/sales/transaksi/submit', [TransaksiController::class, 'submit'])->name('sales/transaksi/submit');
     Route::post('/programhaji/transaksi/{id}/toggle-void', [TransaksiController::class, 'toggleVoid']);
+<<<<<<< HEAD
     Route::post('/programhaji/transaksi/{id}/toggle-activate', [SalesController::class, 'toggleActivate']); // toggle activate by billy
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
     Route::get('/programhaji/sales/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('sales.transaksi.kwitansi');
     Route::get('/programhaji/sales/kwitansi', function () {
         return view('sales.kwitansi');

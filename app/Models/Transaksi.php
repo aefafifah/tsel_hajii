@@ -41,7 +41,10 @@ class Transaksi extends Model
         'id_supervisor',
         'bertugas', // Menambahkan kolom bertugas
         'tempat_tugas', // Menambahkan kolom tempat_tugas
+<<<<<<< HEAD
         'is_activated',
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
     ];
 
     // Relasi ke Produk

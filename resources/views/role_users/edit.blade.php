@@ -299,7 +299,7 @@
                         name="phone"
                         placeholder="Masukkan nomor telepon"
                         value="{{ old('phone', $roleUsers->phone) }}"
-                    /
+                    />
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -319,7 +319,6 @@
                 </x-form-card>
             </div>
         </body>
-
     </x-Sales.SalesLayouts>
 @endif
 
@@ -337,12 +336,10 @@
             reader.readAsDataURL(file);
         }
     }
-
     function validateName(input) {
       // Limit input to 20 characters
       if (input.value.length > 20) {
         input.value = input.value.substring(0, 20);
-
         // Optional: Show validation message
         input.setCustomValidity("Nama tidak boleh lebih dari 20 karakter");
       } else {

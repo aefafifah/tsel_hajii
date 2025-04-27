@@ -153,6 +153,7 @@ class SalesController extends Controller
 
         return redirect()->back()->with('success', 'Data bertugas berhasil diperbarui secara massal!');
     }
+<<<<<<< HEAD
     
         
     public function toggleActivate(Request $request, $id)
@@ -164,6 +165,8 @@ class SalesController extends Controller
     
         return response()->json(['success' => true]);
     }
+=======
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
 
 
 

@@ -628,6 +628,7 @@ class TransaksiController extends Controller
     
     public function forcedelete($id){
         $transaksi = Transaksi::withTrashed()->findOrFail($id);
+<<<<<<< HEAD
         
         $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
         if ($selectedProduk) {
@@ -646,6 +647,14 @@ class TransaksiController extends Controller
         
         $transaksi->forceDelete();
         
+=======
+        $transaksi->forceDelete();
+        
+        $selectedProduk->increment('produk_stok', 1);
+        $selectedProduk->decrement('produk_terjual', 1);
+        $selectedMerchandise->increment('merch_stok', 1);
+        $selectedMerchandise->decrement('merch_terambil', 1);
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
         
         return response()->json(['success' => true]);
     }

@@ -12,8 +12,12 @@
         "laravel/ui": "^4.6",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.29",
+<<<<<<< HEAD
         "spatie/laravel-permission": "^6.10",
         "tecnickcom/tcpdf": "^6.9"
+=======
+        "spatie/laravel-permission": "^6.10"
+>>>>>>> 10d144f9cce1def704a0e249b506945ec224d972
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
