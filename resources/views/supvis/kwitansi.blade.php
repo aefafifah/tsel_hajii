@@ -12,7 +12,7 @@
         }
 /*perubahanmonspace*/
         body {
-            font-family: monospace;
+            font-family: 'Courier New', Courier, monospace;
             width: 80mm;
             margin: 0 auto;
             padding: 1mm;
