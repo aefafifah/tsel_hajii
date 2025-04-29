@@ -107,46 +107,46 @@
                             <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
                         </div>
                     </div>
-                    
-                    <x-form-group 
-                        label="Nama" 
-                        name="name" 
-                        placeholder="Masukkan nama" 
+
+                    <x-form-group
+                        label="Nama"
+                        name="name"
+                        placeholder="Masukkan nama"
                         value="{{ old('name', $roleUsers->name) }}"
-                        required="true" 
+                        required="true"
                         oninput="validateName(this)"
                     />
                     @error('name')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="Email" 
-                        name="email" 
+                    <x-form-group
+                        label="Email"
+                        name="email"
                         type="email"
-                        placeholder="Masukkan email" 
+                        placeholder="Masukkan email"
                         value="{{ old('email', $roleUsers->email) }}"
-                        required="true" 
+                        required="true"
                     />
                     @error('email')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="Telepon" 
-                        name="phone" 
-                        placeholder="Masukkan nomor telepon" 
+                    <x-form-group
+                        label="Telepon"
+                        name="phone"
+                        placeholder="Masukkan nomor telepon"
                         value="{{ old('phone', $roleUsers->phone) }}"
                     />
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="PIN" 
-                        name="pin" 
+                    <x-form-group
+                        label="PIN"
+                        name="pin"
                         type="password"
-                        placeholder="Masukkan PIN baru (maksimal 6 digit)" 
+                        placeholder="Masukkan PIN baru (maksimal 6 digit)"
                     />
                     @error('pin')
                         <div class="text-danger">{{ $message }}</div>
@@ -269,11 +269,11 @@
                             <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(this)">
                         </div>
                     </div>
-                    
-                    <x-form-group 
-                        label="Nama" 
-                        name="name" 
-                        placeholder="Masukkan nama" 
+
+                    <x-form-group
+                        label="Nama"
+                        name="name"
+                        placeholder="Masukkan nama"
                         value="{{ old('name', $roleUsers->name) }}"
                         required="true"
                         oninput="validateName(this)"
@@ -282,33 +282,33 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="Email" 
-                        name="email" 
+                    <x-form-group
+                        label="Email"
+                        name="email"
                         type="email"
-                        placeholder="Masukkan email" 
+                        placeholder="Masukkan email"
                         value="{{ old('email', $roleUsers->email) }}"
-                        required="true" 
+                        required="true"
                     />
                     @error('email')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="Telepon" 
-                        name="phone" 
-                        placeholder="Masukkan nomor telepon" 
+                    <x-form-group
+                        label="Telepon"
+                        name="phone"
+                        placeholder="Masukkan nomor telepon"
                         value="{{ old('phone', $roleUsers->phone) }}"
-                    />
+                    /
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
 
-                    <x-form-group 
-                        label="PIN" 
-                        name="pin" 
+                    <x-form-group
+                        label="PIN"
+                        name="pin"
                         type="password"
-                        placeholder="Masukkan PIN baru (maksimal 6 digit)" 
+                        placeholder="Masukkan PIN baru (maksimal 6 digit)"
                     />
                     @error('pin')
                         <div class="text-danger">{{ $message }}</div>
@@ -319,7 +319,7 @@
                 </x-form-card>
             </div>
         </body>
-        
+
     </x-Sales.SalesLayouts>
 @endif
 
@@ -337,12 +337,12 @@
             reader.readAsDataURL(file);
         }
     }
-    
+
     function validateName(input) {
       // Limit input to 20 characters
       if (input.value.length > 20) {
         input.value = input.value.substring(0, 20);
-        
+
         // Optional: Show validation message
         input.setCustomValidity("Nama tidak boleh lebih dari 20 karakter");
       } else {

@@ -14,7 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleUsersController;
 use App\Http\Controllers\StockHistoryController;
 use App\Http\Controllers\ExportRiwayatTransaksiController;
-
+use App\Http\Controllers\ExportApprovedTransaksiController;
 
 
 
@@ -49,9 +49,9 @@ Route::middleware(['supervisor'])->group(function () {
     // Export Excel Riwayat Transaksi
     Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])
         ->name('export.excel');
-
-    // Rute Insentif
-    Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
+        Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])->name('export.excel');    Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
+        Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
+        Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
         Route::get('/', [InsentifController::class, 'index'])->name('index');
         Route::get('/create', [InsentifController::class, 'create'])->name('create');
         Route::post('/store', [InsentifController::class, 'store'])->name('store');

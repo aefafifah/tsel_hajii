@@ -6,11 +6,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Traits\HasRoles;
 
-
 class RoleUsers extends Authenticatable
 {
-    use HasFactory;
-    use HasRoles;
+    use HasFactory, HasRoles;
 
     protected $table = 'role_users';
 
@@ -31,6 +29,7 @@ class RoleUsers extends Authenticatable
      * Hash the PIN before saving to the database.
      *
      * @param string $value
+     * @return void
      */
     public function setPinAttribute($value)
     {
@@ -38,20 +37,21 @@ class RoleUsers extends Authenticatable
     }
 
     /**
+     * Check if the user has the given role.
      *
+     * @param string $role
      * @return bool
      */
-    // public function isSuperUser(): bool
-    // {
-    //     return $this->role === 'supervisor' && $this->is_superuser;
-    // }
-
-    // In your RoleUsers model or User model
     public function hasRole($role)
     {
         return $this->role === $role;
     }
 
+    /**
+     * Define the relationship with the Transaksi model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function transaksi()
     {
         return $this->hasMany(Transaksi::class);
