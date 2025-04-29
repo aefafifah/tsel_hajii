@@ -36,7 +36,16 @@
 
         .filter-box {
             flex: 1;
-            margin-right: 5px;
+            margin-right: 5px
+        }
+
+        .search-payment {
+            align-items: center;
+            padding: 9px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: 9px auto;
         }
 
         .filter-box select {
@@ -220,6 +229,33 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        {{-- Valen Update Filter By Payment Method --}}
+        <div class="search-payment">
+            <form method="GET" action="{{ route('supvis.transactions.index') }}"
+                class="container mb-2 align-items-center">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <select name="payment_method" class="form-control">
+                            <option value="">-- Semua Metode Pembayaran --</option>
+                            <option value="Tunai" {{ request('payment_method') == 'Tunai' ? 'selected' : '' }}>Tunai
+                            </option>
+                            <option value="BCA" {{ request('payment_method') == 'BCA' ? 'selected' : '' }}>BCA
+                            </option>
+                            <option value="Mandiri" {{ request('payment_method') == 'Mandiri' ? 'selected' : '' }}>
+                                Mandiri</option>
+                            <option value="BNI" {{ request('payment_method') == 'BNI' ? 'selected' : '' }}>BNI
+                            </option>
+                            <option value="BSI" {{ request('payment_method') == 'BSI' ? 'selected' : '' }}>BSI
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success w-100">Filter</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="container mt-4">

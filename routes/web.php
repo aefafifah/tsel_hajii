@@ -177,7 +177,7 @@ Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class
 // pdf print by billy
 Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiController::class, 'print'])->name('supvis.transaksi.kwitansi.print');
 // whatsapp by billy
-Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
+// Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
 // un-lunas transaksi by billy
 Route::put('/programhaji/supvis/transaksi/kwitansi/unlunas/{id}', [TransaksiController::class, 'unlunas'])->name('supvis.transaksi.kwitansi.unlunas');
 // daftar sales by aef

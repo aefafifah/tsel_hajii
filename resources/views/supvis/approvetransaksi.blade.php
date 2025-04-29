@@ -103,9 +103,9 @@
                                         '%0A%0ATerima kasih telah menggunakan layanan kami 🙏😊';
                                 @endphp
 
-                                @if ($item->is_paid)
+                                {{-- @if ($item->is_paid)
                                     <a href="{{ route('supvis.transaksi.kwitansi.whatsapp', $item->id_transaksi) }}"
-                                        class="btn btn-success btn-sm" target="_blank">WA</a>
+                                        class="btn btn-success btn-sm" target="_blank">WA</a> --}}
 
                                     {{-- <form action="" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
@@ -119,7 +119,7 @@
                                         <a href="#" class="btn btn-warning btn-sm btn-unlunas"
                                             data-id="{{ $item->id_transaksi }}">Un-Lunas</a>
                                     @endif
-                                @endif
+                                {{-- @endif --}}
                             </td>
                         </tr>
                     @endforeach
@@ -321,9 +321,9 @@
                                         btns += `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a> `;
                                         btns += `<a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">Delete</a> `;
                                     }
+                                    //valen hapus redirect wa 
                                     if (item.is_paid) {
                                         btns += `
-                                            <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
                                             <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                             ${currentUser.is_superuser
                                                 ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`

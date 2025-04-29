@@ -103,15 +103,23 @@ class TransaksiController extends Controller
                 ->withInput();
         }
     }
-    public function index()
+    public function index(Request $request)
     {
-        $transaksi = Transaksi::withTrashed()
+        $paymentMethod = $request->input('payment_method'); // Ambil filter dari form GET
+
+        $query = Transaksi::withTrashed()
             ->with([
                 'produk' => function ($query) {
                     $query->withTrashed(); // Include trashed products
                 }
-            ])
-            ->get();
+            ]);
+
+        // Jika ada filter metode pembayaran, tambahkan ke query
+        if ($paymentMethod) {
+            $query->where('metode_pembayaran', $paymentMethod);
+        }
+
+        $transaksi = $query->get();
 
         $totalPenjualan = 0;
         $totalInsentif = 0;
@@ -127,9 +135,9 @@ class TransaksiController extends Controller
             }
         }
 
-
-        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif'));
+        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif', 'paymentMethod'));
     }
+
     public function create()
     {
         $produks = Produk::with('merchandises')->get();
@@ -150,7 +158,12 @@ class TransaksiController extends Controller
         $imagick->setImageFormat('png');
 
         // Simpan gambar ke storage publik
-        $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
+        // $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
+        // Storage::disk('public')->put($imagePath, $imagick);
+
+        // Simpan PDF ke Storage Public by Valen
+        $imagePath = "kwitansi/{$formData['id_transaksi']}.pdf";
+        $imagick->setImageFormat('pdf');
         Storage::disk('public')->put($imagePath, $imagick);
 
         // Buat link publik ke gambar
@@ -323,7 +336,6 @@ class TransaksiController extends Controller
         $totalInsentif = $totalsPerDate->sum('totalInsentif');
 
         return view('supvis/void', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
-
     }
 
     public function supvisdestroy($id)
@@ -338,7 +350,6 @@ class TransaksiController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Transaksi berhasil dihapus.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -455,6 +466,26 @@ class TransaksiController extends Controller
             $transaksi->tempat_tugas = $supervisor->tempat_tugas;
             $transaksi->save();
 
+            // Update data transaksi dulu sesuai logika kamu
+
+            // 👉 1. Generate PDF dari view
+            // $pdf = Pdf::loadView('supvis.kwitansi', compact('transaksi'));
+            // $pdf->save(storage_path('public/kwitansi'));
+
+            // $pdf = PDF::loadView('supvis.kwitansi', $formData);
+
+            // // 👉 2. Buat nama file yang benar
+            // $namaFile = 'kwitansi/kwitansi_' . $transaksi->id_transaksi . '.pdf';
+
+            // // 👉 3. Simpan PDF ke storage/app/public/kwitansi/
+            // Storage::disk('public')->put($namaFile, $pdf->output());
+
+            // if (Storage::disk('public')->exists($namaFile)) {
+            //     Log::info('✅ Kwitansi berhasil disimpan di: ' . $namaFile);
+            // } else {
+            //     Log::error('❌ Gagal menyimpan kwitansi!');
+            // }
+
             DB::commit();
             return redirect()->route('supvis.home')->with('success', 'Transaksi berhasil diperbarui!');
         } catch (\Exception $e) {
@@ -538,8 +569,14 @@ class TransaksiController extends Controller
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'id_supervisor' => Auth::user()->id,
             ]);
-            
-            return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
+
+            // Valen, Save Kwitansi PDF to Storage 
+            $pdf = PDF::loadView('supvis.kwitansi', ['formData' => $formData]);
+            $namaFile = 'kwitansi/kwitansi_' . $transaksi-> nama_pelanggan . '.pdf';
+            Storage::disk('public')->put($namaFile, $pdf->output());
+
+            return redirect()->route('transaksi.approve')->with('success', 'Kwitansi berhasil disimpan di storage!');
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
@@ -623,30 +660,30 @@ class TransaksiController extends Controller
         ]);
 
         return redirect()->route('transaksi.approve');
-
     }
-    
-    public function forcedelete($id){
+
+    public function forcedelete($id)
+    {
         $transaksi = Transaksi::withTrashed()->findOrFail($id);
-        
+
         $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
         if ($selectedProduk) {
             $selectedProduk->increment('produk_stok', 1);
             $selectedProduk->decrement('produk_terjual', 1);
         }
-        
+
         // kalo di delete, stok masih error
         $selectedMerchandise = Merchandise::withTrashed()
             ->where('merch_nama', $transaksi->merchandise)
-            ->firstOrFail();        
+            ->firstOrFail();
         if ($selectedMerchandise) {
             $selectedMerchandise->increment('merch_stok', 1);
             $selectedMerchandise->decrement('merch_terambil', 1);
         }
-        
+
         $transaksi->forceDelete();
-        
-        
+
+
         return response()->json(['success' => true]);
     }
 
@@ -663,13 +700,9 @@ class TransaksiController extends Controller
             ->orderBy('id_transaksi', 'asc')
             ->get();
 
-        if($request->ajax()){
-            return response()->json(array('transaksi'=>$transaksi));
-            }
-            return route('transaksi.approve', compact('transaksi'));        
+        if ($request->ajax()) {
+            return response()->json(array('transaksi' => $transaksi));
+        }
+        return route('transaksi.approve', compact('transaksi'));
     }
-
 }
-
-
-
