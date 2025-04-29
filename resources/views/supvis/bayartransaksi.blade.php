@@ -340,6 +340,11 @@
         </div>
 </x-Supvis.SupvisLayouts>
 
+
+
+{{-- @push ('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
 <script>
     function validateInjectionNumber(input) {
         const errorMessage = document.getElementById('error-message-injeksi');
@@ -382,6 +387,16 @@
     window.addEventListener('DOMContentLoaded', toggleNonTunaiOptions);
     document.getElementById('metode1').addEventListener('change', toggleNonTunaiOptions);
     document.getElementById('metode2').addEventListener('change', toggleNonTunaiOptions);
+
+    // @if(session('success'))
+    //     Swal.fire({
+    //         icon: 'success',
+    //         title: 'Sukses!',
+    //         text: '{{ session('success') }}',
+    //         confirmButtonColor: '0ec992#',
+    //         confirmButtonText: 'Oke'
+    //     });
+    // @endif
 </script>
 
 
