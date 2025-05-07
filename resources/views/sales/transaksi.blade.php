@@ -227,7 +227,7 @@
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
                                     {{ $produk->produk_detail }} <br>
-                                    Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}
+                                    Rp {{ number_format($produk->produk_harga_akhir, 0, ',', '.') }}
                                 </label>
                             </div>
                         @endforeach

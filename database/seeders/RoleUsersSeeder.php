@@ -33,6 +33,7 @@ class RoleUsersSeeder extends Seeder
         $roles = [
             'supervisor' => ['manage tasks', 'view tasks', 'assign tasks'],
             'sales' => ['view tasks'],
+             'kasir'=> ['view tasks']
         ];
 
         foreach ($roles as $roleName => $rolePermissions) {
@@ -67,6 +68,15 @@ class RoleUsersSeeder extends Seeder
                 'email' => 'sales@test.com',
                 'pin' => Hash::make('123456'),
                 'role' => 'sales',
+                'is_superuser' => false,
+                'is_setoran' => true,
+                'phone' => "081231780991",
+            ],
+             [
+                'name' => 'Kasir ',
+                'email' => 'kasir@test.com',
+                'pin' => Hash::make('123456'),
+                'role' => 'kasir',
                 'is_superuser' => false,
                 'is_setoran' => true,
                 'phone' => "081231780991",

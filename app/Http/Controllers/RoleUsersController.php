@@ -111,7 +111,8 @@ class RoleUsersController extends Controller
 
     $redirectRoutes = [
         'supervisor' => 'supvis.home',
-        'sales' => 'sales.home'
+        'sales' => 'sales.home',
+        'kasir' => 'kasir.home'
     ];
 
     if (!array_key_exists($roleUser ->role, $redirectRoutes)) {

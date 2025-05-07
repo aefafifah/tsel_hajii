@@ -111,7 +111,7 @@ class SalesController extends Controller
     }
     public function tampilsales()
     {
-        $users = RoleUsers::where('role', 'sales')->get();
+        $users = RoleUsers::whereIn('role', ['sales', 'kasir'])->get();
         return view('supvis.daftarsales', compact('users'));
     }
 
@@ -139,19 +139,28 @@ class SalesController extends Controller
 
     public function massUpdate(Request $request)
     {
-        $request->validate([
-            'user_ids' => 'required|array',
-            'bertugas' => 'required|boolean',
-            'tempat_tugas' => 'required|string|max:255',
-        ]);
+        // Handle deletions
+        if ($request->has('deleted_ids')) {
+            RoleUsers::whereIn('id', $request->deleted_ids)->delete();
+        }
 
-        RoleUsers::whereIn('id', $request->user_ids)
-            ->update([
-                'bertugas' => $request->bertugas,
-                'tempat_tugas' => $request->tempat_tugas,
-            ]);
+        // Handle create/update
+        foreach ($request->users as $userData) {
+            if (empty($userData['name'])) continue; // skip empty
 
-        return redirect()->back()->with('success', 'Data bertugas berhasil diperbarui secara massal!');
+            RoleUsers::updateOrCreate(
+                ['id' => $userData['id'] ?? null],
+                [
+                    'name' => $userData['name'],
+                    'email' => $userData['email'],
+                    'phone' => $userData['phone'],
+                    'bertugas' => $userData['bertugas'],
+                    'tempat_tugas' => $userData['tempat_tugas']
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', 'Berhasil diperbarui.');
     }
     
         

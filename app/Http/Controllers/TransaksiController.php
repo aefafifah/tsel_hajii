@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
@@ -13,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 
 use Imagick;
@@ -103,41 +103,115 @@ class TransaksiController extends Controller
                 ->withInput();
         }
     }
+    
+
     public function index(Request $request)
     {
-        $paymentMethod = $request->input('payment_method'); // Ambil filter dari form GET
-
+        // Determine user role
+        $role = $request->user()->role; // Adjust if your role comes from a relationship
+        $isKasir = $role === 'kasir';
+        $isSupervisor = $role === 'supervisor';
+    
         $query = Transaksi::withTrashed()
             ->with([
-                'produk' => function ($query) {
-                    $query->withTrashed(); // Include trashed products
-                }
-            ]);
-
-        // Jika ada filter metode pembayaran, tambahkan ke query
-        if ($paymentMethod) {
-            $query->where('metode_pembayaran', $paymentMethod);
+                'produk' => fn($q) => $q->withTrashed(),
+                'supervisor'
+            ])
+             ->where('is_paid', true);
+    
+        // Apply role-based filter
+        if ($isKasir) {
+            $query->where('id_supervisor', $request->user()->id);
+        } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+            $query->where('id_supervisor', $request->id_supervisor);
         }
-
+    
+        // === Apply filters if present ===
+        if ($request->filled('id_supervisor')) {
+            $query->where('id_supervisor', $request->id_supervisor);
+        }
+    
+        if ($request->filled('metode_pembayaran')) {
+            $query->where('metode_pembayaran', $request->metode_pembayaran);
+        }
+    
+        if ($request->filled('tanggal_transaksi')) {
+            $query->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+        }
+    
         $transaksi = $query->get();
 
+        // === Calculate totals ===
         $totalPenjualan = 0;
         $totalInsentif = 0;
-
+    
         foreach ($transaksi as $item) {
             $sales = \App\Models\RoleUsers::where('name', $item->nama_sales)->first();
             $item->sales_bertugas = $sales?->bertugas;
             $item->sales_tempat = $sales?->tempat_tugas;
-
+    
             if ($item->produk) {
                 $totalPenjualan += $item->produk->produk_harga_akhir;
                 $totalInsentif += $item->produk->produk_insentif;
             }
         }
 
-        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif', 'paymentMethod'));
+        $methods = ['Mandiri', 'BNI', 'Tunai', 'BCA'];
+        $paymentSums = [];
+        
+        // Handle listed methods
+        foreach ($methods as $method) {
+            $sumQuery = Transaksi::withTrashed()
+                ->where('metode_pembayaran', $method)
+                ->where('is_paid', true)
+                ->with(['produk' => fn($q) => $q->withTrashed()]);
+        
+            if ($isKasir) {
+                $sumQuery->where('id_supervisor', $request->user()->id);
+            } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+                $sumQuery->where('id_supervisor', $request->id_supervisor);
+            }
+            
+            if ($request->filled('tanggal_transaksi')) {
+                $sumQuery->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+            }
+        
+            $paymentSums[$method] = $sumQuery
+                ->get()
+                ->sum(fn($t) => optional($t->produk)->produk_harga_akhir ?? 0);
+        }
+        
+        // Handle 'Others' (not in predefined methods or null)
+        $othersQuery = Transaksi::withTrashed()
+            ->where(function ($query) use ($methods) {
+                $query->whereNotIn('metode_pembayaran', $methods)
+                      ->orWhereNull('metode_pembayaran');
+            })
+            ->where('is_paid', true)
+            ->with(['produk' => fn($q) => $q->withTrashed()]);
+        
+        if ($isKasir) {
+            $othersQuery->where('id_supervisor', $request->user()->id);
+        } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+            $othersQuery->where('id_supervisor', $request->id_supervisor);
+        }
+        
+        if ($request->filled('tanggal_transaksi')) {
+            $othersQuery->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+        }   
+        
+        $paymentSums['Others'] = $othersQuery
+            ->get()
+            ->sum(fn($t) => optional($t->produk)->produk_harga_akhir ?? 0);
+
+
+
+
+    
+        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif', 'paymentSums'));
     }
 
+    
     public function create()
     {
         $produks = Produk::with('merchandises')->get();
@@ -158,12 +232,7 @@ class TransaksiController extends Controller
         $imagick->setImageFormat('png');
 
         // Simpan gambar ke storage publik
-        // $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
-        // Storage::disk('public')->put($imagePath, $imagick);
-
-        // Simpan PDF ke Storage Public by Valen
-        $imagePath = "kwitansi/{$formData['id_transaksi']}.pdf";
-        $imagick->setImageFormat('pdf');
+        $imagePath = "kwitansi/{$formData['id_transaksi']}.jpg";
         Storage::disk('public')->put($imagePath, $imagick);
 
         // Buat link publik ke gambar
@@ -336,6 +405,7 @@ class TransaksiController extends Controller
         $totalInsentif = $totalsPerDate->sum('totalInsentif');
 
         return view('supvis/void', compact('groupedTransaksi', 'totalsPerDate', 'totalPenjualan', 'totalInsentif'));
+
     }
 
     public function supvisdestroy($id)
@@ -350,6 +420,7 @@ class TransaksiController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Transaksi berhasil dihapus.');
+
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -466,26 +537,6 @@ class TransaksiController extends Controller
             $transaksi->tempat_tugas = $supervisor->tempat_tugas;
             $transaksi->save();
 
-            // Update data transaksi dulu sesuai logika kamu
-
-            // 👉 1. Generate PDF dari view
-            // $pdf = Pdf::loadView('supvis.kwitansi', compact('transaksi'));
-            // $pdf->save(storage_path('public/kwitansi'));
-
-            // $pdf = PDF::loadView('supvis.kwitansi', $formData);
-
-            // // 👉 2. Buat nama file yang benar
-            // $namaFile = 'kwitansi/kwitansi_' . $transaksi->id_transaksi . '.pdf';
-
-            // // 👉 3. Simpan PDF ke storage/app/public/kwitansi/
-            // Storage::disk('public')->put($namaFile, $pdf->output());
-
-            // if (Storage::disk('public')->exists($namaFile)) {
-            //     Log::info('✅ Kwitansi berhasil disimpan di: ' . $namaFile);
-            // } else {
-            //     Log::error('❌ Gagal menyimpan kwitansi!');
-            // }
-
             DB::commit();
             return redirect()->route('supvis.home')->with('success', 'Transaksi berhasil diperbarui!');
         } catch (\Exception $e) {
@@ -524,23 +575,24 @@ class TransaksiController extends Controller
     public function bayar(Request $request, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
-    
+
+        // Validasi input metode pembayaran
         $validator = Validator::make($request->all(), [
             'metode_pembayaran' => 'required|string',
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-    
+
         try {
             // Ambil produk & merchandise dari data transaksi lama
             $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
             $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
-    
-            
+
+            // Simpan ke session form_data
             $formData = [
                 'icon' => public_path('admin_asset/img/photos/icon_telkomsel.png'),
                 'logo' => public_path('admin_asset/img/photos/logo_telkomsel.png'),
@@ -558,37 +610,33 @@ class TransaksiController extends Controller
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'aktivasi_tanggal' => $transaksi->aktivasi_tanggal,
             ];
-    
+
             $request->session()->put('form_data', $formData);
-    
-            // tambahan firoh 
+
+            // Update metode pembayaran saja
             $transaksi->update([
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'is_paid' => 1,
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'id_supervisor' => Auth::user()->id,
-
             ]);
+            
+            $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
 
-            // Valen, Save Kwitansi PDF to Storage 
-            $pdf = PDF::loadView('supvis.kwitansi', ['formData' => $formData]);
-            $namaFile = 'kwitansi/kwitansi_' . $transaksi-> nama_pelanggan . '.pdf';
-            Storage::disk('public')->put($namaFile, $pdf->output());
-
-            return redirect()->route('transaksi.approve')->with('success', 'Kwitansi berhasil disimpan di storage!');
-
-        } catch (\Exception $e) {
-          // Redirect langsung ke halaman kwitansi 
-            return redirect()->route('supvis.transaksi.kwitansi.print', ['id' => $transaksi->id_transaksi])
-                ->with('success', 'Metode pembayaran berhasil disimpan dan kwitansi siap untuk dicetak!');
+            // Simpan output PDF (ke memory)
+            $pdfContent = $pdf->output();
     
-            }
-         
-        catch (\Exception $e) {
+            // Save PDF file to storage
+            $storagePath = storage_path('app/public/kwitansi');
+            $filePath = $storagePath . '/' . $formData['id_transaksi'] . '.pdf';
+            file_put_contents($filePath, $pdfContent);
+            
+            return redirect()->route('transaksi.approve')
+            ->with('success', 'Transaksi berhasil dibayar');
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
-    
 
     public function editBayar($id)
     {
@@ -668,30 +716,30 @@ class TransaksiController extends Controller
         ]);
 
         return redirect()->route('transaksi.approve');
+
     }
-
-    public function forcedelete($id)
-    {
+    
+    public function forcedelete($id){
         $transaksi = Transaksi::withTrashed()->findOrFail($id);
-
+        
         $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
         if ($selectedProduk) {
             $selectedProduk->increment('produk_stok', 1);
             $selectedProduk->decrement('produk_terjual', 1);
         }
-
+        
         // kalo di delete, stok masih error
         $selectedMerchandise = Merchandise::withTrashed()
             ->where('merch_nama', $transaksi->merchandise)
-            ->firstOrFail();
+            ->firstOrFail();        
         if ($selectedMerchandise) {
             $selectedMerchandise->increment('merch_stok', 1);
             $selectedMerchandise->decrement('merch_terambil', 1);
         }
-
+        
         $transaksi->forceDelete();
-
-
+        
+        
         return response()->json(['success' => true]);
     }
 
@@ -708,10 +756,13 @@ class TransaksiController extends Controller
             ->orderBy('id_transaksi', 'asc')
             ->get();
 
-        if ($request->ajax()) {
-            return response()->json(array('transaksi' => $transaksi));
-        }
-        return route('transaksi.approve', compact('transaksi'));
+        if($request->ajax()){
+            return response()->json(array('transaksi'=>$transaksi));
+            }
+            return route('transaksi.approve', compact('transaksi'));        
     }
 
 }
+
+
+

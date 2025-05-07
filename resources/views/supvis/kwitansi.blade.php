@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwitansi Pembayaran</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         @page {
             size: 80mm 150mm;
             margin: 0;
         }
-/*perubahanmonspace*/
+
         body {
-            font-family: monospace;
+            font-family: 'Poppins', sans-serif;
             width: 80mm;
             margin: 0 auto;
             padding: 1mm;
@@ -67,13 +68,13 @@
         }
 
         .content table td.label {
-            font-weight: bold;
+            font-weight: 600;
             width: 40%;
         }
 
         .footer {
             text-align: center;
-            font-size: 12px;
+            font-size: 20px;
             position: relative;
             z-index: 1;
         }
@@ -83,7 +84,7 @@
         }
 
         .lunas-text {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 14px;
             margin-top: 8px;
             display: block;
@@ -140,7 +141,7 @@
                     <td>
                         {{ $formData['produk_nama'] }} <s>Rp {{ number_format($formData['produk_harga'], 0, ',', '.') }},-</s>
                         <br>
-                        <span style="display: block; margin-top: 10px; font-size: 13px; font-weight: bold;">
+                        <span style="display: block; margin-top: 10px; font-size: 26px; font-weight: bold;">
                             Rp {{ number_format($formData['produk_harga_akhir'], 0, ',', '.') }},-
                         </span>
                         <span class="lunas-text">LUNAS</span>
@@ -160,7 +161,7 @@
             </table>
         </div>
         <div class="footer">
-            <p>Contact Person : {{ $formData['nama_sales'] }}</p>
+            <p>{{ $formData['nama_sales'] }}</p>
             <p>No Tlp : {{ $formData['nomor_telepon'] }}</p>
         </div>
     </div>

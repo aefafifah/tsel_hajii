@@ -216,7 +216,7 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
-            <form action="{{ route('transaksi.bayar', $transaksi->id_transaksi) }}" method="POST"
+            <form id="formTransaksi" action="{{ route('transaksi.bayar', $transaksi->id_transaksi) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -333,17 +333,15 @@
                         <label for="addon_perdana">PERDANA BARU</label>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                
+                <a target="_blank">
+                    <button type="submit" onclick="handleFormSubmit()" class="btn btn-primary">Simpan Perubahan</button>
+                </a>
+                
                 <a href="{{ url()->previous() }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
 </x-Supvis.SupvisLayouts>
-
-
-
-{{-- @push ('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
 <script>
     function validateInjectionNumber(input) {
@@ -387,16 +385,19 @@
     window.addEventListener('DOMContentLoaded', toggleNonTunaiOptions);
     document.getElementById('metode1').addEventListener('change', toggleNonTunaiOptions);
     document.getElementById('metode2').addEventListener('change', toggleNonTunaiOptions);
+    
+    
+    function handleFormSubmit() {
+        const form = document.getElementById('formTransaksi');
+        const transaksiId = @json($transaksi->id_transaksi);
+        
+        // Open new tab for kwitansi
+        const kwitansiUrl = "{{ url('/programhaji/supvis/transaksi/kwitansi/print') }}/" + transaksiId;
+        window.open(kwitansiUrl, '_blank');
 
-    // @if(session('success'))
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Sukses!',
-    //         text: '{{ session('success') }}',
-    //         confirmButtonColor: '0ec992#',
-    //         confirmButtonText: 'Oke'
-    //     });
-    // @endif
+        // Submit the form
+        form.submit();
+    }
 </script>
 
 

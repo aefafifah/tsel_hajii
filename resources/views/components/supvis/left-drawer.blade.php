@@ -19,7 +19,7 @@
             <x-nav-link href="{{ route('pantau.stok') }}" :active="request()->is('programhaji/pantau-stok')">Pantau Stok</x-nav-link>
             <x-nav-link href="{{ route('supvis.supvis.budget_insentif.pantau') }}" :active="request()->is('programhaji/supvis/budget-insentif/pantau')">Pantau Budget</x-nav-link>
             @if(Auth::user() && Auth::user()->is_superuser)
-                <x-nav-link href="{{ route('add_supvis') }}" :active="request()->is('programhaji/tambah-supvis')">Add Supervisor</x-nav-link>
+                <x-nav-link href="{{ route('add_supvis') }}" :active="request()->is('programhaji/tambah-supvis')">Add Kasir / Supervisor</x-nav-link>
                 <x-nav-link href="{{ route('role-users.sales') }}" :active="request()->is('programhaji/superuser/roleusers/sales')">Daftar Sales</x-nav-link>
             @endif
             <x-nav-link href="{{ route('supvis.void') }}" :active="request()->is('programhaji/supvis/void')">Void Transaksi</x-nav-link>

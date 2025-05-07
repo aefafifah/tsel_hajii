@@ -14,7 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleUsersController;
 use App\Http\Controllers\StockHistoryController;
 use App\Http\Controllers\ExportRiwayatTransaksiController;
-use App\Http\Controllers\ExportApprovedTransaksiController;
+use App\Http\Controllers\KasirController;
 
 
 
@@ -37,21 +37,21 @@ Route::post('/programhaji/logout', [LoginController::class, 'logout'])->name('lo
 
 
 // -------------
-// SUPERVISOR
+// SUPERVISOR KASIR BUTUH MIDDLEWARE BY AEF
+    Route::get('/programhaji/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
+        ->name('supvis.transactions.index');
+
 
 // Grup rute untuk role supervisor
 Route::middleware(['supervisor'])->group(function () {
     // Dashboard Supervisor
     Route::get('/programhaji/supvis/home', [HomeController::class, 'index'])->name('supvis.home');
-    // Riwayat Transaksi
-    Route::get('/programhaji/supvis/riwayat-transaksi', [TransaksiController::class, 'index'])
-        ->name('supvis.transactions.index');
     // Export Excel Riwayat Transaksi
     Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])
         ->name('export.excel');
-        Route::get('/programhaji/supvis/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])->name('export.excel');    Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
-        Route::get('/programhaji/export-pdf', [ExportApprovedTransaksiController::class, 'exportPDF'])->name('export.pdf');
-        Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
+
+    // Rute Insentif
+    Route::prefix('/programhaji/insentif')->name('insentif.')->group(function () {
         Route::get('/', [InsentifController::class, 'index'])->name('index');
         Route::get('/create', [InsentifController::class, 'create'])->name('create');
         Route::post('/store', [InsentifController::class, 'store'])->name('store');
@@ -149,6 +149,8 @@ Route::get('/programhaji/history-setoran', [SupvisController::class, 'showHistor
 Route::get('/programhaji/history-setoran/data', [SupvisController::class, 'getHistorySetoranData'])->name('history.setoran.data');
 Route::post('/programhaji/update-setoran-status', [SupvisController::class, 'updateSetoranStatus'])->name('update.history.setoran.status');
 
+
+
 // --------------------------------------------
 
 
@@ -177,7 +179,7 @@ Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class
 // pdf print by billy
 Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiController::class, 'print'])->name('supvis.transaksi.kwitansi.print');
 // whatsapp by billy
-// Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
+Route::get('/programhaji/supvis/transaksi/kwitansi/whatsapp/{id}', [TransaksiController::class, 'whatsapp'])->name('supvis.transaksi.kwitansi.whatsapp');
 // un-lunas transaksi by billy
 Route::put('/programhaji/supvis/transaksi/kwitansi/unlunas/{id}', [TransaksiController::class, 'unlunas'])->name('supvis.transaksi.kwitansi.unlunas');
 // daftar sales by aef
@@ -187,6 +189,13 @@ Route::put('/programhaji/superuser/role-users/{id}', [SalesController::class, 'u
 Route::post('/role-users/mass-update', [SalesController::class, 'massUpdate'])->name('role-users.mass-update');
 // refresh by billy
 Route::get('/programhaji/supvis/approvetransaksi/refresh',[TransaksiController::class, 'refresh'])->name('transaksi.approve.refresh');
+// kasir by aef
+Route::get('/programhaji/kasir/home', [KasirController::class, 'index'])
+    ->name('kasir.home');
+// kasir export excel di riwayat transaksi by nira
+Route::get('/programhaji/kasir/export-excel', [ExportRiwayatTransaksiController::class, 'exportExcel'])
+        ->name('export.excel');
+
 
 
 
