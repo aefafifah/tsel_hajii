@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Produk;
 use App\Models\Merchandise;
@@ -13,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 
 use Imagick;
@@ -103,33 +103,115 @@ class TransaksiController extends Controller
                 ->withInput();
         }
     }
-    public function index()
-    {
-        $transaksi = Transaksi::withTrashed()
-            ->with([
-                'produk' => function ($query) {
-                    $query->withTrashed(); // Include trashed products
-                }
-            ])
-            ->get();
+    
 
+    public function index(Request $request)
+    {
+        // Determine user role
+        $role = $request->user()->role; // Adjust if your role comes from a relationship
+        $isKasir = $role === 'kasir';
+        $isSupervisor = $role === 'supervisor';
+    
+        $query = Transaksi::withTrashed()
+            ->with([
+                'produk' => fn($q) => $q->withTrashed(),
+                'supervisor'
+            ])
+             ->where('is_paid', true);
+    
+        // Apply role-based filter
+        if ($isKasir) {
+            $query->where('id_supervisor', $request->user()->id);
+        } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+            $query->where('id_supervisor', $request->id_supervisor);
+        }
+    
+        // === Apply filters if present ===
+        if ($request->filled('id_supervisor')) {
+            $query->where('id_supervisor', $request->id_supervisor);
+        }
+    
+        if ($request->filled('metode_pembayaran')) {
+            $query->where('metode_pembayaran', $request->metode_pembayaran);
+        }
+    
+        if ($request->filled('tanggal_transaksi')) {
+            $query->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+        }
+    
+        $transaksi = $query->get();
+
+        // === Calculate totals ===
         $totalPenjualan = 0;
         $totalInsentif = 0;
-
+    
         foreach ($transaksi as $item) {
             $sales = \App\Models\RoleUsers::where('name', $item->nama_sales)->first();
             $item->sales_bertugas = $sales?->bertugas;
             $item->sales_tempat = $sales?->tempat_tugas;
-
+    
             if ($item->produk) {
                 $totalPenjualan += $item->produk->produk_harga_akhir;
                 $totalInsentif += $item->produk->produk_insentif;
             }
         }
 
+        $methods = ['Mandiri', 'BNI', 'Tunai', 'BCA'];
+        $paymentSums = [];
+        
+        // Handle listed methods
+        foreach ($methods as $method) {
+            $sumQuery = Transaksi::withTrashed()
+                ->where('metode_pembayaran', $method)
+                ->where('is_paid', true)
+                ->with(['produk' => fn($q) => $q->withTrashed()]);
+        
+            if ($isKasir) {
+                $sumQuery->where('id_supervisor', $request->user()->id);
+            } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+                $sumQuery->where('id_supervisor', $request->id_supervisor);
+            }
+            
+            if ($request->filled('tanggal_transaksi')) {
+                $sumQuery->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+            }
+        
+            $paymentSums[$method] = $sumQuery
+                ->get()
+                ->sum(fn($t) => optional($t->produk)->produk_harga_akhir ?? 0);
+        }
+        
+        // Handle 'Others' (not in predefined methods or null)
+        $othersQuery = Transaksi::withTrashed()
+            ->where(function ($query) use ($methods) {
+                $query->whereNotIn('metode_pembayaran', $methods)
+                      ->orWhereNull('metode_pembayaran');
+            })
+            ->where('is_paid', true)
+            ->with(['produk' => fn($q) => $q->withTrashed()]);
+        
+        if ($isKasir) {
+            $othersQuery->where('id_supervisor', $request->user()->id);
+        } elseif ($request->filled('id_supervisor') && $isSupervisor) {
+            $othersQuery->where('id_supervisor', $request->id_supervisor);
+        }
+        
+        if ($request->filled('tanggal_transaksi')) {
+            $othersQuery->whereDate('tanggal_transaksi', $request->tanggal_transaksi);
+        }   
+        
+        $paymentSums['Others'] = $othersQuery
+            ->get()
+            ->sum(fn($t) => optional($t->produk)->produk_harga_akhir ?? 0);
 
-        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif'));
+
+
+
+    
+        return view('supvis.RiwayatTransaksi', compact('transaksi', 'totalPenjualan', 'totalInsentif', 'paymentSums'));
     }
+
+    
     public function create()
     {
         $produks = Produk::with('merchandises')->get();
@@ -184,11 +266,12 @@ class TransaksiController extends Controller
 
     public function print($id, $action = 'stream')
     {
-        $transaksi = Transaksi::findOrFail($id);
+        $transaksi = Transaksi::withTrashed()->findOrFail($id);
 
-        // Ambil produk & merchandise dari data transaksi lama
-        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
-        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
+        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::withTrashed()
+            ->where('merch_nama', $transaksi->merchandise)
+            ->firstOrFail();
 
         // Simpan ke session form_data
         $formData = [
@@ -536,10 +619,20 @@ class TransaksiController extends Controller
                 'is_paid' => 1,
                 'nomor_injeksi' => $request->nomor_injeksi,
                 'id_supervisor' => Auth::user()->id,
-
             ]);
+            
+            $pdf = Pdf::loadView('supvis.kwitansi', ['formData' => $formData])->setPaper('A6', 'portrait'); // Set A6 paper size in portrait orientation;
 
-            return redirect()->route('transaksi.approve')->with('success', 'Metode pembayaran berhasil disimpan!');
+            // Simpan output PDF (ke memory)
+            $pdfContent = $pdf->output();
+    
+            // Save PDF file to storage
+            $storagePath = storage_path('app/public/kwitansi');
+            $filePath = $storagePath . '/' . $formData['id_transaksi'] . '.pdf';
+            file_put_contents($filePath, $pdfContent);
+            
+            return redirect()->route('transaksi.approve')
+            ->with('success', 'Transaksi berhasil dibayar');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
@@ -556,11 +649,12 @@ class TransaksiController extends Controller
 
     public function whatsapp($id)
     {
-        $transaksi = Transaksi::findOrFail($id);
+        $transaksi = Transaksi::withTrashed()->findOrFail($id);
 
-        // Ambil produk & merchandise dari data transaksi lama
-        $selectedProduk = Produk::findOrFail($transaksi->jenis_paket);
-        $selectedMerchandise = Merchandise::where('merch_nama', $transaksi->merchandise)->firstOrFail();
+        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
+        $selectedMerchandise = Merchandise::withTrashed()
+            ->where('merch_nama', $transaksi->merchandise)
+            ->firstOrFail();
 
         // Simpan ke session form_data
         $formData = [
@@ -624,6 +718,30 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.approve');
 
     }
+    
+    public function forcedelete($id){
+        $transaksi = Transaksi::withTrashed()->findOrFail($id);
+        
+        $selectedProduk = Produk::withTrashed()->findOrFail($transaksi->jenis_paket);
+        if ($selectedProduk) {
+            $selectedProduk->increment('produk_stok', 1);
+            $selectedProduk->decrement('produk_terjual', 1);
+        }
+        
+        // kalo di delete, stok masih error
+        $selectedMerchandise = Merchandise::withTrashed()
+            ->where('merch_nama', $transaksi->merchandise)
+            ->firstOrFail();        
+        if ($selectedMerchandise) {
+            $selectedMerchandise->increment('merch_stok', 1);
+            $selectedMerchandise->decrement('merch_terambil', 1);
+        }
+        
+        $transaksi->forceDelete();
+        
+        
+        return response()->json(['success' => true]);
+    }
 
     public function refresh(Request $request)
     {
@@ -631,7 +749,9 @@ class TransaksiController extends Controller
             ->with([
                 'produk' => function ($query) {
                     $query->withTrashed(); // Include trashed products
-                }
+                },
+                'supervisor',
+                'sales',
             ])
             ->orderBy('id_transaksi', 'asc')
             ->get();

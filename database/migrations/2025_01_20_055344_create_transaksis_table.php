@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_pelanggan')->nullable();
             $table->string('nomor_telepon')->nullable();
             $table->date('aktivasi_tanggal')->nullable();
-            $table->date('tanggal_transaksi')->nullable();
+            $table->dateTime('tanggal_transaksi')->nullable();
             $table->string('nama_sales')->nullable();
             $table->string('jenis_paket')->nullable();
             $table->string('merchandise')->nullable();
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('is_paid')->default(false);
             $table->string('telepon_pelanggan')->nullable();
             $table->boolean('addon_perdana')->default(false);
+            $table->boolean('is_activated')->default(false);
             // Add the foreign key constraint
             $table->unsignedBigInteger('id_supervisor')->nullable();
             $table->foreign('id_supervisor')->references('id')->on('role_users')->onDelete('set null');

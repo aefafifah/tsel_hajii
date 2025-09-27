@@ -245,7 +245,7 @@
 
                  <div class="form-group">
                     <input type="hidden" name="tanggal_transaksi" class="form-control"
-                        value="<?php echo date('Y-m-d'); ?>" required>
+                        value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi) }}" required>
                 </div>
 
                 <div class="form-group">
@@ -303,28 +303,42 @@
                     </div>
                 </div>
 
+                <input type="hidden" name="metode_pembayaran" id="metode_pembayaran"
+                    value="{{ old('metode_pembayaran', $transaksi->metode_pembayaran) }}">
+                
+                {{-- Pilihan metode: Tunai atau Non Tunai --}}
                 <div class="form-group">
                     <label>Metode Pembayaran</label>
                     <div class="checkbox-group">
                         <div class="checkbox-box">
-                            <input type="radio" id="metode1" name="metode_pembayaran" value="Tunai"
-                                {{ old('metode_pembayaran', $transaksi->metode_pembayaran) === 'Tunai' ? 'checked' : '' }}
-                                required>
+                            <input type="radio" id="metode1" name="metode_type" value="Tunai"
+                                {{ $transaksi->metode_pembayaran === 'Tunai' ? 'checked' : '' }}>
                             <label for="metode1">
                                 <span class="checkbox-icon"></span>
                                 Tunai
                             </label>
                         </div>
                         <div class="checkbox-box">
-                            <input type="radio" id="metode2" name="metode_pembayaran" value="Non Tunai"
-                                {{ old('metode_pembayaran', $transaksi->metode_pembayaran) === 'Non Tunai' ? 'checked' : '' }}
-                                required>
+                            <input type="radio" id="metode2" name="metode_type" value="Non Tunai"
+                                {{ in_array($transaksi->metode_pembayaran, ['BCA', 'Mandiri', 'BNI', 'BSI']) ? 'checked' : '' }}>
                             <label for="metode2">
                                 <span class="checkbox-icon"></span>
                                 Non Tunai
                             </label>
                         </div>
                     </div>
+                </div>
+                
+                {{-- Select bank, hanya muncul saat pilih Non Tunai --}}
+                <div class="form-group" id="bank-options" style="display: none;">
+                    <label for="bank_select">Pilih Bank</label>
+                    <select id="bank_select" class="form-control">
+                        <option value="">-- Pilih Bank --</option>
+                        <option value="BCA" {{ $transaksi->metode_pembayaran === 'BCA' ? 'selected' : '' }}>BCA</option>
+                        <option value="Mandiri" {{ $transaksi->metode_pembayaran === 'Mandiri' ? 'selected' : '' }}>Mandiri</option>
+                        <option value="BNI" {{ $transaksi->metode_pembayaran === 'BNI' ? 'selected' : '' }}>BNI</option>
+                        <option value="BSI" {{ $transaksi->metode_pembayaran === 'BSI' ? 'selected' : '' }}>BSI</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -365,19 +379,55 @@
                     }
                 });
             }
+            
+            function toggleNonTunaiOptions() {
+                const metodeTunai = document.getElementById('metode1');
+                const metodeNonTunai = document.getElementById('metode2');
+                const bankOptions = document.getElementById('bank-options');
+                const bankSelect = document.getElementById('bank_select');
+                const metodeInput = document.getElementById('metode_pembayaran');
+        
+                if (metodeTunai.checked) {
+                    bankOptions.style.display = 'none';
+                    metodeInput.value = 'Tunai';
+                } else {
+                    bankOptions.style.display = 'block';
+                    metodeInput.value = bankSelect.value || '';
+                }
+            }
+        
+                function updateMetodePembayaranFromSelect() {
+                    const bankSelect = document.getElementById('bank_select');
+                    const metodeInput = document.getElementById('metode_pembayaran');
+                    metodeInput.value = bankSelect.value;
+                }
+            
+                window.addEventListener('DOMContentLoaded', () => {
+                    toggleNonTunaiOptions();
+                    document.getElementById('bank_select').addEventListener('change', updateMetodePembayaranFromSelect);
+                    document.getElementById('metode1').addEventListener('change', toggleNonTunaiOptions);
+                    document.getElementById('metode2').addEventListener('change', toggleNonTunaiOptions);
+                });
+                window.addEventListener('DOMContentLoaded', toggleNonTunaiOptions);
+                document.getElementById('metode1').addEventListener('change', toggleNonTunaiOptions);
+                document.getElementById('metode2').addEventListener('change', toggleNonTunaiOptions);
 
             // Panggil filter di awal saat halaman dimuat
             document.addEventListener("DOMContentLoaded", () => {
+                const metodeTunai = document.getElementById('metode1');
+                const metodeNonTunai = document.getElementById('metode2');
+            
+                // Filter merchandise saat produk dipilih
                 const selectedProduk = document.querySelector("input[name='produk']:checked")?.value;
                 if (selectedProduk) {
                     filterMerchandises(selectedProduk);
                 }
-
+            
                 // Validasi sebelum kirim form
                 document.getElementById('editTransaksiForm').addEventListener('submit', function(e) {
                     const selectedProduk = document.querySelector("input[name='produk']:checked");
                     const selectedMerch = document.querySelector("input[name='merchandise']:checked");
-
+    
                     if (!selectedProduk) {
                         e.preventDefault();
                         Swal.fire({
@@ -387,7 +437,7 @@
                         });
                         return;
                     }
-
+            
                     if (!selectedMerch || selectedMerch.disabled) {
                         e.preventDefault();
                         Swal.fire({
@@ -396,6 +446,15 @@
                             icon: "warning"
                         });
                         return;
+                    }
+                    
+                    if (metodeNonTunai.checked && !bankSelect.value) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: "Peringatan!",
+                            text: "Harap pilih bank untuk pembayaran non tunai!",
+                            icon: "warning"
+                        });
                     }
                 });
             });

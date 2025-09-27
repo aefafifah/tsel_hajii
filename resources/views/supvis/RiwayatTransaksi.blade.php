@@ -1,4 +1,7 @@
-<x-Supvis.SupvisLayouts>
+@php
+    $layout = Auth::user()->hasRole('kasir') ? 'Kasir.KasirLayouts' : 'Supvis.SupvisLayouts';
+@endphp
+<x-dynamic-component :component="$layout">
 
     <link href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
 
@@ -188,16 +191,48 @@
             <p style="color: red;">{{ session('error') }}</p>
         @endif
 
-        <div class="search-container">
+        <form method="GET" class="search-container">
             <div class="filter-box">
-                <select id="filter-transaksi" onchange="filterByDateRange(this.value)">
-                    <option value="all">Semua Transaksi</option>
-                    <option value="7">7 Hari Terakhir</option>
-                    <option value="30">1 Bulan Terakhir</option>
-                    <option value="365">1 Tahun Terakhir</option>
+                <input type="date" name="tanggal_transaksi" value="{{ request('tanggal_transaksi') }}">
+            </div>
+        
+            @php
+                $user = auth()->user();
+                $isKasir = $user->hasRole('kasir'); // Assuming you use Spatie or similar
+            @endphp
+            
+            <div class="filter-box">
+                <select name="id_supervisor" {{ $isKasir ? 'disabled' : '' }}>
+                    <option value="">Semua Kasir</option>
+                    @foreach($transaksi->pluck('supervisor')->filter()->unique('id')->sortBy('name') as $supervisor)
+                        <option value="{{ $supervisor->id }}"
+                            {{ (request('id_supervisor') ?? ($isKasir ? $user->id : null)) == $supervisor->id ? 'selected' : '' }}>
+                            {{ $supervisor->name }}
+                        </option>
+                    @endforeach
+                </select>
+            
+                @if($isKasir)
+                    <input type="hidden" name="id_supervisor" value="{{ $user->id }}">
+                @endif
+            </div>
+        
+            <div class="filter-box">
+                <select name="metode_pembayaran">
+                    <option value="">Semua Metode</option>
+                    @foreach($transaksi->pluck('metode_pembayaran')->unique() as $metode)
+                        <option value="{{ $metode }}" {{ request('metode_pembayaran') == $metode ? 'selected' : '' }}>
+                            {{ $metode }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
-        </div>
+        
+            <div class="filter-box">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+
 
         <div class="container d-flex justify-content-center align-items-center mt-3">
             <div class="row w-100">
@@ -214,13 +249,60 @@
                 <div class="col-md-6">
                     <div class="card text-center shadow-sm">
                         <div class="card-body">
-                            <h3 class="card-title text-primary">Total Insentif</h3>
-                            <p class="card-text fw-bold">Rp {{ number_format($totalInsentif, 0, ',', '.') }},-</p>
+                            <h3 class="card-title text-primary">Mandiri</h3>
+                            <p class="card-text fw-bold">Rp {{ number_format($paymentSums['Mandiri'] ?? 0, 0, ',', '.') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="container d-flex justify-content-center align-items-center mt-3">
+            <div class="row w-100">
+
+                <div class="col-md-6">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-success">BNI</h3>
+                            <p class="card-text fw-bold">Rp {{ number_format($paymentSums['BNI'] ?? 0, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary">Tunai</h3>
+                            <p class="card-text fw-bold">Rp {{ number_format($paymentSums['Tunai'] ?? 0, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container d-flex justify-content-center align-items-center mt-3">
+            <div class="row w-100">
+
+                <div class="col-md-6">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-success">BCA</h3>
+                            <p class="card-text fw-bold">Rp {{ number_format($paymentSums['BCA'] ?? 0, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary">Others</h3>
+                            <p class="card-text fw-bold">Rp {{ number_format($paymentSums['Others'] ?? 0, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="container mt-4">
             <div class="table-responsive-scroll">
@@ -228,6 +310,7 @@
                     <thead>
                         <tr>
                             <th>ID Transaksi</th>
+                            <th>Kasir</th>
                             <th>Tanggal Transaksi</th>
                             <th>Nama Sales</th>
                             <th>No. Tlp Sales</th>
@@ -236,6 +319,7 @@
                             <th>Nama Pelanggan</th>
                             <th>No. Tlp Pelanggan</th>
                             <th>Nomor Injeksi</th>
+                            <th>Addon Perdana</th>
                             <th>Aktivasi Tanggal</th>
                             <th>Jenis Paket</th>
                             <th>Merchandise</th>
@@ -247,6 +331,7 @@
                         @foreach ($transaksi as $transaction)
                             <tr>
                                 <td data-label="ID Transaksi">{{ $transaction->id_transaksi }}</td>
+                                <td data-label="Kasir">{{ $transaction->supervisor?->name }}</td>
                                 <td data-label="Tanggal Transaksi">{{ $transaction->tanggal_transaksi }}</td>
                                 <td data-label="Nama Sales">{{ $transaction->nama_sales }}</td>
                                 <td data-label="No. Tlp Sales">{{ $transaction->nomor_telepon }}</td>
@@ -259,14 +344,15 @@
                                 <td data-label="Nama Pelanggan">{{ $transaction->nama_pelanggan }}</td>
                                 <td data-label="No. Tlp Pelanggan">{{ $transaction->telepon_pelanggan }}</td>
                                 <td data-label="Nomor Injeksi">{{ $transaction->nomor_injeksi }}</td>
+                                <td data-label="Addon Perdana"> {{ $transaction->addon_perdana ? '✓' : '✗' }} </td>
                                 <td data-label="Aktivasi Tanggal">{{ $transaction->aktivasi_tanggal }}</td>
                                 <td data-label="Jenis Paket">
                                     {{ optional($transaction->produk)->produk_nama ?? 'Produk tidak ditemukan' }}
                                 </td>
                                 <td data-label="Merchandise">{{ $transaction->merchandise }}</td>
                                 <td data-label="Metode Pembayaran">{{ $transaction->metode_pembayaran }}</td>
-                                <td data-label="Harga">Rp
-                                    {{ number_format(optional($transaction->produk)->produk_harga ?? 0, 0, ',', '.') }}
+                                <td data-label="Harga Akhir">Rp
+                                    {{ number_format(optional($transaction->produk)->produk_harga_akhir ?? 0, 0, ',', '.') }}
                                 </td>
                             </tr>
                         @endforeach
@@ -274,9 +360,18 @@
                 </table>
             </div>
         </div>
+        
+        @php
+            $queryParams = request()->query();
+        
+            // Force id_supervisor into export URL if role is kasir
+            if ($isKasir) {
+                $queryParams['id_supervisor'] = auth()->user()->id;
+            }
+        @endphp
 
         <div class="container text-center mt-3">
-            <a href="{{ route('export.excel') }}" class="btn btn-success">Export ke Excel</a>
+            <a href="{{ route('export.excel',  $queryParams) }}" class="btn btn-success">Export ke Excel</a>
         </div>
 
         <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
@@ -320,4 +415,4 @@
             }
         </script>
     </body>
-</x-Supvis.SupvisLayouts>
+</x-dynamic-component>

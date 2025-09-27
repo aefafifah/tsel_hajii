@@ -227,7 +227,7 @@
                                     <span class="checkbox-icon"></span>
                                     {{ $produk->produk_nama }} <br>
                                     {{ $produk->produk_detail }} <br>
-                                    Rp {{ number_format($produk->produk_harga, 0, ',', '.') }}
+                                    Rp {{ number_format($produk->produk_harga_akhir, 0, ',', '.') }}
                                 </label>
                             </div>
                         @endforeach
@@ -272,8 +272,8 @@
 
                 <div class="form-group">
                     <label>Tanggal Transaksi:</label>
-                    <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
-                        value="<?php echo date('Y-m-d'); ?>" readonly required>
+                    <input type="datetime-local" id="tanggal_transaksi" name="tanggal_transaksi" class="form-control"
+                        value="<?php echo date('Y-m-d\TH:i'); ?>" readonly required>
                 </div>
                 
                 <div class="form-group" style="text-align: center; margin-top: 20px;">
@@ -362,8 +362,7 @@
             return false;
         }
         if (isValid) {
-            alert("Transaksi Sukses!");
-            alert("Transaksi telah disimpan");
+            alert("Transaksi sukses dan telah disimpan");
 
             // Clear all form inputs
             const form = document.querySelector("form");

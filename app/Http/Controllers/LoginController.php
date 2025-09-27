@@ -36,6 +36,9 @@ class LoginController extends Controller
                 case 'sales':
                     Auth::login($user);
                     return redirect()->route('sales.home');
+                case 'kasir':
+                    Auth::login($user);
+                    return redirect()->route('kasir.home');    
                 default:
                     return back()->withErrors(['role' => 'Role tidak valid untuk mengakses halaman ini.']);
             }

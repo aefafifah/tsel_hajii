@@ -129,7 +129,7 @@
 
 <body>
     <div class="container">
-        <h1 class="text-center mb-5 mt-5"><strong>Tambah Supervisor</strong></h1>
+        <h1 class="text-center mb-5 mt-5"><strong>Tambah Kasir / Supervisor</strong></h1>
         <x-form-card>
         <form id="addSupvisForm" action="{{ route('supvis.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -145,9 +145,9 @@
                 </div>
             </div>
             <x-form-group 
-                label="Nama Supervisor" 
+                label="Nama Kasir / Supervisor" 
                 name="name" 
-                placeholder="Masukkan nama Supervisor" 
+                placeholder="Masukkan nama Kasir / Supervisor" 
                 required="true"
                 oninput="validateName(this)"
             />
@@ -192,12 +192,13 @@
                     <option value="">Pilih Role</option>
                     <option value="Sales"disabled>Sales</option>
                     <option value="Supervisor" >Supervisor</option>
+                    <option value="Kasir" >Kasir</option>
                 </select>
                 <div class="error" id="roleError"></div>
             </div>
 
             <div class="btn-container">
-                <button type="submit" class="btn btn-save" onclick="showAlert(event)">Tambah SuperVisor</button>
+                <button type="submit" class="btn btn-save" onclick="showAlert(event)">Tambah</button>
                 <button type="button" class="btn btn-cancel" onclick="confirmCancel()">Batal</button>
             </div>
 
@@ -272,7 +273,7 @@
             role: {
                 validate: (value) => {
                     if (!value) return 'Role wajib dipilih';
-                    const validRoles = ['Sales', 'Supervisor'];
+                    const validRoles = ['Sales', 'Supervisor', 'Kasir'];
                     if (!validRoles.includes(value)) return 'Role tidak valid';
                     return null;
                 }

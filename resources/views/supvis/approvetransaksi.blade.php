@@ -1,5 +1,7 @@
-<x-Supvis.SupvisLayouts>
-
+@php
+    $layout = Auth::user()->hasRole('kasir') ? 'Kasir.KasirLayouts' : 'Supvis.SupvisLayouts';
+@endphp
+<x-dynamic-component :component="$layout">
     <div class="container mt-4">
         <h2 class="mb-4">Daftar Transaksi</h2>
 
@@ -43,6 +45,7 @@
                         <th>Nama</th>
                         <th>Telepon</th>
                         <th>No. Injeksi</th>
+                        <th>Addon Perdana</th>
                         <th>Aktivasi Tanggal</th>
                         <th>Jenis Paket</th>
                         <th>Merchandise</th>
@@ -55,74 +58,7 @@
                     </tr>
                 </thead>
                 <tbody id="transaksi-body">
-                    @foreach ($transaksi as $item)
-                        <tr>
-                            <td>{{ $item->id_transaksi }}</td>
-                            <td>{{ $item->supervisor?->name }}</td>
-                            <td>{{ optional($item->sales)->tempat_tugas ?? '-' }}
-                            <td>{{ $item->tanggal_transaksi }}</td>
-                            <td>{{ $item->nama_pelanggan }}</td>
-                            <td>{{ $item->telepon_pelanggan }}</td>
-                            <td>{{ $item->nomor_injeksi }}</td>
-                            <td>{{ $item->aktivasi_tanggal }}</td>
-                            <td>{{ $item->produk ? $item->produk->produk_nama : 'Tidak ditemukan' }}</td>
-                            <td>{{ $item->merchandise }}</td>
-                            <td>{{ $item->produk ? $item->produk->produk_harga_akhir : 0 }}</td>
-                            <td>{{ $item->metode_pembayaran }}</td>
-                            <td>{{ $item->is_setor ? 'Sudah' : 'Belum' }}</td>
-                            <td>
-                                @if ($item->is_paid)
-                                    <span class="badge bg-success">Lunas</span>
-                                @else
-                                    <span class="badge bg-warning text-dark">Belum</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if (!$item->is_paid)
-                                    <input type="checkbox" class="checkbox-bayar" data-id="{{ $item->id_transaksi }}"
-                                        data-nama="{{ $item->nama_pelanggan }}">
-                                @else
-                                    ✔
-                                @endif
-                            </td>
-                            <td>
-                                @if (Auth::user() && Auth::user()->is_superuser)
-                                    <a href="{{ route('transaksi.edit', $item->id_transaksi) }}"
-                                        class="btn btn-warning btn-sm">Edit</a>
-
-                                    {{-- <a href="{{ route('transaksi.edit.bayar', $item->id_transaksi) }}" class="btn btn-primary btn-sm">Bayar</a> --}}
-                                @endif
-                                @php
-                                    $no_hp = preg_replace('/[^0-9]/', '', $item->telepon_pelanggan);
-                                    if (substr($no_hp, 0, 1) === '0') {
-                                        $no_hp = '62' . substr($no_hp, 1);
-                                    }
-                                    $pesan =
-                                        "Halo {$item->nama_pelanggan},%0AKwitansi transaksi ID *{$item->id_transaksi}* bisa dilihat di:%0A" .
-                                        asset('storage/kwitansi/' . $item->id_transaksi . '.jpg') .
-                                        '%0A%0ATerima kasih telah menggunakan layanan kami 🙏😊';
-                                @endphp
-
-                                @if ($item->is_paid)
-                                    <a href="{{ route('supvis.transaksi.kwitansi.whatsapp', $item->id_transaksi) }}"
-                                        class="btn btn-success btn-sm" target="_blank">WA</a>
-
-                                    {{-- <form action="" method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus transaksi ini?')">Hapus</button>
-                                </form> --}}
-
-                                    <a href="{{ route('supvis.transaksi.kwitansi.print', $item->id_transaksi) }}"
-                                        class="btn btn-success btn-sm" target="_blank">Print</a>
-
-                                    @if (Auth::user() && Auth::user()->is_superuser)
-                                        <a href="#" class="btn btn-warning btn-sm btn-unlunas"
-                                            data-id="{{ $item->id_transaksi }}">Un-Lunas</a>
-                                    @endif
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
@@ -164,16 +100,6 @@
 
     <script>
         $(document).ready(function () {
-            // Initialize DataTable
-            $('#transactionTable').DataTable({
-                language: {
-                    search: "Cari:",
-                    zeroRecords: "Tidak ada data ditemukan"
-                },
-                paging: false,
-                info: false,
-                lengthChange: false
-            });
 
             // Delegated: handle checkbox-bayar
             $(document).on('change', '.checkbox-bayar', function () {
@@ -220,6 +146,43 @@
                     }
                 });
             });
+            
+            $(document).on('click', '.btn-delete', function(e) {
+                e.preventDefault();
+                const id = $(this).data('id');
+                const nama = $(this).data('nama');
+                
+                if (confirm(`Are you sure you want to permanently delete transaction for ${nama}?`)) {
+                    $.ajax({
+                        url: `/programhaji/supvis/transaksi/${id}/forcedelete`,
+                        type: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            alert('Transaction has been permanently deleted');
+                            // Refresh the table immediately instead of waiting for interval
+                            $.ajax({
+                                url: '/programhaji/supvis/approvetransaksi/refresh',
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(response) {
+                                    table.clear();
+                                    response.transaksi.forEach(function(item) {
+                                        // Reuse your existing row creation logic
+                                        // For brevity, I've not repeated it here
+                                    });
+                                    table.draw();
+                                }
+                            });
+                        },
+                        error: function(err) {
+                            console.error('Delete error:', err);
+                            alert('Failed to delete transaction');
+                        }
+                    });
+                }
+            });
 
             function formatDateTime(dateString) {
                 if (!dateString) return '';
@@ -240,71 +203,91 @@
                 is_superuser: {{ Auth::user()->is_superuser ? 'true' : 'false' }},
                 name: @json(Auth::user()->name)
             };
+            
+            let table;
 
-            // Periodic AJAX refresh
-            setInterval(function () {
+            if (!$.fn.DataTable.isDataTable('#transactionTable')) {
+                table = $('#transactionTable').DataTable({
+                    language: {
+                        search: "Cari:",
+                        zeroRecords: "Loading.. >3 sec -> Tidak ada data ditemukan"
+                    },
+                    paging: false,
+                    info: false,
+                    lengthChange: false
+                });
+            } else {
+                table = $('#transactionTable').DataTable(); // just get the instance
+            }
+
+
+            // Function to load transaction data and update the table
+            function loadTransactionData() {
                 $.ajax({
                     url: '/programhaji/supvis/approvetransaksi/refresh',
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        if (response.transaksi.length > 0) {
-                            var rows = '';
-                            response.transaksi.forEach(function (item) {
-                                rows += `
-                                    <tr>
-                                        <td>${item.id_transaksi}</td>
-                                        <td>${(item.supervisor?.name ?? '')}</td>
-                                        <td>${formatDateTime(item.tanggal_transaksi ?? '')}</td>
-                                        <td>${(item.nama_pelanggan ?? '')}</td>
-                                        <td>${(item.telepon_pelanggan ?? '')}</td>
-                                        <td>${(item.nomor_injeksi ?? '')}</td>
-                                        <td>${(item.aktivasi_tanggal ?? '')}</td>
-                                        <td>${(item.produk?.produk_nama ?? 'Tidak ditemukan')}</td>
-                                        <td>${(item.merchandise ?? '')}</td>
-                                        <td>${(item.produk?.produk_harga_akhir ?? 0)}</td>
-                                        <td>${(item.metode_pembayaran ?? '')}</td>
-                                        <td>${item.is_setor ? 'Sudah' : 'Belum'}</td>
-                                        <td>
-                                            ${item.is_paid
-                                                ? '<span class="badge bg-success">Lunas</span>'
-                                                : '<span class="badge bg-warning text-dark">Belum</span>'}
-                                        </td>
-                                        <td>
-                                            ${!item.is_paid
-                                                ? `<input type="checkbox" class="checkbox-bayar" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">`
-                                                : '✔'}
-                                        </td>
-                                        <td>
+                        table.clear(); // Clears all rows from the table
+        
+                        response.transaksi.forEach(function (item) {
+                            table.row.add([
+                                item.id_transaksi,
+                                item.supervisor?.name ?? '',
+                                item.sales?.tempat_tugas ?? '-',
+                                formatDateTime(item.tanggal_transaksi ?? ''),
+                                item.nama_pelanggan ?? '',
+                                item.telepon_pelanggan ?? '',
+                                item.nomor_injeksi ?? '',
+                                item.addon_perdana ? '✓' : '✗',
+                                item.aktivasi_tanggal ?? '',
+                                item.produk?.produk_nama ?? 'Tidak ditemukan',
+                                item.merchandise ?? '',
+                                item.produk?.produk_harga_akhir ?? 0,
+                                item.metode_pembayaran ?? '',
+                                item.is_setor ? 'Sudah' : 'Belum',
+                                item.is_paid
+                                    ? '<span class="badge bg-success">Lunas</span>'
+                                    : '<span class="badge bg-warning text-dark">Belum</span>',
+                                item.is_paid
+                                    ? '✔'
+                                    : `<input type="checkbox" class="checkbox-bayar" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">`,
+                                (function () {
+                                    let btns = '';
+                                    if (currentUser.is_superuser) {
+                                        btns += `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a> `;
+                                        btns += `<a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${item.id_transaksi}" data-nama="${item.nama_pelanggan}">Delete</a> `;
+                                    }
+                                    if (item.is_paid) {
+                                        btns += `
+                                            <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                             ${currentUser.is_superuser
-                                                ? `<a href="/programhaji/supvis/transaksi/${item.id_transaksi}/edit" class="btn btn-warning btn-sm">Edit</a>`
-                                                : ''}
-                                            ${item.is_paid
-                                                ? `
-                                                    <a href="/programhaji/supvis/transaksi/kwitansi/whatsapp/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">WA</a>
-                                                    <a href="/programhaji/supvis/transaksi/kwitansi/print/${item.id_transaksi}" class="btn btn-success btn-sm" target="_blank">Print</a>
-                                                    ${currentUser.is_superuser
-                                                        ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
-                                                        : ''}`
-                                                : ''}
-                                        </td>
-                                    </tr>
-                                `;
-                            });
-
-                            $('#transaksi-body').html(rows);
-                        } else {
-                            $('#transaksi-body').html('');
-                        }
+                                                ? `<a href="#" class="btn btn-warning btn-sm btn-unlunas" data-id="${item.id_transaksi}">Un-Lunas</a>`
+                                                : ''}`;
+                                    }
+                                    return btns;
+                                })()
+                            ]);
+                        });
+        
+                        table.draw(); // Redraw the DataTable with new data
                     },
                     error: function (err) {
                         console.error('AJAX error:', err);
                     }
                 });
-            }, 10000); // Refresh every 10 seconds
+            }
+        
+            // Load data immediately when page loads
+            loadTransactionData();
+        
+            // Then set up periodic refresh
+            setInterval(loadTransactionData, 3000);
+    
         });
     </script>
 @endpush
+</x-dynamic-component>
 
-</x-Supvis.SupvisLayouts>
+
 @stack('scripts')
