@@ -170,10 +170,7 @@ Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'up
 // delete approve by billy
 Route::delete('/programhaji/supvis/transaksi/{id}/forcedelete', [TransaksiController::class, 'forcedelete'])->name('transaksi.delete');
 
-<<<<<<< HEAD
-=======
 
->>>>>>> d1e25c4f2a23e4fe5217fec484edcfc3ed0cf493
 // bayar by aef
 Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('transaksi.edit.bayar');
 Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
