@@ -152,7 +152,7 @@ Route::post('/programhaji/update-setoran-status', [SupvisController::class, 'upd
 
 
 // under this untuk mainan
-
+// test imagick by aef
 Route::get('/cek-imagick', function () {
     if (extension_loaded('imagick')) {
         return 'Imagick aktif!';
@@ -160,15 +160,15 @@ Route::get('/cek-imagick', function () {
         return 'Imagick TIDAK aktif!';
     }
 });
-// Approve superuser
+// Approve superuser by aef
 Route::get('programhaji/supvis/approvetransaksi', [TransaksiController::class, 'approveTransaksi'])->name('transaksi.approve');
     Route::get('programhaji/supvis/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
     Route::put('programhaji/supvis/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
 
-// bayar
+// bayar by aef
 Route::get('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('transaksi.edit.bayar');
 Route::put('programhaji/supvis/transaksi/{id}/bayar', [TransaksiController::class, 'bayar'])->name('transaksi.bayar');
-// kwitansi
+// kwitansi by aef
 Route::get('/programhaji/supvis/transaksi/kwitansi', [TransaksiController::class, 'kwitansi'])->name('supvis.transaksi.kwitansi');
 // pdf print by billy
 Route::get('/programhaji/supvis/transaksi/kwitansi/print/{id}', [TransaksiController::class, 'print'])->name('supvis.transaksi.kwitansi.print');
